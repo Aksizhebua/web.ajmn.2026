@@ -632,7 +632,33 @@ html {
 .hero-about {
     position: relative;
     height: 100vh;
-    background: url('images/Aboutus.jpg') no-repeat center center/cover;
+    background: url('images/aboutus.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* =========================================
+   HERO SECTION - GALLERY 
+   ========================================= */
+.hero-gallery {
+    position: relative;
+    height: 100vh;
+    background: url('images/bg-ruangan.png') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* =========================================
+   HERO SECTION - KONTAK 
+   ========================================= */
+.hero-contact {
+    position: relative;
+    height: 100vh;
+    background: url('images/bg-ruangan.png') no-repeat center center/cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -668,7 +694,9 @@ html {
 /* Overlay agar gambar background agak gelap (mirip gambar referensi) */
 .hero-about .overlay,
 .hero-academic .overlay,
-.hero-non-academic .overlay {
+.hero-non-academic .overlay,
+.hero-gallery .overlay,
+.hero-contact .overlay {
     position: absolute;
     top: 0;
     left: 0;
