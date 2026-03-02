@@ -188,7 +188,8 @@ html {
 .hero {
     position: relative;
     height: 100vh;
-    background: url('images/Hero Home.jpg') no-repeat center center/cover;
+    background: url('./images/Hero Home.jpg') no-repeat center center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -632,7 +633,8 @@ html {
 .hero-about {
     position: relative;
     height: 100vh;
-    background: url('images/aboutus.jpg') no-repeat center center/cover;
+    background: url('./images/aboutus.jpg') no-repeat center center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -645,7 +647,8 @@ html {
 .hero-gallery {
     position: relative;
     height: 100vh;
-    background: url('images/bg-ruangan.png') no-repeat center center/cover;
+    background: url('./images/bg-ruangan.png') no-repeat center center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -658,7 +661,8 @@ html {
 .hero-contact {
     position: relative;
     height: 100vh;
-    background: url('images/bg-ruangan.png') no-repeat center center/cover;
+    background: url('./images/bg-ruangan.png') no-repeat center center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -671,7 +675,8 @@ html {
 .hero-academic {
     position: relative;
     height: 100vh;
-    background: url('images/bg-ruangan.png') no-repeat center center/cover;
+    background: url('./images/bg-ruangan.png') no-repeat center center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -684,7 +689,8 @@ html {
 .hero-non-academic {
     position: relative;
     height: 100vh;
-    background: url('images/Amphi1.jpg') no-repeat center center/cover;
+    background: url('./images/Amphi1.jpg') no-repeat center center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
