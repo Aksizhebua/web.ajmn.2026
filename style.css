@@ -1,0 +1,1583 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; /* Offset untuk fixed navbar agar section tidak tertutup saat scroll */
+}
+
+/* NAVBAR UTAMA (Update ke Fixed & tambah Transition) */
+.navbar {
+    position: fixed; /* UBAH DARI absolute JADI fixed agar selalu ikut scroll */
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 15px 50px;
+    background: transparent;
+    z-index: 1000; /* Pastikan angkanya besar agar tidak tertutup gambar lain */
+    transition: all 0.3s ease-in-out; /* Efek halus saat ganti warna */
+}
+
+/* =========================================
+   LOGO IMAGE STYLING
+   ========================================= */
+.logo img {
+    height: 70px; /* Atur angka ini (misal 40px atau 60px) kalau logonya kekecilan/kebesaran */
+    width: auto;  /* Biarkan auto agar gambar tidak gepeng */
+    display: block;
+    position: relative;
+    top: -6px; /* Geser ke atas */
+}
+
+.logo-text {
+    color: #b89442; /* Warna emas */
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* WADAH NAVIGASI & TOMBOL DI KANAN */
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 35px; /* Jarak antara menu "KONTAK" dengan tombol "Booking" */
+}
+
+/* MENU NAVIGASI */
+.navbar ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 25px; /* Jarak antar teks menu (HOME ke TENTANG KAMI) */
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #d4a742; /* Warna emas terang sesuai gambar */
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: 0.3s;
+}
+
+/* Garis bawah pada menu yang sedang aktif (HOME) */
+.navbar ul li a.active {
+    border-bottom: 2px solid #d4a742;
+    padding-bottom: 5px;
+}
+
+/* TOMBOL BOOKING */
+.btn-booking {
+    background-color: #d4a742;
+    color: #000;
+    padding: 10px 25px;
+    text-decoration: none;
+    font-weight: 800;
+    border-radius: 5px; /* Sedikit kotak sesuai gambar */
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-booking:hover {
+    background-color: #b89442;
+}
+
+/* =========================================
+   PERBAIKAN DROPDOWN - HAPUS BACKGROUND KOTAK
+   ========================================= */
+
+/* 1. Induk menu (SERVICES/LAYANAN) */
+.navbar ul li.dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+/* 2. Kotak Dropdown:DEFAULT SEMBUNYI & TRANSPARAN TOTAL */
+.dropdown-menu {
+    display: none !important; /* Pakai !important untuk memastikan dia sembunyi */
+    position: absolute;
+    top: 100%; /* Pas di bawah tulisan SERVICES */
+    left: 0;
+    
+    /* HAPUS BACKGROUND HITAM SEBELUMNYA */
+    background-color: transparent !important; /* Kotak jadi tembus pandang */
+    
+    min-width: 250px;
+    padding: 10px 0; /* Ruang sedikit agar tidak menempel */
+    z-index: 9999;
+    flex-direction: column;
+    gap: 0 !important;
+}
+
+/* 3. TAMPILKAN saat menu SERVICES disentuh kursor (hover) */
+.navbar ul li.dropdown:hover .dropdown-menu {
+    display: flex !important; /* Memaksa kotak muncul saat di-hover */
+}
+
+/* 4. Pengaturan Teks di dalam kotak Dropdown */
+.dropdown-menu li {
+    margin: 0;
+    width: 100%;
+}
+
+.dropdown-menu li a {
+    padding: 8px 0; /* Rapatkan jarak antar teks (atas-bawah) */
+    display: block;
+    font-size: 14px;
+    
+    /* WARNA TEKS TETAP EMAS AGAR TERBACA JELAS DI ATAS GEDUNG */
+    color: #d4a742; 
+    
+    transition: 0.3s;
+    margin: 0 !important;
+    text-align: left;
+    background-color: transparent !important; /* Pastikan tidak ada background di teks */
+}
+
+/* 5. Efek saat sub-menu dipilih */
+.dropdown-menu li a:hover {
+    color: #ffffff !important; /* Berubah jadi PUTIH saat disorot */
+    text-decoration: underline; /* Sedikit efek garis bawah agar terlihat interaktif */
+}
+
+/* =========================================
+   PERBAIKAN: PAPAN BACKGROUND TIPIS, LOGO TETAP BESAR
+   ========================================= */
+
+/* 1. Paksa papan background (navbar) jadi tipis */
+.navbar.scrolled {
+    background-color: #3e2009;
+    height: 75px !important; /* INI KUNCINYA: Tinggi papan dipaksa kecil (ganti angka ini kalau masih kurang pas) */
+    padding: 0 50px !important; /* Hapus padding atas-bawah supaya tidak makin tebal */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Logo dibiarkan tetap besar sesuai ukuran aslinya */
+.navbar.scrolled .logo img {
+    height: 70px !important; /* Ukuran logomu tidak diganggu gugat */
+    /* Karena papannya cuma 75px tapi logonya 70px, logonya akan otomatis sedikit menonjol keluar. Keren! */
+}
+
+/* 3. Tulisan Navigasi Jadi Putih */
+.navbar.scrolled ul li a {
+    color: #ffffff !important; 
+}
+
+/* 4. Garis Bawah Menu Aktif */
+.navbar.scrolled ul li a.active {
+    border-bottom: 2px solid #ffffff;
+}
+
+/* 5. Hover Effect (Teks Putih ke Emas) */
+.navbar.scrolled ul li a:hover {
+    color: #d4a742 !important; 
+}
+
+/* 6. Background Dropdown saat discroll */
+.navbar.scrolled .dropdown-menu {
+    background-color: #3e2009 !important;
+}
+
+/* HERO SECTION - Tempat gambar utama */
+.hero {
+    position: relative;
+    height: 100vh;
+    background: url('images/Hero Home.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Lapisan hitam tipis agar gambar tidak terlalu terang */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* =========================================
+   HERO SECTION (INDEX)
+   ========================================= */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    max-width: 1000px; /* Sedikit dilebarkan agar teks deskripsi tidak terlalu panjang ke bawah */
+    padding: 0 20px;
+    text-align: center; /* Memastikan teks persis di tengah */
+    margin: 0 auto;
+    margin-top: 60px; /* Turunkan konten hero sedikit */
+}
+
+.hero-content h1 {
+    font-size: 3.5rem; /* Dikecilkan dari sebelumnya agar lebih rapi */
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 850px; /* Menjaga agar paragraf tidak terlalu melebar ke tepi layar */
+}
+
+/* Tombol About Us di tengah */
+.btn-about {
+    background-color: #c19330;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* SECTION SERVICES */
+.services {
+    padding: 80px 60px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #0f0500;
+    margin-bottom: 50px;
+    position: relative;
+    text-transform: uppercase;
+}
+
+/* Garis kecil di bawah judul */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #b89442;
+    margin: 15px auto 0;
+}
+
+.services-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.service-card {
+    flex: 1;
+    max-width: 500px;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+
+.service-info h3 {
+    color: #000;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.service-info {
+    padding: 25px;
+}
+
+
+.service-info p {
+    color: #555;
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.service-info .btn-learn-more {
+    display: inline-block;
+    padding: 10px 28px;
+    background-color: #b89442;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.service-info .btn-learn-more:hover {
+    background-color: #d4a742;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(184, 148, 66, 0.3);
+}
+
+/* Responsif untuk HP */
+@media (max-width: 768px) {
+    .services-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar {
+        padding: 20px;
+    }
+
+    /* Responsif untuk Layar HP */
+    .hero-content h1 {
+        font-size: 2.2rem; /* Mengecilkan otomatis di HP */
+    }
+    .hero-content p {
+        font-size: 0.95rem;
+    }
+}
+
+/* =========================================
+   EXCELLENCE SECTION (REVISI SEJAJAR & CENTER)
+   ========================================= */
+.excellence-section {
+    padding: 80px 10%;
+    background-color: #fcfcfc; /* Warna putih dengan sedikit corak abu sangat muda */
+    display: flex;
+    justify-content: center;
+}
+
+.excellence-section .container {
+    display: flex;
+    align-items: center; /* Kunci utama: Menyejajarkan teks & gambar secara vertikal */
+    justify-content: center;
+    gap: 60px;
+    max-width: 1100px;
+    width: 100%;
+}
+
+/* Kolom Teks */
+.excellence-section .text-content {
+    flex: 1;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Menengahkan tombol */
+    text-align: center; /* Menengahkan teks */
+}
+
+.excellence-section h2 {
+    font-size: 2.2rem; /* Huruf dikecilkan */
+    color: #1a1a1a;
+    line-height: 1.3; /* Jarak antar baris dirapatkan */
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.excellence-section h2 span {
+    color: #b89442; /* Warna Emas */
+}
+
+.excellence-section p {
+    font-size: 0.95rem; /* Huruf paragraf dikecilkan */
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Tombol */
+.excellence-section .btn-booking {
+    background-color: #d4a742;
+    color: #000;
+    padding: 12px 35px; /* Sedikit dilebarkan sesuai gambar */
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(212, 167, 66, 0.3);
+}
+
+/* Kolom Gambar */
+.excellence-section .image-content {
+    flex: 1.2;
+    display: flex;
+    justify-content: center;
+}
+
+.excellence-section .image-content img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 15px; /* Siku gambar dibuat melengkung halus */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Efek bayangan kotak */
+    object-fit: cover;
+}
+
+/* Responsif untuk layar Tablet & HP */
+@media (max-width: 992px) {
+    .excellence-section .container {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+
+/* =========================================
+   FOOTER STYLING (Diperbarui Lebih Gelap & Rapat)
+   ========================================= */
+.main-footer {
+    background-color: #e5e5e5; /* Abu-abu agak digelapkan dari sebelumnya */
+    padding: 40px 10% 20px; /* Padding atas-bawah diperkecil drastis */
+    color: #444; /* Warna teks agak gelap */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-brand {
+    margin-bottom: 12px; /* Dibuat lebih rapat */
+    margin-top: -10px; /* Angkat logo agar sejajar dengan header kolom lain */
+}
+
+.footer-brand img {
+    height: 60px; /* Ukuran logo di footer */
+    width: auto;
+    display: block;
+}
+
+.footer-desc {
+    line-height: 1.5;
+    margin-bottom: 15px; /* Dibuat lebih rapat */
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.footer-col h4 {
+    color: #b89442;
+    margin-bottom: 15px; /* Jarak judul ke list dirapatkan */
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px; /* Jarak antar teks menu dirapatkan */
+}
+
+.footer-col ul li a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #b89442;
+}
+
+/* Ikon Sosial Media */
+.social-icons {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.icon-circle {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #b89442;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #b89442;
+    font-weight: bold;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+.icon-circle:hover {
+    background-color: #b89442;
+    color: white;
+}
+
+/* =========================================
+   IKON SOSIAL MEDIA (TEMA PUTIH EMAS KHAS AJMN)
+   ========================================= */
+
+.social-icon-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px; /* Lebar lingkaran dikecilkan */
+    height: 35px; /* Tinggi lingkaran dikecilkan */
+    border-radius: 50%; /* Membuatnya bulat sempurna */
+    background-color: #e5e5e5; /* Background abu-abu seperti footer */
+    border: 2px solid #b89442; /* Garis tepi warna emas khas kita */
+    color: #b89442; /* Warna logo ikonnya (emas) */
+    font-size: 1rem; /* Ukuran logo dikecilkan */
+    text-decoration: none;
+    transition: all 0.3s ease; /* Efek transisi halus */
+}
+
+/* Efek saat ikon disentuh kursor (Hover) */
+.social-icon-gold:hover {
+    background-color: #b89442; /* Background jadi emas */
+    color: #ffffff; /* Logo jadi putih */
+    transform: translateY(-3px); /* Sedikit terangkat */
+    box-shadow: 0 5px 15px rgba(184, 148, 66, 0.3); /* Bayangan emas tipis */
+}
+
+/* Kontak Info */
+.contact-info p {
+    font-size: 0.9rem;
+    margin-bottom: 12px; /* Jarak antar info dirapatkan */
+    line-height: 1.6;
+    color: #555;
+    display: flex;
+    align-items: flex-start; /* Sejajarkan icon dan teks */
+    gap: 10px;
+}
+
+/* Icon dengan lebar tetap agar teks sejajar */
+.contact-info .contact-icon {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    flex-shrink: 0; /* Pastikan icon tidak menyusut */
+}
+
+/* Text wrapper agar bisa wrap dengan baik */
+.contact-info p span:not(.contact-icon) {
+    flex: 1;
+    line-height: 1.6;
+}
+
+/* Bagian Bawah Copyright */
+.footer-bottom {
+    margin-top: 30px; /* Jarak pemisah ke atas diperkecil (awalnya 50px) */
+    text-align: center;
+}
+
+.footer-bottom hr {
+    border: 0;
+    border-top: 1px solid #d5d5d5; /* Warna garis dibuat agak gelap dikit */
+    margin-bottom: 15px; /* Jarak garis ke tulisan dirapatkan */
+}
+
+.footer-copyright p {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.footer-copyright a {
+    color: #777;
+    text-decoration: none;
+}
+
+.footer-copyright a:hover {
+    color: #b89442;
+}
+
+/* Responsif HP */
+@media (max-width: 768px) {
+    .main-footer {
+        padding: 30px 20px 20px;
+    }
+    .footer-container {
+        flex-direction: column;
+        gap: 25px;
+    }
+}
+
+/* =========================================
+   HERO SECTION - TENTANG KAMI 
+   ========================================= */
+.hero-about {
+    position: relative;
+    height: 100vh;
+    background: url('images/Aboutus.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* =========================================
+   HERO SECTION - AKADEMIK VENTURE 
+   ========================================= */
+.hero-academic {
+    position: relative;
+    height: 100vh;
+    background: url('images/bg-ruangan.png') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* =========================================
+   HERO SECTION - NON-AKADEMIK VENTURE 
+   ========================================= */
+.hero-non-academic {
+    position: relative;
+    height: 100vh;
+    background: url('images/Amphi1.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Overlay agar gambar background agak gelap (mirip gambar referensi) */
+.hero-about .overlay,
+.hero-academic .overlay,
+.hero-non-academic .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-about-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.hero-about-content h1 {
+    font-size: 4.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Responsif untuk HP agar teks tidak kebesaran */
+@media (max-width: 768px) {
+    .hero-about-content h1 {
+        font-size: 3rem;
+    }
+}
+
+/* =========================================
+   PROFILE SECTION - TENTANG KAMI
+   ========================================= */
+.profile-section {
+    padding: 80px 10%;
+    background-color: #ffffff;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.profile-text {
+    flex: 1;
+    color: #222;
+    max-width: 620px;
+}
+
+.profile-text h2 {
+    font-size: 2.6rem;
+    color: #b89442;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.profile-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 22px;
+    text-align: justify;
+}
+
+.profile-image {
+    flex: 1;
+    max-width: 620px;
+}
+
+.profile-image img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    display: block;
+}
+
+@media (max-width: 992px) {
+    .profile-container {
+        flex-direction: column;
+        text-align: left;
+    }
+}
+
+/* =========================================
+   VENUE SECTION (NON-ACADEMIC VENTURE)
+   ========================================= */
+
+.venue-section {
+    padding: 80px 10%;
+    background-color: #fcfcfc;
+}
+
+.venue-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.venue-card {
+    flex: 1;
+    min-width: 300px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efek sedikit terangkat saat disentuh kursor */
+.venue-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.venue-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.venue-info {
+    padding: 35px 30px;
+}
+
+.venue-info h3 {
+    font-size: 1.1rem;
+    color: #b89442; /* Warna coklat emas seperti di homepage */
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    text-align: center; /* Judul ditengah */
+}
+
+.venue-info p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.7;
+    text-align: justify; /* Rata kanan kiri */
+    text-align-last: left; /* Baris terakhir rata kiri */
+    text-justify: inter-word; /* Distribusi spasi yang lebih natural */
+    word-spacing: -0.05em; /* Kurangi sedikit jarak antar kata untuk menghindari rongga besar */
+    margin-bottom: 25px;
+}
+
+.btn-learn-more {
+    display: inline-block;
+    padding: 10px 28px;
+    background-color: #b89442;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-learn-more:hover {
+    background-color: #d4a742;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(184, 148, 66, 0.3);
+}
+
+/* Responsif untuk Layar Tablet dan HP */
+@media (max-width: 992px) {
+    .venue-container {
+        flex-direction: column;
+    }
+
+    .venue-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* =========================================
+   BALLROOM Y15 DETAIL SECTION (WHITE THEME)
+   ========================================= */
+
+.ballroom-detail-section {
+    padding: 80px 5%;
+    background-color: #f8f8f8; /* Background abu-abu sangat terang */
+}
+
+.container-detail {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Gambar Utama */
+.main-hero-image img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+}
+
+/* Teks Judul & Deskripsi */
+.detail-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.detail-header h2 {
+    font-size: 2.8rem;
+    color: #b89442; /* Emas */
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.detail-header p {
+    font-size: 1.05rem;
+    color: #555; /* Abu-abu gelap agar terbaca jelas di putih */
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* 3 Gambar Galeri */
+.detail-gallery {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+.gallery-item {
+    flex: 1;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border: 3px solid #d4a742; /* Garis tepi emas khas AJMN sesuai gambar */
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* Bagian Fasilitas */
+.facilities-wrapper {
+    text-align: center;
+}
+
+.facilities-wrapper h3 {
+    font-size: 2rem;
+    color: #b89442; /* Emas */
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.facilities-grid {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    gap: 50px;
+    background-color: #fcfcfc; /* Warna background sedikit abu sangat terang untuk list */
+    padding: 45px 50px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.facility-column {
+    flex: 1;
+}
+
+.facility-category {
+    font-size: 1.3rem;
+    color: #3e2009;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #d4a742;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.facility-list {
+    list-style: none;
+}
+
+.facility-list > li {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.facility-list > li::before {
+    content: "●";
+    position: absolute;
+    left: 0;
+    color: #b89442;
+    font-size: 0.8rem;
+    top: 5px;
+}
+
+.facility-label {
+    font-weight: 600;
+    color: #3e2009;
+    display: inline-block;
+    min-width: 160px;
+}
+
+.facility-value {
+    color: #555;
+    font-weight: 400;
+}
+
+/* Sub-list untuk Area Details */
+.sub-list {
+    list-style: none;
+    margin-top: 10px;
+    margin-left: 0;
+    padding-left: 20px;
+}
+
+.sub-list li {
+    font-size: 0.88rem;
+    color: #666;
+    margin-bottom: 6px;
+    font-weight: 400;
+    position: relative;
+    padding-left: 15px;
+}
+
+.sub-list li::before {
+    content: "○";
+    position: absolute;
+    left: 0;
+    color: #b89442;
+    font-size: 0.7rem;
+    top: 3px;
+}
+
+/* Responsif HP & Tablet */
+@media (max-width: 768px) {
+    .detail-gallery {
+        flex-direction: column;
+    }
+    .gallery-item img {
+        height: 250px;
+    }
+    .facilities-grid {
+        flex-direction: column;
+        padding: 25px 20px;
+        gap: 35px;
+    }
+    .facility-category {
+        font-size: 1.1rem;
+    }
+    .facility-label {
+        min-width: 140px;
+        font-size: 0.9rem;
+    }
+    .detail-header h2 {
+        font-size: 2.2rem;
+    }
+}
+
+/* =========================================
+   SEMINAR ROOM SECTION
+   ========================================= */
+
+.seminar-room-section {
+    padding: 80px 5%;
+    background-color: #f8f8f8;
+}
+
+/* =========================================
+   AMPHITHEATER SECTION
+   ========================================= */
+
+.amphitheater-section {
+    padding: 80px 5%;
+    background-color: #ffffff;
+}
+
+/* Info/Facility Wrapper */
+.info-wrapper {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.info-wrapper h3 {
+    font-size: 2rem;
+    color: #b89442;
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.info-grid {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    gap: 50px;
+    background-color: #fcfcfc;
+    padding: 45px 50px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Reuse facility-column and facility-category from ballroom section */
+.info-grid .facility-column {
+    flex: 1;
+}
+
+.info-grid .facility-category {
+    font-size: 1.2rem;
+    color: #3e2009;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #d4a742;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-grid .facility-category:first-child {
+    margin-top: 0;
+}
+
+.info-grid .facility-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-grid .facility-list > li {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.info-grid .facility-list > li::before {
+    content: "●";
+    position: absolute;
+    left: 0;
+    color: #b89442;
+    font-size: 0.8rem;
+    top: 5px;
+}
+
+.info-grid .facility-label {
+    font-weight: 600;
+    color: #3e2009;
+    display: inline-block;
+    min-width: 150px;
+}
+
+.info-grid .facility-value {
+    color: #555;
+    font-weight: 400;
+}
+
+/* Generic bullet list for rates section */
+.bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bullet-list li {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.bullet-list li::before {
+    content: "●";
+    position: absolute;
+    left: 0;
+    color: #b89442;
+    font-size: 0.8rem;
+    top: 3px;
+}
+
+/* Rates Section */
+.rates-wrapper {
+    margin-top: 60px;
+}
+
+.rates-grid {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+}
+
+.rate-box {
+    flex: 1;
+    background-color: #fcfcfc;
+    padding: 40px 35px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.rate-box h3 {
+    font-size: 1.5rem;
+    color: #3e2009;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #d4a742;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Left Box - Ambulance Rates */
+.ambulance-item {
+    margin-bottom: 30px;
+}
+
+.ambulance-item:last-child {
+    margin-bottom: 0;
+}
+
+.ambulance-item h4 {
+    font-size: 1.1rem;
+    color: #b89442;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.ambulance-item .bullet-list li {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+/* Right Box - Rental Fee */
+.right-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.price-highlight {
+    font-size: 2rem;
+    color: #b89442;
+    font-weight: 700;
+    margin: 20px 0 10px 0;
+    line-height: 1.3;
+}
+
+.sub-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+.fee-notes {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.fee-notes p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+/* Responsive Amphitheater */
+@media (max-width: 768px) {
+    .info-grid {
+        flex-direction: column;
+        padding: 25px 20px;
+        gap: 25px;
+    }
+    
+    .info-grid .facility-category {
+        font-size: 1.05rem;
+        margin-top: 20px;
+    }
+    
+    .info-grid .facility-category:first-child {
+        margin-top: 0;
+    }
+    
+    .info-grid .facility-label {
+        min-width: 130px;
+        font-size: 0.88rem;
+    }
+    
+    .rates-grid {
+        flex-direction: column;
+        gap: 25px;
+    }
+    
+    .price-highlight {
+        font-size: 1.6rem;
+    }
+}
+/* =========================================
+   FILTER MENU GALERI (Pita Cokelat)
+   ========================================= */
+
+.gallery-filter-bar {
+    background-color: #2a1608; /* Cokelat sangat gelap khas tema */
+    padding: 25px 5%;
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid #3e2009; /* Sedikit garis batas atas */
+}
+
+.filter-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; /* Memastikan tombol otomatis turun ke bawah jika dibuka di HP */
+    justify-content: center;
+}
+
+.filter-btn {
+    background-color: transparent;
+    border: 1px solid #777; /* Garis abu-abu untuk menu yang tidak aktif */
+    color: #ccc; /* Teks abu-abu terang */
+    padding: 10px 25px;
+    border-radius: 30px; /* Bentuk tombol lonjong (pill shape) */
+    font-size: 0.95rem;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none; /* Menghilangkan underline untuk anchor tag */
+    display: inline-block; /* Agar padding bekerja dengan baik untuk anchor */
+}
+
+/* Tampilan untuk tombol yang sedang aktif (Contoh: "Semua") */
+.filter-btn.active {
+    border-color: #d4a742; /* Garis tepi emas */
+    color: #d4a742; /* Teks emas */
+}
+
+/* Efek saat tombol disentuh kursor */
+.filter-btn:hover {
+    border-color: #d4a742;
+    color: #ffffff; /* Teks jadi putih saat dihover */
+}
+
+/* Responsif untuk HP */
+@media (max-width: 768px) {
+    .filter-btn {
+        padding: 8px 18px;
+        font-size: 0.85rem;
+    }
+    .gallery-filter-bar {
+        padding: 15px 5%;
+    }
+}
+/* =========================================
+   GALERI GRID SECTION (5 KOLOM x 2 BARIS)
+   ========================================= */
+
+.gallery-grid-section {
+    padding: 60px 3%; /* Padding kiri-kanan lebih kecil agar 5 gambar muat dengan lega */
+    background-color: #ffffff; /* Background putih bersih */
+}
+
+/* Category Block Wrapper */
+.gallery-category-block {
+    margin-bottom: 80px;
+}
+
+.gallery-category-block:last-child {
+    margin-bottom: 0;
+}
+
+/* Judul Kategori */
+.gallery-category-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.gallery-category-title h2 {
+    font-size: 2.2rem;
+    color: #b89442; /* Emas khas AJMN */
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Garis hiasan kecil di bawah judul */
+.title-line {
+    width: 60px;
+    height: 4px;
+    background-color: #d4a742;
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+/* Container Grid Utama (Membagi 5 Kolom) */
+.gallery-grid-5x2 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* KUNCI: Memaksa 5 gambar dalam 1 baris */
+    gap: 15px; /* Jarak rapi antar gambar */
+}
+
+/* Kotak Foto & Efek Hover Khas Kita */
+.gallery-item-box {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    aspect-ratio: 4 / 3; /* Memastikan semua foto bentuknya persegi panjang landscape seragam */
+    border: 3px solid transparent; /* Bingkai transparan agar tidak goyang saat dihover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Foto dipotong pas agar tidak gepeng */
+    transition: transform 0.4s ease;
+}
+
+/* Efek saat foto disentuh (Bingkai Emas & Zoom) */
+.gallery-item-box:hover {
+    border-color: #d4a742; /* Muncul bingkai emas */
+    transform: translateY(-5px); /* Sedikit terangkat */
+    box-shadow: 0 10px 25px rgba(212, 167, 66, 0.25); /* Bayangan membesar */
+}
+
+.gallery-item-box:hover img {
+    transform: scale(1.1); /* Zoom halus pada foto di dalam kotak */
+}
+
+/* =========================================
+   RESPONSIF (Agar tetap rapi di layar kecil)
+   ========================================= */
+
+/* Di layar Laptop/Tablet besar, jadikan 4 kolom agar tidak kekecilan */
+@media (max-width: 1200px) {
+    .gallery-grid-5x2 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Di Tablet, jadikan 3 kolom */
+@media (max-width: 992px) {
+    .gallery-grid-5x2 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Di HP, jadikan 2 kolom */
+@media (max-width: 600px) {
+    .gallery-grid-5x2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .gallery-category-title h2 {
+        font-size: 1.8rem;
+    }
+}
+/* Jarak antar blok kategori galeri */
+.gallery-category-block {
+    margin-bottom: 80px; /* Memberikan ruang kosong ke bawah sebelum kategori selanjutnya */
+}
+/* =========================================
+   CONTACT SECTION (WHITE & GOLD THEME)
+   ========================================= */
+
+.contact-section {
+    padding: 80px 5%;
+    background-color: #ffffff; /* Tema Background Putih Bersih */
+}
+
+.container-contact {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Layout 2 Kolom */
+.contact-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* Agar tinggi kolom kiri dan kanan sama */
+    gap: 50px;
+    background-color: #fcfcfc; /* Warna background kotak sedikit abu sangat terang */
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Bayangan halus khas kita */
+    padding: 40px;
+}
+
+/* =========================================
+   KOLOM KIRI: MAPS
+   ========================================= */
+.map-container {
+    flex: 1;
+    min-height: 400px; /* Tinggi minimum map */
+    border-radius: 8px;
+    overflow: hidden; /* Agar ujung iframe melengkung mengikuti wadah */
+    border: 3px solid #d4a742; /* Bingkai emas di sekeliling map */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* =========================================
+   KOLOM KANAN: INFORMASI KONTAK
+   ========================================= */
+.contact-info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Teks otomatis berada di tengah secara vertikal */
+}
+
+/* Logo AJMN */
+.contact-logo {
+    width: 180px; /* Ukuran logo disesuaikan */
+    margin-bottom: 25px;
+}
+
+.contact-info-container h3 {
+    font-size: 1.6rem;
+    color: #b89442; /* Emas Khas AJMN */
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.address-text {
+    font-size: 1.05rem;
+    color: #444; /* Abu-abu gelap agar elegan dan mudah dibaca */
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.contact-detail {
+    margin-bottom: 25px;
+}
+
+.contact-detail h4 {
+    font-size: 1.1rem;
+    color: #b89442; /* Emas */
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.contact-detail p {
+    font-size: 1.05rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.contact-hours {
+    margin-top: 10px;
+    padding-top: 25px;
+    border-top: 1px solid #ddd; /* Garis batas halus sebelum jam operasional */
+}
+
+.contact-hours p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.contact-hours p strong {
+    color: #333;
+}
+
+/* =========================================
+   RESPONSIF UNTUK HP DAN TABLET
+   ========================================= */
+@media (max-width: 992px) {
+    .contact-grid {
+        flex-direction: column;
+        padding: 30px;
+        gap: 40px;
+    }
+    
+    .map-container {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-section {
+        padding: 50px 5%;
+    }
+    
+    .contact-info-container h3 {
+        font-size: 1.4rem;
+    }
+}

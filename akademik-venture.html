@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademik Venture - PT Atma Jaya Mitra Nusantara</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+        
+        <div class="nav-container">
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="tentang-kami.html">ABOUT US</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="active">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="akademik-venture.html">Akademik Venture</a></li>
+                            <li><a href="non-akademik-venture.html">Non-Academic Venture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="galeri.html">GALLERY</a></li>
+                    <li><a href="kontak.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">Booking</a>
+        </div>
+    </header>
+
+    <section class="hero-academic">
+        <div class="overlay"></div>
+        <div class="hero-about-content">
+            <h1>Academic Venture</h1>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <p class="footer-desc">Solusi profesional untuk pengelolaan area komersial, event organizer, dan booking venue terpercaya di Indonesia.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>SERVICES</h4>
+                <ul>
+                    <li><a href="akademik-venture.html">Academic Venture</a></li>
+                    <li><a href="non-akademik-venture.html">Non-Academic Venture</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>COMPANY</h4>
+                <ul>
+                    <li><a href="tentang-kami.html">About Us</a></li>
+                    <li><a href="galeri.html">Gallery</a></li>
+                    <li><a href="kontak.html">Contact</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
+                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            // Jika layar discroll lebih dari 50 pixel ke bawah
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled'); // Kembali transparan kalau di paling atas
+            }
+        });
+    </script>
+</body>
+</html>
