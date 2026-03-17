@@ -184,6 +184,188 @@ html {
     background-color: #3e2009 !important;
 }
 
+/* =========================================
+   HAMBURGER MENU FOR MOBILE
+   ========================================= */
+
+/* Hamburger button - hidden by default on desktop */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: #d4a742;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* Animation for hamburger to X */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-6px, -6px);
+}
+
+/* Mobile Navigation Styles */
+@media (max-width: 768px) {
+    /* Show hamburger on mobile */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Hide desktop navigation */
+    .navbar nav {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+    }
+
+    /* Show navigation when active */
+    .navbar nav.active {
+        left: 0;
+    }
+
+    /* Mobile menu styling */
+    .navbar nav ul {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .navbar nav ul li a {
+        font-size: 18px;
+        color: #d4a742;
+        padding: 10px 0;
+        display: block;
+    }
+
+    /* Dropdown in mobile */
+    .dropdown-menu {
+        position: static !important;
+        background: rgba(40, 40, 40, 0.8) !important;
+        margin-top: 15px;
+        border-radius: 8px;
+        padding: 15px 0;
+        display: none !important;
+    }
+
+    .navbar ul li.dropdown:hover .dropdown-menu {
+        display: none !important;
+    }
+
+    /* Mobile dropdown toggle */
+    .navbar ul li.dropdown.active .dropdown-menu {
+        display: flex !important;
+    }
+
+    /* Adjust booking button for mobile */
+    .btn-booking {
+        font-size: 16px;
+        padding: 12px 30px;
+    }
+
+    /* Adjust navbar padding on mobile */
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    /* Logo size adjustment for mobile */
+    .logo img {
+        height: 50px;
+    }
+    
+    /* Hero sections mobile responsiveness */
+    .hero-contact, .hero-about, .hero-academic, .hero-non-academic, .hero-gallery {
+        min-height: 70vh;
+        padding: 0 20px;
+    }
+    
+    .hero-about-content, .hero-contact-content, .hero-academic-content, .hero-non-academic-content, .hero-gallery-content {
+        max-width: 95%;
+        padding: 30px 15px;
+    }
+    
+    .hero-about-content h1, .hero-contact-content h1, .hero-academic-content h1, .hero-non-academic-content h1, .hero-gallery-content h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 15px;
+        line-height: 1.3;
+    }
+    
+    .hero-about-content p, .hero-contact-content p, .hero-academic-content p, .hero-non-academic-content p, .hero-gallery-content p {
+        font-size: 0.9rem !important;
+        line-height: 1.6;
+    }
+}
+
+/* Additional mobile improvements for forms and content */
+@media (max-width: 768px) {
+    /* General content padding */
+    .container, .content-section {
+        padding: 40px 20px;
+    }
+    
+    /* Buttons mobile sizing */
+    .btn, .btn-primary, .btn-secondary {
+        font-size: 14px;
+        padding: 12px 24px;
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    /* Typography adjustments */
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    h3 { font-size: 1.3rem !important; }
+    h4 { font-size: 1.1rem !important; }
+    
+    /* Text content */
+    p, li {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    /* Contact forms and input fields */
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-control, input, textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px;
+        width: 100%;
+    }
+    
+    /* Tables responsive */
+    .table-responsive table {
+        font-size: 0.85rem;
+    }
+    
+    .table-responsive th, .table-responsive td {
+        padding: 8px 5px;
+    }
+}
+
 /* HERO SECTION - Tempat gambar utama */
 .hero {
     position: relative;
@@ -346,18 +528,78 @@ html {
     .services-container {
         flex-direction: column;
         align-items: center;
+        gap: 20px;
+    }
+    
+    .service-card {
+        max-width: 90%;
+        margin: 0 auto 20px;
+    }
+    
+    .service-card img {
+        height: 200px;
+    }
+    
+    .service-info {
+        padding: 20px 15px;
+    }
+    
+    .service-info h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .service-info p {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
     }
 
     .navbar {
-        padding: 20px;
+        padding: 15px 20px;
     }
 
-    /* Responsif untuk Layar HP */
-    .hero-content h1 {
-        font-size: 2.2rem; /* Mengecilkan otomatis di HP */
+    /* Hero section responsive */
+    .hero {
+        padding: 0 20px;
+        min-height: 80vh;
     }
+    
+    .hero-content {
+        max-width: 95%;
+        padding: 40px 20px;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        line-height: 1.3;
+    }
+    
     .hero-content p {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+    
+    .btn-about {
+        font-size: 13px;
+        padding: 12px 25px;
+    }
+    
+    /* Services section mobile */
+    .services {
+        padding: 60px 20px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 35px;
+    }
+    
+    .section-title::after {
+        width: 40px;
+        height: 2px;
+        margin: 12px auto 0;
     }
 }
 
@@ -621,9 +863,108 @@ html {
     .main-footer {
         padding: 30px 20px 20px;
     }
+    
     .footer-container {
         flex-direction: column;
         gap: 25px;
+        text-align: center;
+    }
+    
+    .footer-col {
+        min-width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* Footer brand styling for mobile */
+    .footer-brand {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .footer-brand img {
+        height: 50px;
+        margin: 0 auto;
+    }
+    
+    .footer-desc {
+        text-align: center;
+        font-size: 0.85rem;
+        padding: 0 10px;
+        line-height: 1.6;
+    }
+    
+    /* Headers styling for mobile */
+    .footer-col h4 {
+        text-align: center;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #d5d5d5;
+    }
+    
+    /* Contact info mobile styling */
+    .contact-info {
+        text-align: left;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .contact-info p {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+        align-items: center;
+        padding: 8px 0;
+    }
+    
+    .contact-info .contact-icon {
+        width: 25px;
+        font-size: 1.1rem;
+        margin-right: 5px;
+    }
+    
+    /* Social icons mobile styling */
+    .social-icons {
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .social-icon-gold {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    
+    /* Footer links mobile styling */
+    .footer-col ul {
+        text-align: center;
+    }
+    
+    .footer-col ul li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-col ul li a {
+        font-size: 0.9rem;
+        padding: 5px 0;
+        display: inline-block;
+    }
+    
+    /* Footer bottom mobile styling */
+    .footer-bottom {
+        margin-top: 25px;
+    }
+    
+    .footer-copyright p {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        padding: 0 10px;
+    }
+    
+    /* Adjust nav container for mobile footer spacing */
+    .nav-container {
+        justify-content: space-between;
+        width: 100%;
     }
 }
 

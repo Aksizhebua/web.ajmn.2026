@@ -16,19 +16,24 @@
         </div>
         
         <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <nav>
                 <ul>
-                    <li><a href=".">HOME</a></li>
-                    <li><a href="tentang-kami">ABOUT US</a></li>
+                    <li><a href="home">HOME</a></li>
+                    <li><a href="about">ABOUT US</a></li>
                     <li class="dropdown">
                         <a href="#" class="active">SERVICES &#9662;</a>
                         <ul class="dropdown-menu">
-                            <li><a href="akademik-venture">Akademik Venture</a></li>
-                            <li><a href="non-akademik-venture">Non-Academic Venture</a></li>
+                            <li><a href="academic-venture">AKADEMIK VENTURE</a></li>
+                            <li><a href="non-academic-venture">NON-ACADEMIC VENTURE</a></li>
                         </ul>
                     </li>
-                    <li><a href="galeri">GALLERY</a></li>
-                    <li><a href="kontak">CONTACT</a></li>
+                    <li><a href="gallery">GALLERY</a></li>
+                    <li><a href="contact">CONTACT</a></li>
                 </ul>
             </nav>
             <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">Booking</a>
@@ -59,17 +64,17 @@
             <div class="footer-col">
                 <h4>SERVICES</h4>
                 <ul>
-                    <li><a href="akademik-venture">Academic Venture</a></li>
-                    <li><a href="non-akademik-venture">Non-Academic Venture</a></li>
+                    <li><a href="academic-venture">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture">NON-ACADEMIC VENTURE</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
                 <h4>COMPANY</h4>
                 <ul>
-                    <li><a href="tentang-kami">About Us</a></li>
-                    <li><a href="galeri">Gallery</a></li>
-                    <li><a href="kontak">Contact</a></li>
+                    <li><a href="about">ABOUT US</a></li>
+                    <li><a href="gallery">GALLERY</a></li>
+                    <li><a href="contact">CONTACT</a></li>
                     <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
                 </ul>
             </div>
@@ -102,6 +107,33 @@
             } else {
                 navbar.classList.remove('scrolled'); // Kembali transparan kalau di paling atas
             }
+        });
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('.navbar nav');
+        const dropdownItems = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Handle dropdown toggle on mobile
+        dropdownItems.forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    this.classList.toggle('active');
+                }
+            });
         });
     </script>
 </body>
