@@ -7,12 +7,13 @@
 // Ganti dengan config Firebase project Anda
 // Dapatkan dari: Firebase Console → Project Settings → Your Apps
 const firebaseConfig = {
-    apiKey:            "YOUR_API_KEY",
-    authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId:         "YOUR_PROJECT_ID",
-    storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId:             "YOUR_APP_ID"
+    apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
+    authDomain:        "ajmn-website.firebaseapp.com",
+    projectId:         "ajmn-website",
+    storageBucket:     "ajmn-website.firebasestorage.app",
+    messagingSenderId: "223460999999",
+    appId:             "1:223460999999:web:a0758ffee209e3b49c898a",
+    measurementId:     "G-4N8TJSHKRW"
 };
 
 // ─── DEFAULT CONTENT (fallback jika Firestore kosong) ───────
@@ -283,11 +284,17 @@ function setupAuth() {
             await auth.signInWithEmailAndPassword(email, pass);
             // onAuthStateChanged akan handle redirect ke dashboard
         } catch (err) {
-            let msg = "Login gagal";
-            if (err.code === "auth/user-not-found")    msg = "Email tidak ditemukan";
-            else if (err.code === "auth/wrong-password") msg = "Password salah";
-            else if (err.code === "auth/invalid-email")  msg = "Format email tidak valid";
+            console.error("Login error:", err.code, err.message);
+            let msg = "Login gagal: " + (err.code || err.message);
+            if (err.code === "auth/user-not-found")         msg = "Email tidak ditemukan. Pastikan sudah tambah user di Firebase Console → Authentication → Users";
+            else if (err.code === "auth/wrong-password")    msg = "Password salah";
+            else if (err.code === "auth/invalid-credential") msg = "Email atau password salah";
+            else if (err.code === "auth/invalid-email")     msg = "Format email tidak valid";
             else if (err.code === "auth/too-many-requests") msg = "Terlalu banyak percobaan, coba lagi nanti";
+            else if (err.code === "auth/operation-not-allowed") msg = "Login email/password belum diaktifkan di Firebase Console";
+            else if (err.code === "auth/network-request-failed") msg = "Gagal koneksi ke server, periksa internet";
+            else if (err.code === "auth/unauthorized-domain") msg = "Domain belum diizinkan. Tambahkan domain di Firebase Console → Authentication → Settings → Authorized domains";
+            else if (err.code === "auth/configuration-not-found") msg = "Konfigurasi Firebase salah atau Authentication belum diaktifkan";
             showToast(msg, "error");
             setBtnLoading(btn, false);
         }

@@ -104,8 +104,8 @@ git push origin main
 4. Branch: **main** / **(root)**
 5. Klik **Save**
 
-Website akan tersedia di: `https://username.github.io/repository-name/`
-Admin panel di: `https://username.github.io/repository-name/admin/`
+Website akan tersedia di: `https://aksizhebua.github.io/web.ajmn.2026/`
+Admin panel di: `https://aksizhebua.github.io/web.ajmn.2026/admin/`
 
 ---
 
@@ -114,14 +114,14 @@ Admin panel di: `https://username.github.io/repository-name/admin/`
 Agar login bisa bekerja di GitHub Pages:
 1. Firebase Console → **Authentication** → **Settings** → **Authorized domains**
 2. Klik **"Add domain"**
-3. Masukkan domain GitHub Pages Anda: `username.github.io`
+3. Masukkan domain GitHub Pages Anda: `aksizhebua.github.io`
 4. Klik **Add**
 
 ---
 
 ## 🧪 CARA TEST LOGIN DAN EDIT KONTEN
 
-1. Buka `https://username.github.io/repo/admin/`
+1. Buka `https://aksizhebua.github.io/web.ajmn.2026/admin/`
 2. Login dengan email & password admin yang dibuat di Langkah 2
 3. Setelah login, pilih menu **"Edit Hero"** di sidebar
 4. Ubah Judul, Deskripsi, atau URL Gambar
