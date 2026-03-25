@@ -288,6 +288,39 @@
         </div>
     </footer>
 
+    <!-- Firebase Gallery Loader - Prepend dynamic photos to each category -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+    (function(){
+        const firebaseConfig = {
+            apiKey:"AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",authDomain:"ajmn-website.firebaseapp.com",
+            projectId:"ajmn-website",storageBucket:"ajmn-website.firebasestorage.app",
+            messagingSenderId:"223460999999",appId:"1:223460999999:web:a0758ffee209e3b49c898a"
+        };
+        try {
+            if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            firebase.firestore().collection("siteContent").doc("gallery").get().then(doc => {
+                if (!doc.exists || !doc.data().items || !doc.data().items.length) return;
+                const items = doc.data().items;
+                const categoryGrids = { corporate: null, konser: null, wedding: null, venue: null };
+                // Map category to grid element in each section
+                Object.keys(categoryGrids).forEach(cat => {
+                    const sec = document.getElementById(cat);
+                    if (sec) categoryGrids[cat] = sec.querySelector('.gallery-grid-5x2');
+                });
+                // Also prepend to "semua" (ALL)
+                const allGrid = document.querySelector('#semua .gallery-grid-5x2');
+                items.forEach(item => {
+                    const box = `<div class="gallery-item-box"><img src="${item.img}" alt="${item.alt || ''}"></div>`;
+                    if (allGrid) allGrid.insertAdjacentHTML('afterbegin', box);
+                    if (categoryGrids[item.category]) categoryGrids[item.category].insertAdjacentHTML('afterbegin', box);
+                });
+            });
+        } catch(e){ console.warn("Gallery load error:", e.message); }
+    })();
+    </script>
+
     <script>
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');

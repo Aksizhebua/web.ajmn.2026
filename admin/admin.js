@@ -112,9 +112,8 @@ async function loadContentFromFirestore() {
     }
 }
 
-async function saveContentToFirestore(data) {
-    await db.collection(COLLECTION).doc(DOC_ID).set(data, { merge: true });
-    saveCache(null); // invalidate cache setelah save
+async function saveContentToFirestore(data, docId = DOC_ID) {
+    await db.collection(COLLECTION).doc(docId).set(data, { merge: true });
     localStorage.removeItem(CACHE_KEY);
 }
 
@@ -239,11 +238,247 @@ async function handleSaveServices() {
     }
 }
 
-// ─── NAVIGATION ─────────────────────────────────────────────
+// ─── GALLERY CRUD ─────────────────────────────────────────────
+let galleryItems = [];
+
+async function loadGallery() {
+    try {
+        const doc = await db.collection(COLLECTION).doc("gallery").get();
+        galleryItems = (doc.exists && doc.data().items) ? doc.data().items : [];
+        renderGalleryList(galleryItems);
+    } catch(e) { console.warn("Gallery load error:", e.message); }
+}
+
+const CATEGORY_LABELS = {
+    corporate: "Corporate Event",
+    konser:    "Concert & Entertainment",
+    wedding:   "Wedding & Private",
+    venue:     "Venue & Facilities"
+};
+
+function renderGalleryList(items) {
+    const listEl = document.getElementById("gallery-item-list");
+    if (!items.length) {
+        listEl.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i>Belum ada foto. Klik "+ Tambah Foto" untuk menambahkan.</div>';
+        return;
+    }
+    listEl.innerHTML = items.map(item => `
+        <div class="event-list-item" data-id="${item.id}">
+            <img class="eli-img" src="${item.img || ''}" alt="${item.alt || ''}" onerror="this.style.display='none'">
+            <div class="eli-body">
+                <div class="eli-title">${item.alt || item.img || '(tanpa keterangan)'}</div>
+                <div class="eli-meta">${CATEGORY_LABELS[item.category] || item.category || ''}</div>
+            </div>
+            <div class="eli-actions">
+                <button class="btn-icon btn-icon-edit" onclick="editGalleryItem('${item.id}')"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn-icon btn-icon-del"  onclick="deleteGalleryItem('${item.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.editGalleryItem = function(id) {
+    const item = galleryItems.find(i => i.id === id);
+    if (!item) return;
+    document.getElementById("gallery-form-box").classList.add("show");
+    document.getElementById("gallery-form-title").innerHTML = `<i class="fas fa-edit"></i> Edit Foto`;
+    document.getElementById("gallery-edit-id").value  = id;
+    document.getElementById("gi-img").value           = item.img      || "";
+    document.getElementById("gi-alt").value           = item.alt      || "";
+    document.getElementById("gi-category").value      = item.category || "corporate";
+    updateGiPreview();
+    document.getElementById("gallery-form-box").scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+window.deleteGalleryItem = async function(id) {
+    if (!confirm("Hapus foto ini?")) return;
+    galleryItems = galleryItems.filter(i => i.id !== id);
+    await saveContentToFirestore({ items: galleryItems }, "gallery");
+    renderGalleryList(galleryItems);
+    showToast("Foto dihapus", "info");
+};
+
+function updateGiPreview() {
+    const url = document.getElementById("gi-img").value.trim();
+    const wrap = document.getElementById("gi-preview-wrap");
+    const img  = document.getElementById("gi-preview-img");
+    if (url) { img.src = url; wrap.style.display = "block"; }
+    else      { wrap.style.display = "none"; }
+}
+
+async function handleSaveGalleryItem() {
+    const btn = document.getElementById("save-gallery-item-btn");
+    setBtnLoading(btn, true);
+    try {
+        const img      = document.getElementById("gi-img").value.trim();
+        const alt      = document.getElementById("gi-alt").value.trim();
+        const category = document.getElementById("gi-category").value;
+        if (!img) { showToast("URL gambar tidak boleh kosong", "error"); return; }
+        const editId = document.getElementById("gallery-edit-id").value;
+        if (editId) {
+            const idx = galleryItems.findIndex(i => i.id === editId);
+            if (idx >= 0) galleryItems[idx] = { id: editId, img, alt, category };
+        } else {
+            galleryItems.push({ id: genId(), img, alt, category });
+        }
+        await saveContentToFirestore({ items: galleryItems }, "gallery");
+        renderGalleryList(galleryItems);
+        document.getElementById("gallery-form-box").classList.remove("show");
+        document.getElementById("gallery-edit-id").value = "";
+        document.getElementById("gi-img").value = "";
+        document.getElementById("gi-alt").value = "";
+        document.getElementById("gi-preview-wrap").style.display = "none";
+        showToast("Foto berhasil disimpan! ✨", "success");
+    } catch(e) { showToast("Gagal: " + e.message, "error"); }
+    finally { setBtnLoading(btn, false); }
+}
+
+// ─── PANEL TITLES ────────────────────────────────────────────
+let upcomingEvents = [];
+let pastEvents     = [];
+
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+async function loadEvents() {
+    try {
+        const [uDoc, pDoc] = await Promise.all([
+            db.collection(COLLECTION).doc("upcomingEvents").get(),
+            db.collection(COLLECTION).doc("pastEvents").get()
+        ]);
+        upcomingEvents = (uDoc.exists && uDoc.data().events) ? uDoc.data().events : [];
+        pastEvents     = (pDoc.exists && pDoc.data().events) ? pDoc.data().events : [];
+        renderEventList("upcoming", upcomingEvents);
+        renderEventList("past", pastEvents);
+    } catch(e) { console.warn("Events load error:", e.message); }
+}
+
+function renderEventList(type, events) {
+    const listEl = document.getElementById(`${type}-event-list`);
+    if (!events.length) {
+        listEl.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-times"></i>Belum ada event. Klik "+ Tambah Event" untuk menambahkan.</div>';
+        return;
+    }
+    listEl.innerHTML = events.map(ev => `
+        <div class="event-list-item" data-id="${ev.id}">
+            <img class="eli-img" src="${ev.img || ''}" alt="" onerror="this.style.display='none'">
+            <div class="eli-body">
+                <div class="eli-title">${ev.title}</div>
+                <div class="eli-meta">${ev.date || ''} · ${ev.category || ''} · <span class="badge badge-warning">${ev.badge || ''}</span></div>
+            </div>
+            <div class="eli-actions">
+                <button class="btn-icon btn-icon-edit" onclick="editEvent('${type}','${ev.id}')"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn-icon btn-icon-del"  onclick="deleteEvent('${type}','${ev.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showEventForm(type, clear = true) {
+    const box = document.getElementById(`${type}-form-box`);
+    box.classList.add("show");
+    if (clear) {
+        const prefix = type === "upcoming" ? "ue" : "pe";
+        ["title","date","desc","location","img","linkText","link"].forEach(f => {
+            const el = document.getElementById(`${prefix}-${f}`);
+            if (el) el.value = "";
+        });
+        document.getElementById(`${type}-edit-id`).value = "";
+        document.getElementById(`${type}-form-title`).innerHTML = `<i class="fas fa-plus-circle"></i> Tambah Event Baru`;
+    }
+    box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+window.editEvent = function(type, id) {
+    const events = type === "upcoming" ? upcomingEvents : pastEvents;
+    const ev = events.find(e => e.id === id);
+    if (!ev) return;
+    const prefix = type === "upcoming" ? "ue" : "pe";
+    showEventForm(type, false);
+    document.getElementById(`${type}-edit-id`).value = id;
+    document.getElementById(`${type}-form-title`).innerHTML = `<i class="fas fa-edit"></i> Edit Event`;
+    document.getElementById(`${prefix}-title`).value    = ev.title    || "";
+    document.getElementById(`${prefix}-date`).value     = ev.date     || "";
+    document.getElementById(`${prefix}-desc`).value     = ev.desc     || "";
+    document.getElementById(`${prefix}-category`).value = ev.category || "seminar";
+    document.getElementById(`${prefix}-badge`).value    = ev.badge    || "";
+    document.getElementById(`${prefix}-badgeType`).value= ev.badgeType|| "";
+    document.getElementById(`${prefix}-location`).value = ev.location || "";
+    document.getElementById(`${prefix}-img`).value      = ev.img      || "";
+    document.getElementById(`${prefix}-linkText`).value = ev.linkText || "";
+    document.getElementById(`${prefix}-link`).value     = ev.link     || "";
+};
+
+window.deleteEvent = async function(type, id) {
+    if (!confirm("Hapus event ini?")) return;
+    if (type === "upcoming") {
+        upcomingEvents = upcomingEvents.filter(e => e.id !== id);
+        await saveContentToFirestore({ events: upcomingEvents }, "upcomingEvents");
+        renderEventList("upcoming", upcomingEvents);
+    } else {
+        pastEvents = pastEvents.filter(e => e.id !== id);
+        await saveContentToFirestore({ events: pastEvents }, "pastEvents");
+        renderEventList("past", pastEvents);
+    }
+    showToast("Event dihapus", "info");
+};
+
+function getEventFormData(type) {
+    const prefix = type === "upcoming" ? "ue" : "pe";
+    return {
+        title:     document.getElementById(`${prefix}-title`).value.trim(),
+        date:      document.getElementById(`${prefix}-date`).value.trim(),
+        desc:      document.getElementById(`${prefix}-desc`).value.trim(),
+        category:  document.getElementById(`${prefix}-category`).value,
+        badge:     document.getElementById(`${prefix}-badge`).value,
+        badgeType: document.getElementById(`${prefix}-badgeType`).value,
+        location:  document.getElementById(`${prefix}-location`).value.trim(),
+        img:       document.getElementById(`${prefix}-img`).value.trim(),
+        linkText:  document.getElementById(`${prefix}-linkText`).value.trim(),
+        link:      document.getElementById(`${prefix}-link`).value.trim()
+    };
+}
+
+async function handleSaveEvent(type) {
+    const btn = document.getElementById(`save-${type}-event-btn`);
+    setBtnLoading(btn, true);
+    try {
+        const data = getEventFormData(type);
+        if (!data.title) { showToast("Judul event tidak boleh kosong", "error"); return; }
+        const editId = document.getElementById(`${type}-edit-id`).value;
+        if (type === "upcoming") {
+            if (editId) {
+                const idx = upcomingEvents.findIndex(e => e.id === editId);
+                if (idx >= 0) upcomingEvents[idx] = { id: editId, ...data };
+            } else {
+                upcomingEvents.push({ id: genId(), ...data });
+            }
+            await saveContentToFirestore({ events: upcomingEvents }, "upcomingEvents");
+            renderEventList("upcoming", upcomingEvents);
+        } else {
+            if (editId) {
+                const idx = pastEvents.findIndex(e => e.id === editId);
+                if (idx >= 0) pastEvents[idx] = { id: editId, ...data };
+            } else {
+                pastEvents.push({ id: genId(), ...data });
+            }
+            await saveContentToFirestore({ events: pastEvents }, "pastEvents");
+            renderEventList("past", pastEvents);
+        }
+        document.getElementById(`${type}-form-box`).classList.remove("show");
+        document.getElementById(`${type}-edit-id`).value = "";
+        showToast("Event berhasil disimpan! ✨", "success");
+    } catch(e) { showToast("Gagal: " + e.message, "error"); }
+    finally { setBtnLoading(btn, false); }
+}
+
+// ─── PANEL TITLES ────────────────────────────────────────────
 const PANEL_TITLES = {
     overview:       "Dashboard",
     "edit-hero":    "Edit Hero Section",
-    "edit-services":"Edit Layanan"
+    "edit-services":"Edit Layanan",
+    "gallery":      "Gallery",
+    "upcoming":     "Upcoming Events",
+    "past":         "Past Events"
 };
 
 function switchPanel(panelId) {
@@ -332,6 +567,8 @@ function setupAuth() {
 
             const fresh = await loadContentFromFirestore();
             populateForms(fresh);
+            await loadEvents();
+            await loadGallery();
             updateCacheStatus();
             hideSpinner();
             showToast("Data berhasil dimuat dari Firestore", "success");
@@ -375,4 +612,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("save-hero-btn").addEventListener("click", handleSaveHero);
     document.getElementById("save-services-btn").addEventListener("click", handleSaveServices);
+    // Gallery CRUD
+    document.getElementById("add-gallery-btn").addEventListener("click", () => {
+        document.getElementById("gallery-form-box").classList.add("show");
+        document.getElementById("gallery-form-title").innerHTML = `<i class="fas fa-plus-circle"></i> Tambah Foto Baru`;
+        document.getElementById("gallery-edit-id").value = "";
+        document.getElementById("gi-img").value = "";
+        document.getElementById("gi-alt").value = "";
+        document.getElementById("gi-preview-wrap").style.display = "none";
+        document.getElementById("gallery-form-box").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    document.getElementById("cancel-gallery-btn").addEventListener("click", () => document.getElementById("gallery-form-box").classList.remove("show"));
+    document.getElementById("save-gallery-item-btn").addEventListener("click", handleSaveGalleryItem);
+    document.getElementById("gi-img").addEventListener("input", updateGiPreview);
+    // Events CRUD
+    document.getElementById("add-upcoming-btn").addEventListener("click", () => showEventForm("upcoming"));
+    document.getElementById("cancel-upcoming-btn").addEventListener("click", () => document.getElementById("upcoming-form-box").classList.remove("show"));
+    document.getElementById("save-upcoming-event-btn").addEventListener("click", () => handleSaveEvent("upcoming"));
+    document.getElementById("add-past-btn").addEventListener("click", () => showEventForm("past"));
+    document.getElementById("cancel-past-btn").addEventListener("click", () => document.getElementById("past-form-box").classList.remove("show"));
+    document.getElementById("save-past-event-btn").addEventListener("click", () => handleSaveEvent("past"));
 });

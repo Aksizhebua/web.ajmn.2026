@@ -147,6 +147,54 @@
         </div>
     </footer>
 
+    <!-- Firebase Past Events Loader -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+    (function(){
+        const firebaseConfig = {
+            apiKey:"AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",authDomain:"ajmn-website.firebaseapp.com",
+            projectId:"ajmn-website",storageBucket:"ajmn-website.firebasestorage.app",
+            messagingSenderId:"223460999999",appId:"1:223460999999:web:a0758ffee209e3b49c898a"
+        };
+        function buildCard(ev) {
+            return `<div class="event-card" data-category="${ev.category || ''}">
+                <div class="event-img-wrap">
+                    <img src="${ev.img || 'images/av.jpg'}" alt="${ev.title || ''}">
+                    <span class="event-badge ${ev.badgeType || ''}">${ev.badge || 'SELESAI'}</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> ${ev.date || ''}</span>
+                        <span class="event-category-tag">${(ev.category || '').toUpperCase()}</span>
+                    </div>
+                    <h3 class="event-title">${ev.title || ''}</h3>
+                    <p class="event-desc">${ev.desc || ''}</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> ${ev.location || ''}</span>
+                        ${ev.link ? `<a href="${ev.link}" class="btn-event" target="_blank">${ev.linkText || 'LIHAT DOKUMENTASI'}</a>` : ''}
+                    </div>
+                </div>
+            </div>`;
+        }
+        try {
+            if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            firebase.firestore().collection("siteContent").doc("pastEvents").get().then(doc => {
+                const container = document.getElementById("past-events");
+                const noEvEl = document.getElementById("no-events");
+                if (!doc.exists || !doc.data().events || !doc.data().events.length) {
+                    if (noEvEl) noEvEl.style.display = "block";
+                    return;
+                }
+                if (noEvEl) noEvEl.style.display = "none";
+                doc.data().events.forEach(ev => {
+                    container.insertAdjacentHTML('beforeend', buildCard(ev));
+                });
+            });
+        } catch(e){ console.warn("Past events load error:", e.message); }
+    })();
+    </script>
+
     <script>
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');

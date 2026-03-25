@@ -662,6 +662,101 @@
         .btn.loading .btn-text { display: none; }
         .btn.loading .btn-spinner { display: inline-block; }
 
+        /* ===== EVENT CRUD LIST ===== */
+        .event-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+        .event-list-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .event-list-item .eli-img {
+            width: 64px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            background: var(--border);
+        }
+
+        .event-list-item .eli-body { flex: 1; overflow: hidden; }
+        .event-list-item .eli-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .event-list-item .eli-meta {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+
+        .event-list-item .eli-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-icon-edit { background: rgba(201,168,76,0.15); color: var(--accent); }
+        .btn-icon-edit:hover { background: rgba(201,168,76,0.3); }
+        .btn-icon-del  { background: rgba(244,67,54,0.12);  color: var(--error); }
+        .btn-icon-del:hover  { background: rgba(244,67,54,0.25); }
+
+        /* Event Form (inline) */
+        .event-form-box {
+            background: rgba(201,168,76,0.06);
+            border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .event-form-box.show { display: block; }
+        .event-form-box h4 { font-size: 0.85rem; color: var(--accent); margin-bottom: 14px; font-weight: 600; }
+
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        @media (max-width: 900px) { .form-row-3 { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 600px) { .form-row-3 { grid-template-columns: 1fr; } }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .form-group select:focus { border-color: var(--accent); }
+
+        .empty-state {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        .empty-state i { font-size: 2rem; margin-bottom: 8px; display: block; opacity: 0.3; }
+
         /* ===== RESPONSIVE ===== */
         .sidebar-overlay {
             display: none;
@@ -752,11 +847,26 @@
                 <button class="nav-item active" data-panel="overview">
                     <i class="fas fa-th-large"></i> Dashboard
                 </button>
+
+                <div class="nav-section-label" style="margin-top:14px;">HOME</div>
                 <button class="nav-item" data-panel="edit-hero">
                     <i class="fas fa-image"></i> Edit Hero
                 </button>
                 <button class="nav-item" data-panel="edit-services">
                     <i class="fas fa-concierge-bell"></i> Edit Services
+                </button>
+
+                <div class="nav-section-label" style="margin-top:14px;">HALAMAN</div>
+                <button class="nav-item" data-panel="gallery">
+                    <i class="fas fa-images"></i> Gallery
+                </button>
+
+                <div class="nav-section-label" style="margin-top:14px;">WHAT'S ON</div>
+                <button class="nav-item" data-panel="upcoming">
+                    <i class="fas fa-calendar-plus"></i> Upcoming Events
+                </button>
+                <button class="nav-item" data-panel="past">
+                    <i class="fas fa-history"></i> Past Events
                 </button>
             </nav>
 
@@ -969,6 +1079,242 @@
                         <button class="btn btn-secondary" id="reset-services-btn" style="width:auto; padding:10px 24px;">
                             <i class="fas fa-undo"></i> Reset Default
                         </button>
+                    </div>
+                </div>
+
+                <!-- ===== GALLERY PANEL ===== -->
+                <div class="panel" id="panel-gallery">
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-images"></i> Gallery — Kelola Foto</h3>
+                            <button class="btn btn-primary" id="add-gallery-btn" style="padding:7px 16px;width:auto;font-size:0.8rem;">
+                                <i class="fas fa-plus"></i> Tambah Foto
+                            </button>
+                        </div>
+                        <div class="editor-card-body">
+                            <!-- Add/Edit Form -->
+                            <div class="event-form-box" id="gallery-form-box">
+                                <h4 id="gallery-form-title"><i class="fas fa-plus-circle"></i> Tambah Foto Baru</h4>
+                                <input type="hidden" id="gallery-edit-id">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>URL Gambar</label>
+                                        <input type="url" id="gi-img" placeholder="https://...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Keterangan / Alt Text</label>
+                                        <input type="text" id="gi-alt" placeholder="Deskripsi foto...">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Kategori</label>
+                                        <select id="gi-category">
+                                            <option value="corporate">Corporate Event</option>
+                                            <option value="konser">Concert & Entertainment</option>
+                                            <option value="wedding">Wedding & Private</option>
+                                            <option value="venue">Venue & Facilities</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="display:flex;align-items:flex-end;">
+                                        <div class="action-bar" style="margin:0;">
+                                            <button class="btn btn-primary" id="save-gallery-item-btn" style="width:auto;padding:10px 20px;">
+                                                <span class="btn-text"><i class="fas fa-save"></i> Simpan</span>
+                                                <div class="btn-spinner"></div>
+                                            </button>
+                                            <button class="btn btn-secondary" id="cancel-gallery-btn" style="width:auto;padding:10px 20px;">Batal</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Preview -->
+                                <div id="gi-preview-wrap" style="margin-top:12px; display:none;">
+                                    <img id="gi-preview-img" src="" alt="" style="max-height:120px; border-radius:8px; border:1px solid var(--border);">
+                                </div>
+                            </div>
+                            <!-- Gallery Grid List -->
+                            <div id="gallery-item-list" class="event-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== UPCOMING EVENTS PANEL ===== -->
+                <div class="panel" id="panel-upcoming">
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-calendar-plus"></i> Upcoming Events</h3>
+                            <button class="btn btn-primary" id="add-upcoming-btn" style="padding:7px 16px;width:auto;font-size:0.8rem;">
+                                <i class="fas fa-plus"></i> Tambah Event
+                            </button>
+                        </div>
+                        <div class="editor-card-body">
+                            <!-- Add/Edit Form -->
+                            <div class="event-form-box" id="upcoming-form-box">
+                                <h4 id="upcoming-form-title"><i class="fas fa-plus-circle"></i> Tambah Event Baru</h4>
+                                <input type="hidden" id="upcoming-edit-id">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Judul Event</label>
+                                        <input type="text" id="ue-title" placeholder="Nama event...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tanggal</label>
+                                        <input type="text" id="ue-date" placeholder="10 April 2026">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Deskripsi</label>
+                                    <textarea id="ue-desc" rows="3" placeholder="Deskripsi event..."></textarea>
+                                </div>
+                                <div class="form-row-3">
+                                    <div class="form-group">
+                                        <label>Kategori</label>
+                                        <select id="ue-category">
+                                            <option value="seminar">Seminar & Training</option>
+                                            <option value="corporate">Corporate Event</option>
+                                            <option value="entertainment">Concert & Entertainment</option>
+                                            <option value="promo">Promo & Penawaran</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Badge</label>
+                                        <select id="ue-badge">
+                                            <option value="UPCOMING">UPCOMING</option>
+                                            <option value="OPEN REGISTRATION">OPEN REGISTRATION</option>
+                                            <option value="ONGOING">ONGOING</option>
+                                            <option value="PROMO">PROMO</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tipe Badge</label>
+                                        <select id="ue-badgeType">
+                                            <option value="">Normal (biru)</option>
+                                            <option value="ongoing">Ongoing (oranye)</option>
+                                            <option value="promo">Promo (emas)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Lokasi</label>
+                                        <input type="text" id="ue-location" placeholder="Gedung Yustinus Lt. 14, Jakarta">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL Gambar</label>
+                                        <input type="url" id="ue-img" placeholder="https://...">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Teks Tombol</label>
+                                        <input type="text" id="ue-linkText" placeholder="DAFTAR SEKARANG">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL WhatsApp / Link</label>
+                                        <input type="text" id="ue-link" placeholder="https://api.whatsapp.com/...">
+                                    </div>
+                                </div>
+                                <div class="action-bar">
+                                    <button class="btn btn-primary" id="save-upcoming-event-btn" style="width:auto;padding:10px 20px;">
+                                        <span class="btn-text"><i class="fas fa-save"></i> Simpan Event</span>
+                                        <div class="btn-spinner"></div>
+                                    </button>
+                                    <button class="btn btn-secondary" id="cancel-upcoming-btn" style="width:auto;padding:10px 20px;">
+                                        Batal
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Events List -->
+                            <div class="event-list" id="upcoming-event-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PAST EVENTS PANEL ===== -->
+                <div class="panel" id="panel-past">
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-history"></i> Past Events</h3>
+                            <button class="btn btn-primary" id="add-past-btn" style="padding:7px 16px;width:auto;font-size:0.8rem;">
+                                <i class="fas fa-plus"></i> Tambah Event
+                            </button>
+                        </div>
+                        <div class="editor-card-body">
+                            <!-- Add/Edit Form -->
+                            <div class="event-form-box" id="past-form-box">
+                                <h4 id="past-form-title"><i class="fas fa-plus-circle"></i> Tambah Past Event Baru</h4>
+                                <input type="hidden" id="past-edit-id">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Judul Event</label>
+                                        <input type="text" id="pe-title" placeholder="Nama event...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tanggal</label>
+                                        <input type="text" id="pe-date" placeholder="10 Maret 2025">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Deskripsi</label>
+                                    <textarea id="pe-desc" rows="3" placeholder="Deskripsi event..."></textarea>
+                                </div>
+                                <div class="form-row-3">
+                                    <div class="form-group">
+                                        <label>Kategori</label>
+                                        <select id="pe-category">
+                                            <option value="seminar">Seminar & Training</option>
+                                            <option value="corporate">Corporate Event</option>
+                                            <option value="entertainment">Concert & Entertainment</option>
+                                            <option value="promo">Promo & Penawaran</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Badge</label>
+                                        <select id="pe-badge">
+                                            <option value="SELESAI">SELESAI</option>
+                                            <option value="SUKSES">SUKSES</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tipe Badge</label>
+                                        <select id="pe-badgeType">
+                                            <option value="">Normal</option>
+                                            <option value="ongoing">Berwarna</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Lokasi</label>
+                                        <input type="text" id="pe-location" placeholder="Gedung Yustinus Lt. 14, Jakarta">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL Gambar</label>
+                                        <input type="url" id="pe-img" placeholder="https://...">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Teks Tombol</label>
+                                        <input type="text" id="pe-linkText" placeholder="LIHAT DOKUMENTASI">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL Link</label>
+                                        <input type="text" id="pe-link" placeholder="https://...">
+                                    </div>
+                                </div>
+                                <div class="action-bar">
+                                    <button class="btn btn-primary" id="save-past-event-btn" style="width:auto;padding:10px 20px;">
+                                        <span class="btn-text"><i class="fas fa-save"></i> Simpan Event</span>
+                                        <div class="btn-spinner"></div>
+                                    </button>
+                                    <button class="btn btn-secondary" id="cancel-past-btn" style="width:auto;padding:10px 20px;">
+                                        Batal
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Events List -->
+                            <div class="event-list" id="past-event-list"></div>
+                        </div>
                     </div>
                 </div>
 
