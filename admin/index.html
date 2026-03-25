@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - PT Atma Jaya Mitra Nusantara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #c9a84c;
+            --accent-dark: #a07a2a;
+            --text: #e0e0e0;
+            --text-muted: #9e9e9e;
+            --bg: #0f0f1a;
+            --card: #1e1e30;
+            --border: #2a2a40;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        #login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .login-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo .brand-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            margin: 0 auto 16px;
+        }
+
+        .login-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .login-logo p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(201, 168, 76, 0.4);
+        }
+
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+        .btn-danger {
+            background: var(--error);
+            color: #fff;
+        }
+
+        /* ===== DASHBOARD LAYOUT ===== */
+        #dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--primary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand span {
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 8px 8px 4px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(201,168,76,0.08);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: rgba(201,168,76,0.15);
+            color: var(--accent);
+        }
+
+        .nav-item i { width: 18px; text-align: center; font-size: 1rem; }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            margin-bottom: 8px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .user-details { overflow: hidden; }
+
+        .user-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 0.72rem;
+            color: var(--accent);
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #f44336;
+            border: none;
+            background: none;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-logout:hover { background: rgba(244,67,54,0.1); }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .page-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .page-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .content-area {
+            padding: 28px;
+        }
+
+        /* ===== PANELS ===== */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-card .stat-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .stat-card .stat-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0.3;
+            float: right;
+            margin-top: -36px;
+        }
+
+        /* Content Editor */
+        .editor-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .editor-card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .editor-card-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .editor-card-header h3 i { color: var(--accent); }
+
+        .editor-card-body { padding: 20px; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        /* Preview */
+        .preview-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .preview-box.show { display: block; }
+
+        .preview-box h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .preview-hero {
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-hero img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .preview-hero .preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preview-hero h2 {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .preview-hero p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.85);
+            margin-top: 6px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .preview-service {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .preview-service img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .preview-service-info h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .preview-service-info p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Action buttons */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .action-bar .btn {
+            width: auto;
+            padding: 10px 20px;
+        }
+
+        /* Badge */
+        .badge {
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background: rgba(76,175,80,0.15); color: var(--success); }
+        .badge-warning { background: rgba(255,152,0,0.15); color: var(--warning); }
+
+        /* ===== TOAST ===== */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 280px;
+            max-width: 380px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            animation: slideIn 0.3s ease;
+            cursor: pointer;
+        }
+
+        .toast-success { background: #1a3a1f; border: 1px solid var(--success); color: #a5d6a7; }
+        .toast-error   { background: #3a1a1a; border: 1px solid var(--error);   color: #ef9a9a; }
+        .toast-info    { background: #1a2a3a; border: 1px solid #2196f3;         color: #90caf9; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to   { transform: translateX(0);    opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0);    opacity: 1; }
+            to   { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        #global-spinner {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        #global-spinner.show { display: flex; }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(201,168,76,0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .spinner-text { color: var(--text-muted); font-size: 0.9rem; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Inline spinner */
+        .btn .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .btn.loading .btn-text { display: none; }
+        .btn.loading .btn-spinner { display: inline-block; }
+
+        /* ===== RESPONSIVE ===== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 99;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.show { display: block; }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: block; }
+            .content-area { padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .login-card { padding: 32px 24px; }
+            .action-bar .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== LOADING SPINNER ===== -->
+<div id="global-spinner">
+    <div class="spinner"></div>
+    <span class="spinner-text">Loading...</span>
+</div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div id="toast-container"></div>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="login-page">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="brand-icon"><i class="fas fa-building"></i></div>
+            <h2>Admin Panel</h2>
+            <p>PT Atma Jaya Mitra Nusantara</p>
+        </div>
+        <form id="login-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email-input" placeholder="admin@example.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password-input" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary" id="login-btn">
+                <span class="btn-text">Login</span>
+                <div class="btn-spinner"></div>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard">
+    <div class="dashboard-layout">
+
+        <!-- Sidebar Overlay (mobile) -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-icon"><i class="fas fa-building"></i></div>
+                    <div>
+                        <h3>AJMN Admin</h3>
+                        <span>Content Manager</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Menu</div>
+                <button class="nav-item active" data-panel="overview">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </button>
+                <button class="nav-item" data-panel="edit-hero">
+                    <i class="fas fa-image"></i> Edit Hero
+                </button>
+                <button class="nav-item" data-panel="edit-services">
+                    <i class="fas fa-concierge-bell"></i> Edit Services
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">A</div>
+                    <div class="user-details">
+                        <div class="user-name" id="user-email-display">admin</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+                    <div>
+                        <div class="page-title" id="page-title">Dashboard</div>
+                        <div class="page-subtitle">PT Atma Jaya Mitra Nusantara</div>
+                    </div>
+                </div>
+                <a href="../index.html" target="_blank" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none; display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-external-link-alt"></i> Lihat Website
+                </a>
+            </div>
+
+            <div class="content-area">
+
+                <!-- ===== OVERVIEW PANEL ===== -->
+                <div class="panel active" id="panel-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Status Website</div>
+                            <div class="stat-value" style="font-size:1.2rem;">
+                                <span class="badge badge-success">🟢 Online</span>
+                            </div>
+                            <div class="stat-desc">GitHub Pages aktif</div>
+                            <i class="fas fa-globe stat-icon"></i>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Halaman</div>
+                            <div class="stat-value">9</div>
+                            <div class="stat-desc">Static HTML pages</div>
+                            <i class="fas fa-file-code stat-icon"></i>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Firebase</div>
+                            <div class="stat-value" id="firebase-status" style="font-size:1rem;">Connecting...</div>
+                            <div class="stat-desc">Firestore Database</div>
+                            <i class="fas fa-database stat-icon"></i>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Cache</div>
+                            <div class="stat-value" id="cache-status" style="font-size:1rem;">-</div>
+                            <div class="stat-desc">localStorage</div>
+                            <i class="fas fa-hdd stat-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-info-circle"></i> Panduan Cepat</h3>
+                        </div>
+                        <div class="editor-card-body">
+                            <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+                                Selamat datang di Admin Panel AJMN. Gunakan menu di sidebar untuk mengedit konten website:
+                            </p>
+                            <ul style="color:var(--text-muted); font-size:0.875rem; line-height:2; margin-top:12px; padding-left:20px;">
+                                <li><strong style="color:var(--accent);">Edit Hero</strong> — Ubah judul, deskripsi, dan gambar latar hero section</li>
+                                <li><strong style="color:var(--accent);">Edit Services</strong> — Ubah konten kartu layanan (Education & Event)</li>
+                            </ul>
+                            <p style="color:var(--text-muted); font-size:0.85rem; margin-top:16px; padding: 12px; background: rgba(201,168,76,0.08); border-left: 3px solid var(--accent); border-radius: 4px;">
+                                ⚡ Perubahan langsung tersimpan ke Firebase Firestore dan website akan memuat data terbaru secara otomatis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== EDIT HERO PANEL ===== -->
+                <div class="panel" id="panel-edit-hero">
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-image"></i> Hero Section</h3>
+                            <button class="btn btn-secondary" id="toggle-hero-preview" style="padding:6px 14px; width:auto; font-size:0.8rem;">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <label>Judul Hero</label>
+                                <input type="text" id="hero-title" placeholder="PT Atma Jaya Mitra Nusantara">
+                            </div>
+                            <div class="form-group">
+                                <label>Deskripsi Hero</label>
+                                <textarea id="hero-desc" rows="4" placeholder="Deskripsi singkat perusahaan..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>URL Gambar Background Hero</label>
+                                <input type="url" id="hero-img" placeholder="https://example.com/hero-bg.jpg">
+                            </div>
+
+                            <!-- Preview Box -->
+                            <div class="preview-box" id="hero-preview">
+                                <h4><i class="fas fa-eye"></i> Preview</h4>
+                                <div class="preview-hero">
+                                    <img id="prev-hero-img" src="" alt="Hero BG" onerror="this.style.display='none'">
+                                    <div class="preview-overlay">
+                                        <h2 id="prev-hero-title"></h2>
+                                        <p id="prev-hero-desc"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="action-bar">
+                                <button class="btn btn-primary" id="save-hero-btn" style="width:auto; padding:10px 24px;">
+                                    <span class="btn-text"><i class="fas fa-save"></i> Simpan Hero</span>
+                                    <div class="btn-spinner"></div>
+                                </button>
+                                <button class="btn btn-secondary" id="reset-hero-btn" style="width:auto; padding:10px 24px;">
+                                    <i class="fas fa-undo"></i> Reset Default
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== EDIT SERVICES PANEL ===== -->
+                <div class="panel" id="panel-edit-services">
+                    <!-- Service 1 -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-graduation-cap"></i> Layanan 1 — Education & Training</h3>
+                            <button class="btn btn-secondary" id="toggle-s1-preview" style="padding:6px 14px; width:auto; font-size:0.8rem;">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <label>Judul Layanan</label>
+                                <input type="text" id="s1-title" placeholder="Education & Training">
+                            </div>
+                            <div class="form-group">
+                                <label>Deskripsi</label>
+                                <textarea id="s1-desc" rows="3" placeholder="Deskripsi layanan..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>URL Gambar</label>
+                                <input type="url" id="s1-img" placeholder="https://example.com/service1.jpg">
+                            </div>
+
+                            <div class="preview-box" id="s1-preview">
+                                <h4><i class="fas fa-eye"></i> Preview</h4>
+                                <div class="preview-service">
+                                    <img id="prev-s1-img" src="" alt="">
+                                    <div class="preview-service-info">
+                                        <h3 id="prev-s1-title"></h3>
+                                        <p id="prev-s1-desc"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Layanan 2 — Event & Venue</h3>
+                            <button class="btn btn-secondary" id="toggle-s2-preview" style="padding:6px 14px; width:auto; font-size:0.8rem;">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <label>Judul Layanan</label>
+                                <input type="text" id="s2-title" placeholder="Event & Venue Services">
+                            </div>
+                            <div class="form-group">
+                                <label>Deskripsi</label>
+                                <textarea id="s2-desc" rows="3" placeholder="Deskripsi layanan..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>URL Gambar</label>
+                                <input type="url" id="s2-img" placeholder="https://example.com/service2.jpg">
+                            </div>
+
+                            <div class="preview-box" id="s2-preview">
+                                <h4><i class="fas fa-eye"></i> Preview</h4>
+                                <div class="preview-service">
+                                    <img id="prev-s2-img" src="" alt="">
+                                    <div class="preview-service-info">
+                                        <h3 id="prev-s2-title"></h3>
+                                        <p id="prev-s2-desc"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <button class="btn btn-primary" id="save-services-btn" style="width:auto; padding:10px 24px;">
+                            <span class="btn-text"><i class="fas fa-save"></i> Simpan Semua Layanan</span>
+                            <div class="btn-spinner"></div>
+                        </button>
+                        <button class="btn btn-secondary" id="reset-services-btn" style="width:auto; padding:10px 24px;">
+                            <i class="fas fa-undo"></i> Reset Default
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Firebase SDK v9 (CDN - compat mode) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

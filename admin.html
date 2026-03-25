@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        .dashboard { max-width: 900px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px #0001; }
+        h1 { text-align: center; }
+        .section { margin-bottom: 40px; }
+        .section h2 { margin-bottom: 10px; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 8px; }
+        .admin-table th { background: #f0f0f0; }
+        .actions button { margin-right: 5px; }
+        .add-form input, .add-form textarea { margin-bottom: 8px; width: 100%; padding: 6px; }
+        .add-form button { padding: 6px 16px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Admin Dashboard</h1>
+        <div class="section" id="whats-on-section">
+            <h2>What's On</h2>
+            <table class="admin-table" id="whatsOnTable">
+                <thead>
+                    <tr><th>Judul</th><th>Deskripsi</th><th>Aksi</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <form class="add-form" id="addWhatsOnForm">
+                <input type="text" id="woTitle" placeholder="Judul" required>
+                <textarea id="woDesc" placeholder="Deskripsi" required></textarea>
+                <button type="submit">Tambah</button>
+            </form>
+        </div>
+        <div class="section" id="gallery-section">
+            <h2>Gallery</h2>
+            <table class="admin-table" id="galleryTable">
+                <thead>
+                    <tr><th>Nama Gambar</th><th>URL</th><th>Aksi</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <form class="add-form" id="addGalleryForm">
+                <input type="text" id="galleryName" placeholder="Nama Gambar" required>
+                <input type="text" id="galleryUrl" placeholder="URL Gambar" required>
+                <button type="submit">Tambah</button>
+            </form>
+        </div>
+        <div class="section" id="events-section">
+            <h2>Events</h2>
+            <table class="admin-table" id="eventsTable">
+                <thead>
+                    <tr><th>Nama Event</th><th>Tanggal</th><th>Aksi</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <form class="add-form" id="addEventForm">
+                <input type="text" id="eventName" placeholder="Nama Event" required>
+                <input type="date" id="eventDate" required>
+                <button type="submit">Tambah</button>
+            </form>
+        </div>
+        <div class="section" id="tenant-section">
+            <h2>Tenant</h2>
+            <table class="admin-table" id="tenantTable">
+                <thead>
+                    <tr><th>Nama Tenant</th><th>Detail</th><th>Aksi</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <form class="add-form" id="addTenantForm">
+                <input type="text" id="tenantName" placeholder="Nama Tenant" required>
+                <textarea id="tenantDetail" placeholder="Detail Tenant" required></textarea>
+                <button type="submit">Tambah</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Data dummy, simpan di localStorage
+        const storageKeys = {
+            whatsOn: 'admin_whats_on',
+            gallery: 'admin_gallery',
+            events: 'admin_events',
+            tenants: 'admin_tenants'
+        };
+        function getData(key) {
+            return JSON.parse(localStorage.getItem(key) || '[]');
+        }
+        function setData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+        // What's On
+        function renderWhatsOn() {
+            const data = getData(storageKeys.whatsOn);
+            const tbody = document.querySelector('#whatsOnTable tbody');
+            tbody.innerHTML = '';
+            data.forEach((item, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${item.title}</td><td>${item.desc}</td><td class="actions"><button onclick="editWhatsOn(${i})">Edit</button><button onclick="deleteWhatsOn(${i})">Hapus</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+        function addWhatsOn(e) {
+            e.preventDefault();
+            const title = document.getElementById('woTitle').value;
+            const desc = document.getElementById('woDesc').value;
+            const data = getData(storageKeys.whatsOn);
+            data.push({ title, desc });
+            setData(storageKeys.whatsOn, data);
+            renderWhatsOn();
+            e.target.reset();
+        }
+        function deleteWhatsOn(i) {
+            const data = getData(storageKeys.whatsOn);
+            data.splice(i, 1);
+            setData(storageKeys.whatsOn, data);
+            renderWhatsOn();
+        }
+        window.editWhatsOn = function(i) {
+            const data = getData(storageKeys.whatsOn);
+            const item = data[i];
+            const title = prompt('Edit Judul:', item.title);
+            const desc = prompt('Edit Deskripsi:', item.desc);
+            if (title !== null && desc !== null) {
+                data[i] = { title, desc };
+                setData(storageKeys.whatsOn, data);
+                renderWhatsOn();
+            }
+        };
+        document.getElementById('addWhatsOnForm').addEventListener('submit', addWhatsOn);
+        // Gallery
+        function renderGallery() {
+            const data = getData(storageKeys.gallery);
+            const tbody = document.querySelector('#galleryTable tbody');
+            tbody.innerHTML = '';
+            data.forEach((item, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${item.name}</td><td><a href="${item.url}" target="_blank">${item.url}</a></td><td class="actions"><button onclick="editGallery(${i})">Edit</button><button onclick="deleteGallery(${i})">Hapus</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+        function addGallery(e) {
+            e.preventDefault();
+            const name = document.getElementById('galleryName').value;
+            const url = document.getElementById('galleryUrl').value;
+            const data = getData(storageKeys.gallery);
+            data.push({ name, url });
+            setData(storageKeys.gallery, data);
+            renderGallery();
+            e.target.reset();
+        }
+        function deleteGallery(i) {
+            const data = getData(storageKeys.gallery);
+            data.splice(i, 1);
+            setData(storageKeys.gallery, data);
+            renderGallery();
+        }
+        window.editGallery = function(i) {
+            const data = getData(storageKeys.gallery);
+            const item = data[i];
+            const name = prompt('Edit Nama Gambar:', item.name);
+            const url = prompt('Edit URL:', item.url);
+            if (name !== null && url !== null) {
+                data[i] = { name, url };
+                setData(storageKeys.gallery, data);
+                renderGallery();
+            }
+        };
+        document.getElementById('addGalleryForm').addEventListener('submit', addGallery);
+        // Events
+        function renderEvents() {
+            const data = getData(storageKeys.events);
+            const tbody = document.querySelector('#eventsTable tbody');
+            tbody.innerHTML = '';
+            data.forEach((item, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${item.name}</td><td>${item.date}</td><td class="actions"><button onclick="editEvent(${i})">Edit</button><button onclick="deleteEvent(${i})">Hapus</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+        function addEvent(e) {
+            e.preventDefault();
+            const name = document.getElementById('eventName').value;
+            const date = document.getElementById('eventDate').value;
+            const data = getData(storageKeys.events);
+            data.push({ name, date });
+            setData(storageKeys.events, data);
+            renderEvents();
+            e.target.reset();
+        }
+        function deleteEvent(i) {
+            const data = getData(storageKeys.events);
+            data.splice(i, 1);
+            setData(storageKeys.events, data);
+            renderEvents();
+        }
+        window.editEvent = function(i) {
+            const data = getData(storageKeys.events);
+            const item = data[i];
+            const name = prompt('Edit Nama Event:', item.name);
+            const date = prompt('Edit Tanggal:', item.date);
+            if (name !== null && date !== null) {
+                data[i] = { name, date };
+                setData(storageKeys.events, data);
+                renderEvents();
+            }
+        };
+        document.getElementById('addEventForm').addEventListener('submit', addEvent);
+        // Tenant
+        function renderTenants() {
+            const data = getData(storageKeys.tenants);
+            const tbody = document.querySelector('#tenantTable tbody');
+            tbody.innerHTML = '';
+            data.forEach((item, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${item.name}</td><td>${item.detail}</td><td class="actions"><button onclick="editTenant(${i})">Edit</button><button onclick="deleteTenant(${i})">Hapus</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+        function addTenant(e) {
+            e.preventDefault();
+            const name = document.getElementById('tenantName').value;
+            const detail = document.getElementById('tenantDetail').value;
+            const data = getData(storageKeys.tenants);
+            data.push({ name, detail });
+            setData(storageKeys.tenants, data);
+            renderTenants();
+            e.target.reset();
+        }
+        function deleteTenant(i) {
+            const data = getData(storageKeys.tenants);
+            data.splice(i, 1);
+            setData(storageKeys.tenants, data);
+            renderTenants();
+        }
+        window.editTenant = function(i) {
+            const data = getData(storageKeys.tenants);
+            const item = data[i];
+            const name = prompt('Edit Nama Tenant:', item.name);
+            const detail = prompt('Edit Detail:', item.detail);
+            if (name !== null && detail !== null) {
+                data[i] = { name, detail };
+                setData(storageKeys.tenants, data);
+                renderTenants();
+            }
+        };
+        document.getElementById('addTenantForm').addEventListener('submit', addTenant);
+        // Render all on load
+        renderWhatsOn();
+        renderGallery();
+        renderEvents();
+        renderTenants();
+    </script>
+</body>
+</html>

@@ -47,11 +47,11 @@
         </div>
     </header>
 
-    <section class="hero">
+    <section class="hero" id="hero-section">
         <div class="overlay"></div>
         <div class="hero-content">
-            <h1>PT Atma Jaya Mitra Nusantara</h1>
-            <p>is a professional company specializing in building management and event services. Supporting Universitas Katolik Indonesia Atma Jaya and the wider community, we provide reliable solutions in facility management, event organization, business support, education, community engagement, and AV training services, including seminars, certification programs, and brevet AB courses to enhance professional competencies.</p>
+            <h1 id="hero-title">PT Atma Jaya Mitra Nusantara</h1>
+            <p id="hero-desc">is a professional company specializing in building management and event services. Supporting Universitas Katolik Indonesia Atma Jaya and the wider community, we provide reliable solutions in facility management, event organization, business support, education, community engagement, and AV training services, including seminars, certification programs, and brevet AB courses to enhance professional competencies.</p>
             <a href="about" class="btn-about">ABOUT US &rarr;</a>
         </div>
     </section>
@@ -61,19 +61,19 @@
         
         <div class="services-container">
             <div class="service-card">
-                <img src="images/av.jpg" alt="Layanan 1">
+                <img src="images/av.jpg" alt="Layanan 1" id="service1-img">
                 <div class="service-info">
-                    <h3>Education & Training</h3>
-                    <p>Professional training programs, seminars, certifications, and Brevet AB courses to enhance skills and professional competencies.</p>
+                    <h3 id="service1-title">Education & Training</h3>
+                    <p id="service1-desc">Professional training programs, seminars, certifications, and Brevet AB courses to enhance skills and professional competencies.</p>
                     <a href="academic-venture.html" class="btn-learn-more">LEARN MORE</a>
                 </div>
             </div>
 
             <div class="service-card">
-                <img src="images/non-av.jpg" alt="Layanan 2">
+                <img src="images/non-av.jpg" alt="Layanan 2" id="service2-img">
                 <div class="service-info">
-                    <h3>Event & Venue Services</h3>
-                    <p>We provide professional venue management and event support services for academic, corporate, and institutional activities, ensuring a well-organized and seamless experience.</p>
+                    <h3 id="service2-title">Event & Venue Services</h3>
+                    <p id="service2-desc">We provide professional venue management and event support services for academic, corporate, and institutional activities, ensuring a well-organized and seamless experience.</p>
                     <a href="non-academic-venture.html" class="btn-learn-more">LEARN MORE</a>
                 </div>
             </div>
@@ -177,6 +177,88 @@
             </div>
         </div>
     </footer>
+
+    <!-- Firebase Dynamic Content Loader -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+    (function() {
+        // ── Firebase config (sama seperti admin/admin.js) ──
+        const firebaseConfig = {
+            apiKey:            "YOUR_API_KEY",
+            authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId:         "YOUR_PROJECT_ID",
+            storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId:             "YOUR_APP_ID"
+        };
+
+        const CACHE_KEY  = "ajmn_content_cache";
+        const CACHE_TTL  = 10 * 60 * 1000;
+        const COLLECTION = "siteContent";
+        const DOC_ID     = "homepage";
+
+        const DEFAULTS = {
+            heroTitle: "PT Atma Jaya Mitra Nusantara",
+            heroDesc:  "is a professional company specializing in building management and event services. Supporting Universitas Katolik Indonesia Atma Jaya and the wider community, we provide reliable solutions in facility management, event organization, business support, education, community engagement, and AV training services, including seminars, certification programs, and brevet AB courses to enhance professional competencies.",
+            heroImg:   "",
+            s1Title:   "Education & Training",
+            s1Desc:    "Professional training programs, seminars, certifications, and Brevet AB courses to enhance skills and professional competencies.",
+            s1Img:     "images/av.jpg",
+            s2Title:   "Event & Venue Services",
+            s2Desc:    "We provide professional venue management and event support services for academic, corporate, and institutional activities, ensuring a well-organized and seamless experience.",
+            s2Img:     "images/non-av.jpg"
+        };
+
+        function applyContent(data) {
+            const d = Object.assign({}, DEFAULTS, data);
+            document.getElementById("hero-title").textContent = d.heroTitle || DEFAULTS.heroTitle;
+            document.getElementById("hero-desc").textContent  = d.heroDesc  || DEFAULTS.heroDesc;
+            if (d.heroImg) {
+                document.getElementById("hero-section").style.backgroundImage = `url('${d.heroImg}')`;
+            }
+            document.getElementById("service1-title").textContent = d.s1Title || DEFAULTS.s1Title;
+            document.getElementById("service1-desc").textContent  = d.s1Desc  || DEFAULTS.s1Desc;
+            if (d.s1Img) document.getElementById("service1-img").src = d.s1Img;
+            document.getElementById("service2-title").textContent = d.s2Title || DEFAULTS.s2Title;
+            document.getElementById("service2-desc").textContent  = d.s2Desc  || DEFAULTS.s2Desc;
+            if (d.s2Img) document.getElementById("service2-img").src = d.s2Img;
+        }
+
+        function loadCache() {
+            try {
+                const raw = localStorage.getItem(CACHE_KEY);
+                if (!raw) return null;
+                const { data, ts } = JSON.parse(raw);
+                if (Date.now() - ts > CACHE_TTL) { localStorage.removeItem(CACHE_KEY); return null; }
+                return data;
+            } catch { return null; }
+        }
+
+        // 1. Terapkan cache dulu (agar cepat, tanpa flash of default content)
+        const cached = loadCache();
+        if (cached) applyContent(cached);
+
+        // 2. Fetch dari Firestore (update terbaru)
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            db.collection(COLLECTION).doc(DOC_ID).get().then(doc => {
+                const data = doc.exists ? doc.data() : {};
+                applyContent(data);
+                // Update cache
+                localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
+            }).catch(err => {
+                console.warn("Gagal memuat konten dari Firestore:", err.message);
+                // Fallback ke defaults jika tidak ada cache
+                if (!cached) applyContent(DEFAULTS);
+            });
+        } catch(e) {
+            console.warn("Firebase init error:", e.message);
+            if (!cached) applyContent(DEFAULTS);
+        }
+    })();
+    </script>
 
     <script>
         window.addEventListener('scroll', function() {

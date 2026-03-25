@@ -1,3 +1,144 @@
+/* =============================
+   ADMIN DASHBOARD MODERN STYLE
+   ============================= */
+.dashboard {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(40,40,40,0.10), 0 1.5px 6px 0 rgba(40,40,40,0.08);
+    padding: 40px 32px;
+    margin: 48px auto;
+    max-width: 950px;
+}
+.dashboard h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #2d2d2d;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+}
+.section {
+    background: #f8f9fb;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px 0 rgba(40,40,40,0.04);
+    padding: 28px 24px 20px 24px;
+    margin-bottom: 32px;
+}
+.section h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #b89442;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px 0 rgba(40,40,40,0.04);
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+.admin-table th {
+    background: #f3e7c9;
+    color: #7a5c1c;
+    font-weight: 700;
+    padding: 12px 10px;
+    border-bottom: 2px solid #e7d6b0;
+    text-align: left;
+}
+.admin-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+}
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+.admin-table tr:hover {
+    background: #f9f6ef;
+    transition: background 0.2s;
+}
+.actions button {
+    background: #b89442;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-right: 6px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px 0 rgba(40,40,40,0.08);
+}
+.actions button:last-child {
+    margin-right: 0;
+    background: #e74c3c;
+}
+.actions button:hover {
+    background: #7a5c1c;
+    color: #fff;
+}
+.actions button:last-child:hover {
+    background: #c0392b;
+}
+.add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    margin-top: 8px;
+}
+.add-form input,
+.add-form textarea {
+    flex: 1 1 180px;
+    border: 1.5px solid #e7d6b0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    background: #fff;
+    transition: border 0.2s;
+}
+.add-form input:focus,
+.add-form textarea:focus {
+    border: 1.5px solid #b89442;
+    outline: none;
+}
+.add-form button {
+    background: #b89442;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 8px;
+    box-shadow: 0 1px 2px 0 rgba(40,40,40,0.08);
+}
+.add-form button:hover {
+    background: #7a5c1c;
+}
+@media (max-width: 700px) {
+    .dashboard {
+        padding: 18px 4px;
+    }
+    .section {
+        padding: 16px 6px 12px 6px;
+    }
+    .admin-table th, .admin-table td {
+        font-size: 0.95rem;
+        padding: 8px 4px;
+    }
+    .add-form button {
+        padding: 8px 12px;
+        font-size: 0.95rem;
+    }
+}
 * {
     margin: 0;
     padding: 0;
