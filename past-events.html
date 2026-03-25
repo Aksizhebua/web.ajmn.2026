@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABOUT US - PT ATMA JAYA MITRA NUSANTARA</title>
+    <title>PAST EVENTS - PT ATMA JAYA MITRA NUSANTARA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -24,7 +24,7 @@
             <nav>
                 <ul>
                     <li><a href="index.html">HOME</a></li>
-                    <li><a href="about.html" class="active">ABOUT US</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
                     <li class="dropdown">
                         <a href="#">SERVICES &#9662;</a>
                         <ul class="dropdown-menu">
@@ -34,7 +34,7 @@
                     </li>
                     <li><a href="gallery.html">GALLERY</a></li>
                     <li class="dropdown">
-                        <a href="upcoming-events.html">WHAT'S ON &#9662;</a>
+                        <a href="past-events.html" class="active">WHAT'S ON &#9662;</a>
                         <ul class="dropdown-menu">
                             <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
                             <li><a href="past-events.html">PAST EVENTS</a></li>
@@ -47,49 +47,69 @@
         </div>
     </header>
 
-    <section class="hero-about">
+    <!-- HERO SECTION -->
+    <section class="hero-whatson">
         <div class="overlay"></div>
         <div class="hero-about-content">
-            <h1>ABOUT US</h1>
+            <h1>PAST EVENTS</h1>
+            <p>Lihat kembali berbagai event dan kegiatan yang telah sukses diselenggarakan oleh PT Atma Jaya Mitra Nusantara</p>
         </div>
     </section>
 
-    <section class="profile-section">
-        <div class="profile-container">
-            <div class="profile-content">
-                <h2 style="text-transform: uppercase; font-size: 2.5rem; color: #0f0500; text-align: center; margin-bottom: 30px;">PT ATMA JAYA MITRA NUSANTARA</h2>
-                <p style="text-align: justify; line-height: 1.8; font-size: 1rem; color: #333; margin-bottom: 25px;">
-                    <strong>PT Atma Jaya Mitra Nusantara</strong> is a professional company specializing in building management and event services. Supporting Universitas Katolik Indonesia Atma Jaya and the wider community, we provide reliable solutions in facility management, event organization, business support, education, community engagement, and AV training services, including seminars, certification programs, and brevet AB courses to enhance professional competencies.
-                </p>
-                
-                <p style="text-align: justify; line-height: 1.8; font-size: 1rem; color: #333; margin-bottom: 25px;">
-                    Our commitment to excellence and innovation makes us a trusted partner for various institutions looking to optimize their operations and create meaningful experiences.
-                </p>
-            </div>
+    <!-- FILTER BAR -->
+    <section class="whatson-filter-bar">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="seminar">SEMINAR & TRAINING</button>
+            <button class="filter-btn" data-filter="corporate">CORPORATE EVENT</button>
+            <button class="filter-btn" data-filter="entertainment">CONCERT & ENTERTAINMENT</button>
+            <button class="filter-btn" data-filter="promo">PROMO & PENAWARAN</button>
         </div>
     </section>
 
+    <!-- EVENTS SECTION -->
+    <section class="whatson-section">
+
+        <h2 class="section-title" style="text-align:center; margin-top:40px;">PAST EVENTS</h2>
+        <div class="whatson-container" id="past-events">
+            <!-- Tambahkan event yang sudah lewat di sini -->
+        </div>
+
+        <!-- No Events Message -->
+        <div class="no-events" id="no-events">
+            <i class="fas fa-calendar-times"></i>
+            <p>Belum ada past event yang ditampilkan saat ini.</p>
+            <p>Pantau terus halaman ini untuk update terbaru!</p>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="whatson-cta">
+            <h2>Ingin Menyelenggarakan Event Anda?</h2>
+            <p>Tim profesional kami siap membantu mewujudkan event impian Anda. Hubungi kami untuk konsultasi gratis.</p>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Halo%20AJMN%2C%20saya%20ingin%20konsultasi%20event&type=phone_number&app_absent=0" class="btn-cta-whatson" target="_blank">
+                <i class="fab fa-whatsapp"></i> KONSULTASI GRATIS
+            </a>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-col">
                 <div class="footer-brand">
-                    <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
                 </div>
-                <div class="footer-desc">
-                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
-                </div>
-
-                <!-- Social Media -->
+                <p class="footer-desc">Solusi profesional untuk pengelolaan area komersial, event organizer, dan booking venue terpercaya di Indonesia.</p>
                 <div class="social-icons">
-                    <a href="#" class="social-icon-gold" aria-label="Facebook">f</a>
-                    <a href="#" class="social-icon-gold" aria-label="Twitter">T</a>
-                    <a href="https://www.instagram.com/pt.ajmn" target="_blank" class="social-icon-gold" aria-label="Instagram">IG</a>
-                    <a href="#" class="social-icon-gold" aria-label="LinkedIn">in</a>
+                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                 </div>
             </div>
 
             <div class="footer-col">
-                <h4>OUR SERVICES</h4>
+                <h4>SERVICES</h4>
                 <ul>
                     <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                     <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
@@ -97,12 +117,14 @@
             </div>
 
             <div class="footer-col">
-                <h4>QUICK LINKS</h4>
+                <h4>COMPANY</h4>
                 <ul>
                     <li><a href="about.html">ABOUT US</a></li>
                     <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
+                    <li><a href="past-events.html">PAST EVENTS</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
                 </ul>
             </div>
 
@@ -128,15 +150,13 @@
     <script>
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
-            // Jika layar discroll lebih dari 50 pixel ke bawah
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
-                navbar.classList.remove('scrolled'); // Kembali transparan kalau di paling atas
+                navbar.classList.remove('scrolled');
             }
         });
 
-        // Hamburger Menu Toggle
         const hamburger = document.getElementById('hamburger');
         const nav = document.querySelector('.navbar nav');
         const dropdownItems = document.querySelectorAll('.dropdown');
@@ -146,7 +166,6 @@
             nav.classList.toggle('active');
         });
 
-        // Close menu when clicking on a link
         document.querySelectorAll('.navbar nav ul li a').forEach(link => {
             link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
@@ -154,12 +173,36 @@
             });
         });
 
-        // Handle dropdown toggle on mobile
         dropdownItems.forEach(dropdown => {
             dropdown.addEventListener('click', function() {
                 if (window.innerWidth <= 768) {
                     this.classList.toggle('active');
                 }
+            });
+        });
+
+        const filterBtns = document.querySelectorAll('.whatson-filter-bar .filter-btn');
+        const eventCards = document.querySelectorAll('.event-card');
+        const noEvents = document.getElementById('no-events');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+                let visibleCount = 0;
+
+                eventCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                noEvents.style.display = visibleCount === 0 ? 'block' : 'none';
             });
         });
     </script>

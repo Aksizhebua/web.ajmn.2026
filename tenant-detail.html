@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Detail - PT Atma Jaya Mitra Nusantara</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li class="dropdown">
+                        <a href="#">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="academic-venture.html">AKADEMIK VENTURE</a></li>
+                            <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li class="dropdown">
+                        <a href="upcoming-events.html">WHAT'S ON &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
+                            <li><a href="past-events.html">PAST EVENTS</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">BOOKING</a>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="tenant-hero" id="tenantHero">
+        <div class="overlay"></div>
+    </section>
+
+    <!-- TENANT DETAIL SECTION -->
+    <section class="tenant-detail-section">
+        <div class="tenant-detail-container">
+
+            <!-- LEFT: Logo + Info -->
+            <aside class="tenant-detail-sidebar">
+                <div class="tenant-logo-box">
+                    <img id="detailLogo" src="" alt="">
+                </div>
+                <div class="tenant-info-block">
+                    <h4>Alamat</h4>
+                    <p id="detailAddress"></p>
+                </div>
+                <div class="tenant-info-block">
+                    <h4>Jam Operasional</h4>
+                    <p id="detailHours"></p>
+                </div>
+                <div class="tenant-info-block">
+                    <h4>Kontak</h4>
+                    <p id="detailPhone"></p>
+                </div>
+                <a id="detailWebsite" href="#" target="_blank" class="btn-tenant-detail-web">
+                    <i class="fas fa-globe"></i> Kunjungi Website
+                </a>
+                <a id="detailLocation" href="#" target="_blank" class="btn-tenant-detail-loc">
+                    <i class="fas fa-map-marker-alt"></i> Lihat Lokasi
+                </a>
+                <a href="index.html#tenants" class="btn-tenant-back">
+                    &larr; Kembali ke Tenants
+                </a>
+            </aside>
+
+            <!-- RIGHT: Content -->
+            <div class="tenant-detail-content">
+                <p class="tenant-detail-category" id="detailCategory"></p>
+                <h1 class="tenant-detail-name" id="detailName"></h1>
+                <div class="tenant-detail-divider"></div>
+                <div class="tenant-detail-desc" id="detailDesc"></div>
+
+                <!-- Gallery photos placeholder -->
+                <div class="tenant-photo-gallery" id="tenantPhotoGallery">
+                    <!-- Foto akan diisi via JavaScript berdasarkan ID tenant -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <p class="footer-desc">Solusi profesional untuk pengelolaan area komersial, event organizer, dan booking venue terpercaya di Indonesia.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>SERVICES</h4>
+                <ul>
+                    <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>COMPANY</h4>
+                <ul>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="whats-on.html">WHAT'S ON</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
+                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // DATA TENANT — Isi di sini sesuai kebutuhan
+        // =============================================
+        const tenants = {
+            1: {
+                name: "Tenant 1",
+                category: "Food & Beverages",
+                logo: "images/tenant1.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 1. Ceritakan sejarah, produk unggulan, dan keunikan tenant ini.</p>
+                       <p>Anda bisa menambahkan paragraf lebih banyak di sini untuk memberikan informasi yang komprehensif kepada pengunjung.</p>`,
+                address: "Gedung Yustinus Lt. 1, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            2: {
+                name: "Tenant 2",
+                category: "Food & Beverages",
+                logo: "images/tenant2.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 2.</p>`,
+                address: "Gedung Yustinus Lt. 1, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            3: {
+                name: "Tenant 3",
+                category: "Retail",
+                logo: "images/tenant3.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 3.</p>`,
+                address: "Gedung Yustinus Lt. 2, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            4: {
+                name: "Tenant 4",
+                category: "Retail",
+                logo: "images/tenant4.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 4.</p>`,
+                address: "Gedung Yustinus Lt. 2, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            5: {
+                name: "Tenant 5",
+                category: "Services",
+                logo: "images/tenant5.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 5.</p>`,
+                address: "Gedung Yustinus Lt. 3, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            6: {
+                name: "Tenant 6",
+                category: "Services",
+                logo: "images/tenant6.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 6.</p>`,
+                address: "Gedung Yustinus Lt. 3, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            7: {
+                name: "Tenant 7",
+                category: "Food & Beverages",
+                logo: "images/tenant7.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 7.</p>`,
+                address: "Gedung Yustinus Lt. 4, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            8: {
+                name: "Tenant 8",
+                category: "Food & Beverages",
+                logo: "images/tenant8.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 8.</p>`,
+                address: "Gedung Yustinus Lt. 4, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            9: {
+                name: "Tenant 9",
+                category: "Retail",
+                logo: "images/tenant9.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 9.</p>`,
+                address: "Gedung Yustinus Lt. 5, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            10: {
+                name: "Tenant 10",
+                category: "Services",
+                logo: "images/tenant10.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 10.</p>`,
+                address: "Gedung Yustinus Lt. 5, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            11: {
+                name: "Tenant 11",
+                category: "Retail",
+                logo: "images/tenant11.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 11.</p>`,
+                address: "Gedung Yustinus Lt. 6, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            },
+            12: {
+                name: "Tenant 12",
+                category: "Services",
+                logo: "images/tenant12.png",
+                heroBg: "images/bg-ruangan.png",
+                desc: `<p>Deskripsi lengkap tentang Tenant 12.</p>`,
+                address: "Gedung Yustinus Lt. 6, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
+                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
+                phone: "+62 21 1234 5678",
+                website: "#",
+                location: "https://maps.google.com",
+                photos: []
+            }
+        };
+
+        // Read ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get('id'));
+        const tenant = tenants[id];
+
+        if (tenant) {
+            // Page title
+            document.title = tenant.name + ' - PT Atma Jaya Mitra Nusantara';
+
+            // Hero
+            document.getElementById('tenantHero').style.backgroundImage = `url('${tenant.heroBg}')`;
+            document.getElementById('heroTenantName').textContent = tenant.name;
+
+            // Sidebar
+            document.getElementById('detailLogo').src = tenant.logo;
+            document.getElementById('detailLogo').alt = tenant.name;
+            document.getElementById('detailAddress').textContent = tenant.address;
+            document.getElementById('detailHours').innerHTML = tenant.hours.replace(/\n/g, '<br>');
+            document.getElementById('detailPhone').textContent = tenant.phone;
+            document.getElementById('detailWebsite').href = tenant.website;
+            document.getElementById('detailLocation').href = tenant.location;
+
+            // Content
+            document.getElementById('detailCategory').textContent = tenant.category;
+            document.getElementById('detailName').textContent = tenant.name;
+            document.getElementById('detailDesc').innerHTML = tenant.desc;
+
+            // Photo gallery
+            const gallery = document.getElementById('tenantPhotoGallery');
+            if (tenant.photos && tenant.photos.length > 0) {
+                gallery.innerHTML = '<h3 class="tenant-gallery-title">Gallery</h3><div class="tenant-gallery-grid">' +
+                    tenant.photos.map(p => `<div class="tenant-gallery-item"><img src="${p}" alt="${tenant.name}"></div>`).join('') +
+                '</div>';
+            }
+        } else {
+            // Tenant not found
+            document.querySelector('.tenant-detail-section').innerHTML =
+                '<div style="text-align:center;padding:100px 20px;"><h2>Tenant tidak ditemukan.</h2><a href="index.html" style="color:#d4a742;">Kembali ke Home</a></div>';
+        }
+
+        // Navbar scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+
+        // Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('.navbar nav');
+        const dropdownItems = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        dropdownItems.forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                if (window.innerWidth <= 768) this.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

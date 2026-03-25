@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHAT'S ON - PT ATMA JAYA MITRA NUSANTARA</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+        
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li class="dropdown">
+                        <a href="#">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="academic-venture.html">AKADEMIK VENTURE</a></li>
+                            <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li class="dropdown">
+                        <a href="upcoming-events.html">WHAT'S ON &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
+                            <li><a href="past-events.html">PAST EVENTS</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">BOOKING</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-whatson">
+        <div class="overlay"></div>
+        <div class="hero-about-content">
+            <h1>WHAT'S ON</h1>
+            <p>Temukan berbagai event, program, dan kegiatan terbaru dari PT Atma Jaya Mitra Nusantara</p>
+        </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <section class="whatson-filter-bar">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="seminar">SEMINAR & TRAINING</button>
+            <button class="filter-btn" data-filter="corporate">CORPORATE EVENT</button>
+            <button class="filter-btn" data-filter="entertainment">CONCERT & ENTERTAINMENT</button>
+            <button class="filter-btn" data-filter="promo">PROMO & PENAWARAN</button>
+        </div>
+    </section>
+
+    <!-- EVENTS SECTION -->
+    <section class="whatson-section">
+
+        <h2 class="section-title" style="text-align:center; margin-top:40px;">UPCOMING EVENTS</h2>
+        <div class="whatson-container" id="upcoming-events">
+            <!-- Event Card 1 -->
+            <div class="event-card" data-category="seminar">
+                <div class="event-img-wrap">
+                    <img src="images/av.jpg" alt="Brevet AB Tax Training">
+                    <span class="event-badge">UPCOMING</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> 10 April 2026</span>
+                        <span class="event-category-tag">SEMINAR & TRAINING</span>
+                    </div>
+                    <h3 class="event-title">Brevet AB Tax Certification Program</h3>
+                    <p class="event-desc">Program sertifikasi perpajakan Brevet AB yang komprehensif untuk meningkatkan kompetensi profesional di bidang perpajakan Indonesia.</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> Gedung Yustinus Lt. 14, Jakarta</span>
+                        <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Saya%20ingin%20mendaftar%20Brevet%20AB&type=phone_number" class="btn-event" target="_blank">DAFTAR SEKARANG</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 2 -->
+            <div class="event-card" data-category="seminar">
+                <div class="event-img-wrap">
+                    <img src="images/av.jpg" alt="Seminar Nasional">
+                    <span class="event-badge">OPEN REGISTRATION</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> 25 April 2026</span>
+                        <span class="event-category-tag">SEMINAR & TRAINING</span>
+                    </div>
+                    <h3 class="event-title">Seminar Nasional: Inovasi & Kewirausahaan 2026</h3>
+                    <p class="event-desc">Seminar nasional yang mempertemukan para pemimpin industri, akademisi, dan wirausahawan muda untuk berbagi wawasan dan inspirasi.</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> Aula Unika Atma Jaya, Jakarta</span>
+                        <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Saya%20ingin%20mendaftar%20Seminar%20Nasional&type=phone_number" class="btn-event" target="_blank">DAFTAR SEKARANG</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 3 -->
+            <div class="event-card" data-category="corporate">
+                <div class="event-img-wrap">
+                    <img src="images/bumn1.png" alt="Corporate Event">
+                    <span class="event-badge ongoing">ONGOING</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> Maret – Mei 2026</span>
+                        <span class="event-category-tag">CORPORATE EVENT</span>
+                    </div>
+                    <h3 class="event-title">BUMN Corporate Training Series</h3>
+                    <p class="event-desc">Serangkaian pelatihan dan workshop eksklusif yang dirancang untuk memenuhi kebutuhan pengembangan SDM perusahaan BUMN.</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> Gedung Yustinus, Jakarta</span>
+                        <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Saya%20ingin%20info%20BUMN%20Corporate%20Training&type=phone_number" class="btn-event" target="_blank">INFO SELENGKAPNYA</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 4 -->
+            <div class="event-card" data-category="entertainment">
+                <div class="event-img-wrap">
+                    <img src="images/non-av.jpg" alt="Concert Entertainment">
+                    <span class="event-badge">UPCOMING</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> 15 Mei 2026</span>
+                        <span class="event-category-tag">CONCERT & ENTERTAINMENT</span>
+                    </div>
+                    <h3 class="event-title">Malam Apresiasi Seni & Budaya</h3>
+                    <p class="event-desc">Malam penuh inspirasi yang menampilkan pertunjukan seni, musik, dan budaya dari berbagai komunitas di lingkungan Atma Jaya dan mitra kami.</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> Amphitheater Atma Jaya, Jakarta</span>
+                        <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Saya%20ingin%20info%20Malam%20Seni%20Budaya&type=phone_number" class="btn-event" target="_blank">INFO SELENGKAPNYA</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 5 -->
+            <div class="event-card" data-category="promo">
+                <div class="event-img-wrap">
+                    <img src="images/bg-ruangan.png" alt="Promo Venue">
+                    <span class="event-badge promo">PROMO</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> s/d 30 Juni 2026</span>
+                        <span class="event-category-tag">PROMO & PENAWARAN</span>
+                    </div>
+                    <h3 class="event-title">Promo Spesial Booking Venue – Diskon 20%</h3>
+                    <p class="event-desc">Dapatkan diskon 20% untuk pemesanan venue meeting room dan aula selama periode promosi. Berlaku untuk pemesanan minimal 4 jam.</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> Semua Venue AJMN</span>
+                        <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Saya%20ingin%20info%20promo%20venue&type=phone_number" class="btn-event" target="_blank">BOOKING SEKARANG</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 6 -->
+            <div class="event-card" data-category="seminar">
+                <div class="event-img-wrap">
+                    <img src="images/av.jpg" alt="Workshop Digital Marketing">
+                    <span class="event-badge">UPCOMING</span>
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> 20 Juni 2026</span>
+                        <span class="event-category-tag">SEMINAR & TRAINING</span>
+                    </div>
+                    <h3 class="event-title">Workshop Digital Marketing & Social Media Strategy</h3>
+                    <p class="event-desc">Workshop intensif satu hari tentang strategi pemasaran digital dan pengelolaan media sosial yang efektif untuk bisnis modern.</p>
+                    <div class="event-footer">
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> Gedung Yustinus Lt. 14, Jakarta</span>
+                        <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Saya%20ingin%20mendaftar%20Workshop%20Digital%20Marketing&type=phone_number" class="btn-event" target="_blank">DAFTAR SEKARANG</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="text-align:center; margin-top:60px;">PAST EVENTS</h2>
+        <div class="whatson-container" id="past-events">
+            <!-- Contoh event yang sudah lewat, tambahkan di sini jika ada event lama -->
+            <!-- Saat ini belum ada event yang lewat, tambahkan di sini jika diperlukan -->
+        </div>
+
+        <!-- No Events Message (hidden by default) -->
+        <div class="no-events" id="no-events" style="display:none;">
+            <i class="fas fa-calendar-times"></i>
+            <p>Tidak ada event yang tersedia untuk kategori ini saat ini.</p>
+            <p>Pantau terus halaman ini untuk update terbaru!</p>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="whatson-cta">
+            <h2>Ingin Menyelenggarakan Event Anda?</h2>
+            <p>Tim profesional kami siap membantu mewujudkan event impian Anda. Hubungi kami untuk konsultasi gratis.</p>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Halo%20AJMN%2C%20saya%20ingin%20konsultasi%20event&type=phone_number&app_absent=0" class="btn-cta-whatson" target="_blank">
+                <i class="fab fa-whatsapp"></i> KONSULTASI GRATIS
+            </a>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <p class="footer-desc">Solusi profesional untuk pengelolaan area komersial, event organizer, dan booking venue terpercaya di Indonesia.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>SERVICES</h4>
+                <ul>
+                    <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>COMPANY</h4>
+                <ul>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="whats-on.html">WHAT'S ON</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
+                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('.navbar nav');
+        const dropdownItems = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        dropdownItems.forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    this.classList.toggle('active');
+                }
+            });
+        });
+
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.whatson-filter-bar .filter-btn');
+        const eventCards = document.querySelectorAll('.event-card');
+        const noEvents = document.getElementById('no-events');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+                let visibleCount = 0;
+
+                eventCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                noEvents.style.display = visibleCount === 0 ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

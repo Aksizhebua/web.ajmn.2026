@@ -1956,3 +1956,860 @@ html {
         font-size: 1.4rem;
     }
 }
+
+/* =========================================
+   HERO SECTION - WHAT'S ON
+   ========================================= */
+.hero-whatson {
+    position: relative;
+    height: 100vh;
+    background: url('./images/bg-ruangan.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-whatson .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-whatson .hero-about-content p {
+    color: #e0c97a;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   WHAT'S ON FILTER BAR
+   ========================================= */
+.whatson-filter-bar {
+    background-color: #111;
+    padding: 20px 50px;
+    position: sticky;
+    top: 80px;
+    z-index: 100;
+    border-bottom: 2px solid #d4a742;
+}
+
+.whatson-filter-bar .filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.whatson-filter-bar .filter-btn {
+    background: transparent;
+    border: 1.5px solid #d4a742;
+    color: #d4a742;
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.whatson-filter-bar .filter-btn:hover,
+.whatson-filter-bar .filter-btn.active {
+    background-color: #d4a742;
+    color: #000;
+}
+
+/* =========================================
+   WHAT'S ON EVENTS SECTION
+   ========================================= */
+.whatson-section {
+    background-color: #0d0d0d;
+    padding: 70px 8%;
+}
+
+.whatson-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 35px;
+    margin-bottom: 60px;
+}
+
+/* =========================================
+   EVENT CARD
+   ========================================= */
+.event-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 35px rgba(212, 167, 66, 0.2);
+    border-color: #d4a742;
+}
+
+.event-img-wrap {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+}
+
+.event-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.event-card:hover .event-img-wrap img {
+    transform: scale(1.05);
+}
+
+.event-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #d4a742;
+    color: #000;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 5px 12px;
+    border-radius: 3px;
+}
+
+.event-badge.ongoing {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.event-badge.promo {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.event-info {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.event-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.event-date {
+    color: #d4a742;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.event-category-tag {
+    background: rgba(212, 167, 66, 0.15);
+    color: #d4a742;
+    border: 1px solid #d4a742;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.event-title {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.event-desc {
+    color: #aaa;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    flex: 1;
+}
+
+.event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2a2a2a;
+    margin-top: auto;
+}
+
+.event-location {
+    color: #888;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-event {
+    background-color: #d4a742;
+    color: #000;
+    padding: 8px 18px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-event:hover {
+    background-color: #b89442;
+}
+
+/* =========================================
+   NO EVENTS MESSAGE
+   ========================================= */
+.no-events {
+    text-align: center;
+    padding: 60px 20px;
+    color: #aaa;
+}
+
+.no-events i {
+    font-size: 3.5rem;
+    color: #d4a742;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.no-events p {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* =========================================
+   WHAT'S ON CTA SECTION
+   ========================================= */
+.whatson-cta {
+    text-align: center;
+    padding: 70px 20px;
+    border-top: 1px solid #2a2a2a;
+    margin-top: 20px;
+}
+
+.whatson-cta h2 {
+    color: #d4a742;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.whatson-cta p {
+    color: #aaa;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+}
+
+.btn-cta-whatson {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #25D366;
+    color: #fff;
+    padding: 14px 35px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cta-whatson:hover {
+    background-color: #1da851;
+}
+
+/* =========================================
+   RESPONSIVE - WHAT'S ON
+   ========================================= */
+@media (max-width: 768px) {
+    .hero-whatson {
+        min-height: 70vh;
+    }
+
+    .whatson-filter-bar {
+        padding: 15px 20px;
+        top: 70px;
+    }
+
+    .whatson-filter-bar .filter-btn {
+        font-size: 10px;
+        padding: 7px 14px;
+    }
+
+    .whatson-section {
+        padding: 50px 5%;
+    }
+
+    .whatson-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .event-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .whatson-cta h2 {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* =========================================
+   OUR TENANTS SECTION
+   ========================================= */
+.tenants-section {
+    padding: 80px 8%;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.tenants-subtitle {
+    color: #777;
+    font-size: 0.95rem;
+    margin-top: -20px;
+    margin-bottom: 50px;
+    letter-spacing: 0.5px;
+}
+
+.tenants-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tenant-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 25px 20px;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.tenant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border-color: #d4a742;
+}
+
+.tenant-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: grayscale(30%);
+}
+
+.tenant-card:hover img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+}
+
+@media (max-width: 992px) {
+    .tenants-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .tenants-section {
+        padding: 60px 5%;
+    }
+
+    .tenants-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .tenant-card {
+        padding: 18px 12px;
+    }
+}
+
+
+/* =========================================
+   TENANT MODAL
+   ========================================= */
+.tenant-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.tenant-modal-overlay.active {
+    display: flex;
+}
+
+.tenant-modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 860px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.tenant-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #555;
+    line-height: 1;
+    z-index: 10;
+    transition: color 0.2s;
+}
+
+.tenant-modal-close:hover {
+    color: #000;
+}
+
+.tenant-modal-body {
+    display: flex;
+    gap: 0;
+}
+
+/* Left column: logo + meta info */
+.tenant-modal-left {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid #eee;
+    padding: 40px 25px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: #fafafa;
+    border-radius: 12px 0 0 12px;
+}
+
+.tenant-modal-left img {
+    max-width: 180px;
+    max-height: 120px;
+    object-fit: contain;
+}
+
+.tenant-modal-meta {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.tenant-modal-meta p {
+    margin: 0;
+}
+
+.btn-tenant-web {
+    display: block;
+    text-align: center;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 9px 14px;
+    border-radius: 5px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 6px;
+    transition: background 0.2s;
+}
+
+.btn-tenant-web:hover {
+    background: #d4a742;
+    color: #000;
+}
+
+.btn-tenant-loc {
+    display: block;
+    text-align: center;
+    border: 1px solid #ccc;
+    color: #555;
+    padding: 9px 14px;
+    border-radius: 5px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-tenant-loc:hover {
+    border-color: #d4a742;
+    color: #d4a742;
+}
+
+/* Right column: name, category, description */
+.tenant-modal-right {
+    flex: 1;
+    padding: 40px 35px 30px;
+}
+
+.tenant-modal-right h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 6px;
+}
+
+.modal-category {
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+.tenant-modal-right p:last-child {
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+/* Responsive modal */
+@media (max-width: 640px) {
+    .tenant-modal-body {
+        flex-direction: column;
+    }
+
+    .tenant-modal-left {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        border-radius: 12px 12px 0 0;
+        padding: 30px 20px 20px;
+    }
+
+    .tenant-modal-right {
+        padding: 25px 20px;
+    }
+
+    .tenant-modal-right h2 {
+        font-size: 1.3rem;
+    }
+}
+
+
+/* =========================================
+   TENANT DETAIL PAGE
+   ========================================= */
+.tenant-hero {
+    position: relative;
+    height: 45vh;
+    min-height: 280px;
+    background: url('./images/bg-ruangan.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 0 8% 40px;
+}
+
+.tenant-hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.tenant-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.tenant-hero-breadcrumb {
+    color: #ccc;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.tenant-hero-breadcrumb a {
+    color: #d4a742;
+    text-decoration: none;
+}
+
+.tenant-hero-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* ---- Detail Section ---- */
+.tenant-detail-section {
+    background: #fff;
+    padding: 60px 8% 80px;
+}
+
+.tenant-detail-container {
+    display: flex;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+/* SIDEBAR */
+.tenant-detail-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 110px;
+}
+
+.tenant-logo-box {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+}
+
+.tenant-logo-box img {
+    max-width: 100%;
+    max-height: 110px;
+    object-fit: contain;
+}
+
+.tenant-info-block h4 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.tenant-info-block p {
+    font-size: 0.85rem;
+    color: #444;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.btn-tenant-detail-web,
+.btn-tenant-detail-loc,
+.btn-tenant-back {
+    display: block;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-tenant-detail-web {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.btn-tenant-detail-web:hover {
+    background: #d4a742;
+    color: #000;
+}
+
+.btn-tenant-detail-loc {
+    border: 1.5px solid #ccc;
+    color: #555;
+}
+
+.btn-tenant-detail-loc:hover {
+    border-color: #d4a742;
+    color: #d4a742;
+}
+
+.btn-tenant-back {
+    border: 1.5px solid #e0e0e0;
+    color: #999;
+    font-size: 0.75rem;
+}
+
+.btn-tenant-back:hover {
+    border-color: #d4a742;
+    color: #d4a742;
+}
+
+/* CONTENT */
+.tenant-detail-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.tenant-detail-category {
+    color: #d4a742;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.tenant-detail-name {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.tenant-detail-divider {
+    height: 3px;
+    width: 60px;
+    background: #d4a742;
+    border-radius: 2px;
+    margin-bottom: 30px;
+}
+
+.tenant-detail-desc p {
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.85;
+    margin-bottom: 16px;
+}
+
+/* Photo gallery inside detail page */
+.tenant-gallery-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111;
+    margin: 40px 0 20px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.tenant-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.tenant-gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+}
+
+.tenant-gallery-item img:hover {
+    transform: scale(1.03);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .tenant-detail-container {
+        flex-direction: column;
+    }
+
+    .tenant-detail-sidebar {
+        width: 100%;
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .tenant-logo-box {
+        width: 160px;
+        flex-shrink: 0;
+    }
+
+    .btn-tenant-detail-web,
+    .btn-tenant-detail-loc,
+    .btn-tenant-back {
+        width: auto;
+        display: inline-block;
+    }
+
+    .tenant-detail-name {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .tenant-detail-section {
+        padding: 40px 5% 60px;
+    }
+
+    .tenant-detail-sidebar {
+        flex-direction: column;
+    }
+
+    .tenant-logo-box {
+        width: 100%;
+    }
+
+    .tenant-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tenant-detail-name {
+        font-size: 1.5rem;
+    }
+}
