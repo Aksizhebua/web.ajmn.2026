@@ -11,12 +11,13 @@
 // ============================================================
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
+    authDomain:        "ajmn-website.firebaseapp.com",
+    projectId:         "ajmn-website",
+    storageBucket:     "ajmn-website.firebasestorage.app",
+    messagingSenderId: "223460999999",
+    appId:             "1:223460999999:web:a0758ffee209e3b49c898a",
+    measurementId:     "G-4N8TJSHKRW"
 };
 
 export { firebaseConfig };
