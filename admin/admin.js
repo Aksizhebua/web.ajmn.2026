@@ -60,7 +60,7 @@ function showToast(message, type = "info") {
         setTimeout(() => toast.remove(), 300);
     };
     toast.addEventListener("click", remove);
-    setTimeout(remove, 4000);
+    setTimeout(remove, 7000);
 }
 
 function setBtnLoading(btn, loading) {
