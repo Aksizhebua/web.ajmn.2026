@@ -2712,6 +2712,17 @@ html {
     background: rgba(0, 0, 0, 0.55);
 }
 
+.hero-tenant-name {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
 .tenant-hero-content {
     position: relative;
     z-index: 2;
@@ -2758,14 +2769,9 @@ html {
 }
 
 .tenant-logo-box {
-    background: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 140px;
 }
 
 .tenant-logo-box img {
@@ -2871,6 +2877,7 @@ html {
     font-size: 0.95rem;
     line-height: 1.85;
     margin-bottom: 16px;
+    text-align: justify;
 }
 
 /* Photo gallery inside detail page */
