@@ -1860,7 +1860,8 @@ html {
 
 .gallery-grid-section {
     padding: 60px 3%; /* Padding kiri-kanan lebih kecil agar 5 gambar muat dengan lega */
-    background-color: #ffffff; /* Background putih bersih */
+    background-color: #111111; /* Background gelap seperti what's on */
+    color: #fff;
 }
 
 /* Category Block Wrapper */
@@ -2171,7 +2172,7 @@ html {
    WHAT'S ON EVENTS SECTION
    ========================================= */
 .whatson-section {
-    background-color: #0d0d0d;
+    background-color: #fff;
     padding: 70px 8%;
 }
 
