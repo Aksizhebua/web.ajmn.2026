@@ -36,8 +36,9 @@ const DOC_ID     = "homepage";
 
 // ─── INIT FIREBASE ──────────────────────────────────────────
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db   = firebase.firestore();
+const auth    = firebase.auth();
+const db      = firebase.firestore();
+const storage = firebase.storage();
 
 // ─── UTILITIES ──────────────────────────────────────────────
 function showSpinner(msg = "Menyimpan...") {
@@ -382,6 +383,10 @@ function showEventForm(type, clear = true) {
             const el = document.getElementById(`${prefix}-${f}`);
             if (el) el.value = "";
         });
+        const fileInput  = document.getElementById(`${prefix}-img-file`);
+        const previewDiv = document.getElementById(`${prefix}-img-preview`);
+        if (fileInput) fileInput.value = "";
+        if (previewDiv) previewDiv.style.display = "none";
         document.getElementById(`${type}-edit-id`).value = "";
         document.getElementById(`${type}-form-title`).innerHTML = `<i class="fas fa-plus-circle"></i> Tambah Event Baru`;
     }
@@ -404,6 +409,18 @@ window.editEvent = function(type, id) {
     document.getElementById(`${prefix}-badgeType`).value= ev.badgeType|| "";
     document.getElementById(`${prefix}-location`).value = ev.location || "";
     document.getElementById(`${prefix}-img`).value      = ev.img      || "";
+    // Tampilkan preview gambar yang sudah ada
+    const previewDiv = document.getElementById(`${prefix}-img-preview`);
+    const previewImg = document.getElementById(`${prefix}-img-preview-img`);
+    const fileInput  = document.getElementById(`${prefix}-img-file`);
+    if (ev.img) {
+        previewImg.src = ev.img;
+        previewDiv.style.display = "block";
+        document.getElementById(`${prefix}-img-upload-status`).textContent = "Gambar saat ini";
+    } else {
+        previewDiv.style.display = "none";
+    }
+    if (fileInput) fileInput.value = "";
     document.getElementById(`${prefix}-linkText`).value = ev.linkText || "";
     document.getElementById(`${prefix}-link`).value     = ev.link     || "";
 };
@@ -438,10 +455,30 @@ function getEventFormData(type) {
     };
 }
 
+async function uploadEventImage(file, prefix) {
+    const ext      = file.name.split('.').pop();
+    const filename = `events/${prefix}_${Date.now()}.${ext}`;
+    const ref      = storage.ref(filename);
+    const statusEl = document.getElementById(`${prefix}-img-upload-status`);
+    statusEl.textContent = "Mengupload...";
+    await ref.put(file);
+    const url = await ref.getDownloadURL();
+    document.getElementById(`${prefix}-img`).value = url;
+    statusEl.textContent = "Upload selesai ✓";
+    return url;
+}
+
 async function handleSaveEvent(type) {
-    const btn = document.getElementById(`save-${type}-event-btn`);
+    const btn    = document.getElementById(`save-${type}-event-btn`);
+    const prefix = type === "upcoming" ? "ue" : "pe";
     setBtnLoading(btn, true);
     try {
+        // Upload gambar jika ada file baru dipilih
+        const fileInput = document.getElementById(`${prefix}-img-file`);
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+            await uploadEventImage(fileInput.files[0], prefix);
+        }
+
         const data = getEventFormData(type);
         if (!data.title) { showToast("Judul event tidak boleh kosong", "error"); return; }
         const editId = document.getElementById(`${type}-edit-id`).value;
@@ -632,4 +669,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("add-past-btn").addEventListener("click", () => showEventForm("past"));
     document.getElementById("cancel-past-btn").addEventListener("click", () => document.getElementById("past-form-box").classList.remove("show"));
     document.getElementById("save-past-event-btn").addEventListener("click", () => handleSaveEvent("past"));
+
+    // File preview listeners
+    ["ue", "pe"].forEach(prefix => {
+        document.getElementById(`${prefix}-img-file`).addEventListener("change", function() {
+            const file = this.files[0];
+            if (!file) return;
+            const previewDiv = document.getElementById(`${prefix}-img-preview`);
+            const previewImg = document.getElementById(`${prefix}-img-preview-img`);
+            previewImg.src = URL.createObjectURL(file);
+            previewDiv.style.display = "block";
+            document.getElementById(`${prefix}-img-upload-status`).textContent = "File dipilih, akan diupload saat simpan";
+        });
+    });
 });
