@@ -86,41 +86,14 @@
         
 
         <div class="tenants-grid">
-            <a href="tenant-detail.html?id=1" class="tenant-card">
-                <img src="images/tenant1.png" alt="Tenant 1">
-            </a>
             <a href="tenant-detail.html?id=2" class="tenant-card">
-                <img src="images/olie.png" alt="Tenant 2">
-            </a>
-            <a href="tenant-detail.html?id=3" class="tenant-card">
-                <img src="images/tenant3.png" alt="Tenant 3">
-            </a>
-            <a href="tenant-detail.html?id=4" class="tenant-card">
-                <img src="images/tenant4.png" alt="Tenant 4">
-            </a>
-            <a href="tenant-detail.html?id=5" class="tenant-card">
-                <img src="images/tenant5.png" alt="Tenant 5">
+                <img src="images/olie.png" alt="Olie">
             </a>
             <a href="tenant-detail.html?id=6" class="tenant-card">
-                <img src="images/tenant6.png" alt="Tenant 6">
+                <img src="images/tenant6.png" alt="ATMAcanteen">
             </a>
             <a href="tenant-detail.html?id=7" class="tenant-card">
-                <img src="images/tenant7.png" alt="Tenant 7">
-            </a>
-            <a href="tenant-detail.html?id=8" class="tenant-card">
-                <img src="images/tenant8.png" alt="Tenant 8">
-            </a>
-            <a href="tenant-detail.html?id=9" class="tenant-card">
-                <img src="images/tenant9.png" alt="Tenant 9">
-            </a>
-            <a href="tenant-detail.html?id=10" class="tenant-card">
-                <img src="images/tenant10.png" alt="Tenant 10">
-            </a>
-            <a href="tenant-detail.html?id=11" class="tenant-card">
-                <img src="images/tenant11.png" alt="Tenant 11">
-            </a>
-            <a href="tenant-detail.html?id=12" class="tenant-card">
-                <img src="images/tenant12.png" alt="Tenant 12">
+                <img src="images/tenant7.png" alt="AJ SQUARE">
             </a>
         </div>
     </section>
@@ -183,16 +156,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
     (function() {
-        // ── Firebase config (sama seperti admin/admin.js) ──
-        const firebaseConfig = {
-            apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
-            authDomain:        "ajmn-website.firebaseapp.com",
-            projectId:         "ajmn-website",
-            storageBucket:     "ajmn-website.firebasestorage.app",
-            messagingSenderId: "223460999999",
-            appId:             "1:223460999999:web:a0758ffee209e3b49c898a",
-            measurementId:     "G-4N8TJSHKRW"
-        };
+// ── Firebase config from shared file ──
+        const firebaseConfig = window.firebaseConfig;
 
         const CACHE_KEY  = "ajmn_content_cache";
         const CACHE_TTL  = 10 * 60 * 1000;

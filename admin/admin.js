@@ -4,17 +4,10 @@
 // ============================================================
 
 // ─── FIREBASE CONFIG ────────────────────────────────────────
-// Ganti dengan config Firebase project Anda
-// Dapatkan dari: Firebase Console → Project Settings → Your Apps
-const firebaseConfig = {
-    apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
-    authDomain:        "ajmn-website.firebaseapp.com",
-    projectId:         "ajmn-website",
-    storageBucket:     "ajmn-website.firebasestorage.app",
-    messagingSenderId: "223460999999",
-    appId:             "1:223460999999:web:a0758ffee209e3b49c898a",
-    measurementId:     "G-4N8TJSHKRW"
-};
+// Loaded from shared firebase-config.js
+const firebaseConfig = window.firebaseConfig;
+
+
 
 // ─── DEFAULT CONTENT (fallback jika Firestore kosong) ───────
 const DEFAULTS = {
