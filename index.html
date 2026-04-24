@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -81,19 +89,46 @@
     </section>
 
     <!-- OUR TENANTS SECTION -->
-    <section class="tenants-section">
+    <section class="tenants-section" id="our-tenants">
         <h2 class="section-title">Our Tenants</h2>
         
 
         <div class="tenants-grid">
+            <a href="tenant-detail.html?id=1" class="tenant-card">
+                <img src="images/+62.png" alt="+62 Coffee">
+            </a>
             <a href="tenant-detail.html?id=2" class="tenant-card">
                 <img src="images/olie.png" alt="Olie">
+            </a>
+            <a href="tenant-detail.html?id=3" class="tenant-card">
+                <img src="images/logohokben.jpeg" alt="HokBen">
+            </a>
+            <a href="tenant-detail.html?id=4" class="tenant-card">
+                <img src="images/Hontang.png" alt="Hong Tang x Cafe Canton">
+            </a>
+            <a href="tenant-detail.html?id=5" class="tenant-card">
+                <img src="images/mie.png" alt="Mie Star">
             </a>
             <a href="tenant-detail.html?id=6" class="tenant-card">
                 <img src="images/tenant6.png" alt="ATMAcanteen">
             </a>
             <a href="tenant-detail.html?id=7" class="tenant-card">
                 <img src="images/tenant7.png" alt="AJ SQUARE">
+            </a>
+            <a href="tenant-detail.html?id=8" class="tenant-card">
+                <img src="images/hollan.png" alt="Vending Machine Holland Bakery">
+            </a>
+            <a href="tenant-detail.html?id=9" class="tenant-card">
+                <img src="images/mandiri.png" alt="Bank Mandiri">
+            </a>
+            <a href="tenant-detail.html?id=10" class="tenant-card">
+                <img src="images/BCA.png" alt="Bank BCA">
+            </a>
+            <a href="tenant-detail.html?id=11" class="tenant-card">
+                <img src="images/CIMN.png" alt="Bank CIMB Niaga">
+            </a>
+            <a href="tenant-detail.html?id=12" class="tenant-card">
+                <img src="images/BRI.png" alt="ATM BRI">
             </a>
         </div>
     </section>
@@ -106,16 +141,20 @@
                 <div class="footer-brand">
                     <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
                 </div>
-                <p class="footer-desc">Professional solutions for commercial area management, event organizing, and trusted venue booking services in Indonesia.</p>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+
+                <!-- Social Media -->
                 <div class="social-icons">
-                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
                 </div>
             </div>
 
             <div class="footer-col">
-                <h4>SERVICES</h4>
+                <h4>OUR SERVICES</h4>
                 <ul>
                     <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                     <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
@@ -123,22 +162,21 @@
             </div>
 
             <div class="footer-col">
-                <h4>COMPANY</h4>
+                <h4>QUICK LINKS</h4>
                 <ul>
                     <li><a href="about.html">ABOUT US</a></li>
                     <li><a href="gallery.html">GALLERY</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
                 <h4>CONTACT US</h4>
                 <div class="contact-info">
-                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
-                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
-                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
-                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
                 </div>
             </div>
         </div>
@@ -264,6 +302,83 @@
             });
         });
 
+        // Auto-loop tenant carousel on desktop
+        (function autoLoopTenants() {
+            const track = document.querySelector('.tenants-grid');
+            if (!track || window.innerWidth <= 768) return;
+
+            const cards = Array.from(track.children);
+            if (cards.length < 2) return;
+
+            const cloneFragment = document.createDocumentFragment();
+            cards.forEach(card => cloneFragment.appendChild(card.cloneNode(true)));
+            track.appendChild(cloneFragment);
+
+            let loopWidth = track.scrollWidth / 2;
+            let isPaused = false;
+            let isDragging = false;
+            let dragStartX = 0;
+            let dragStartScroll = 0;
+            let rafId = null;
+
+            function normalizeScroll() {
+                if (track.scrollLeft >= loopWidth) {
+                    track.scrollLeft -= loopWidth;
+                } else if (track.scrollLeft < 0) {
+                    track.scrollLeft += loopWidth;
+                }
+            }
+
+            function tick() {
+                if (!isPaused && !isDragging) {
+                    track.scrollLeft += 0.6;
+                    normalizeScroll();
+                }
+                rafId = window.requestAnimationFrame(tick);
+            }
+
+            track.addEventListener('mouseenter', () => { isPaused = true; });
+            track.addEventListener('mouseleave', () => { isPaused = false; });
+            track.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
+            track.addEventListener('touchend', () => { isPaused = false; }, { passive: true });
+
+            track.addEventListener('pointerdown', (event) => {
+                isDragging = true;
+                isPaused = true;
+                dragStartX = event.clientX;
+                dragStartScroll = track.scrollLeft;
+                track.classList.add('dragging');
+                track.setPointerCapture(event.pointerId);
+            });
+
+            track.addEventListener('pointermove', (event) => {
+                if (!isDragging) return;
+                const deltaX = event.clientX - dragStartX;
+                track.scrollLeft = dragStartScroll - deltaX;
+                normalizeScroll();
+            });
+
+            function stopDragging() {
+                isDragging = false;
+                isPaused = false;
+                track.classList.remove('dragging');
+            }
+
+            track.addEventListener('pointerup', stopDragging);
+            track.addEventListener('pointercancel', stopDragging);
+
+            window.addEventListener('resize', () => {
+                loopWidth = track.scrollWidth / 2;
+            });
+
+            window.addEventListener('beforeunload', () => {
+                if (rafId) window.cancelAnimationFrame(rafId);
+            });
+
+            tick();
+        })();
+
     </script>
+    <script src="viewport-scale.js"></script>
 </body>
 </html>

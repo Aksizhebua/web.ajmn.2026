@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "FIREBASE_SETUP.md",
+      "TODO.md"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false
+  }
+}

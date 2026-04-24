@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Detail - PT Atma Jaya Mitra Nusantara</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li class="dropdown">
+                        <a href="academic-venture.html" class="active">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                            <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li class="dropdown">
+                        <a href="upcoming-events.html">WHAT'S ON &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
+                            <li><a href="past-events.html">PAST EVENTS</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">BOOKING</a>
+        </div>
+    </header>
+
+    <section class="academic-detail-hero">
+        <div class="overlay"></div>
+        <div class="hero-about-content">
+            <h1 id="academicDetailHeroTitle">ACADEMIC DETAIL</h1>
+        </div>
+    </section>
+
+    <section class="academic-detail-page">
+        <div class="academic-detail-wrapper">
+            <div class="academic-detail-media">
+                <img id="academicDetailImage" src="images/Amphi1.jpg" alt="Academic detail image">
+            </div>
+            <div class="academic-detail-text">
+                <div class="academic-detail-kicker" id="academicDetailKicker">Academic Venue</div>
+                <h1 id="academicDetailTitle">Academic Detail</h1>
+                <div id="academicDetailDescription"></div>
+                <div class="academic-detail-action">
+                    <a id="academicDetailButton" href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank" class="academic-register-btn">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+
+                <!-- Social Media -->
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>OUR SERVICES</h4>
+                <ul>
+                    <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const academicDetails = {
+            1: {
+                title: 'BNSP HRM Certification',
+                heroTitle: 'BNSP HRM Certification',
+                kicker: 'Professional Certification',
+                image: 'imagesav/msdm.png',
+                galleryImages: ['imagesav/msdm.png', 'imagesav/msdm1.png', 'imagesav/msdm2.png', 'imagesav/msdm3.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>Elevate your HR team's professionalism and validate their expertise through our BNSP-Certified Human Resource Management (MSDM) Certification program. This comprehensive training and assessment program is designed to equip Human Capital practitioners with a measurable national framework, ensuring they have officially recognized skills to manage, recruit, and develop human potential in the modern era.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Competency Assessment Schemes</h3>
+                        <ul class="detail-chip-list">
+                            <li>HR Staff</li>
+                            <li>HR Supervisor</li>
+                            <li>HR Recruitment and Selection Supervisor</li>
+                            <li>HR Manager</li>
+                            <li>Talent Management Manager</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Learning Options and Methods</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Public Class</strong> Open to individuals and corporate representatives seeking independent capacity building.</li>
+                            <li><strong>In-House Training</strong> Intensive training conducted exclusively for your internal team, allowing specific discussions and case studies aligned with your corporate culture.</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Program Highlights</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Proven Passing Record</strong> We maintain an exceptional track record, with training batches where 100% of participants were officially declared competent by BNSP assessors.</li>
+                            <li><strong>Trusted by Leading Clients</strong> Our training quality is trusted by multinational institutions and large corporations across various industries, including UOB, HSBC, MUFG, SeaBank, MMS Group Indonesia, PT United Super Steel, and Atma Jaya Hospital.</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p>Transform your HR team into resilient strategic partners for your company: certified, competent, and ready to lead organizational transformation.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            2: {
+                title: 'AJLEP (Atma Jaya Leadership Execution Program)',
+                heroTitle: 'AJLEP',
+                kicker: 'Leadership Development Program',
+                image: 'imagesav/ajlep1.png',
+                galleryImages: ['imagesav/ajlep1.png', 'imagesav/ajlep2.png', 'imagesav/ajlep3.png', 'imagesav/ajlep4.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>AJLEP is a focused leadership program designed to strengthen execution capability, strategic thinking, and practical leadership behavior in dynamic organizational environments.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Program Focus</h3>
+                        <ul class="detail-chip-list">
+                            <li>Leadership mindset</li>
+                            <li>Strategic execution</li>
+                            <li>Team communication</li>
+                            <li>Decision making</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Learning Outcomes</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Execution Discipline</strong> Participants build practical routines to translate strategy into measurable action.</li>
+                            <li><strong>Leadership Confidence</strong> Participants improve confidence in leading teams through change and performance pressure.</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p>AJLEP is ideal for professionals and future leaders who want to strengthen execution skills and leadership impact in real workplace settings.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            3: {
+                title: 'Tax Brevet AB Training',
+                heroTitle: 'Tax Brevet AB Training',
+                kicker: 'Tax Competency Program',
+                image: 'imagesav/ab1.png',
+                galleryImages: ['imagesav/ab1.png', 'imagesav/ab2.png', 'imagesav/ab3.png', 'imagesav/ab4.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>The Tax Brevet AB Training program is designed to equip participants with comprehensive knowledge of taxation, ranging from fundamental concepts to practical technical applications in accordance with current regulations.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Key Topics</h3>
+                        <ul class="detail-chip-list">
+                            <li>Income Tax (PPh) and Value Added Tax (PPN)</li>
+                            <li>Tax calculation</li>
+                            <li>Tax reporting administration</li>
+                            <li>Tax case studies</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Program Highlights</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Practical Learning</strong> Materials are delivered through an applicative approach, making them easy to implement in daily work.</li>
+                            <li><strong>Career Readiness</strong> Participants gain relevant competencies for roles in administration, finance, and taxation.</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p><strong>For Every Learner</strong> Suitable for students, fresh graduates, and professionals who want to strengthen their foundation in taxation systematically.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            4: {
+                title: 'Microsoft Office Specialist - Excel Expert (Office 2019 or 365)',
+                heroTitle: 'Microsoft Office Specialist - Excel Expert (Office 2019 or 365)',
+                kicker: 'Digital Productivity Certification',
+                image: 'imagesav/mos1.png',
+                galleryImages: ['imagesav/mos1.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>This program offers an internationally recognized certification designed to validate advanced skills in Microsoft Excel, focusing on data processing, automation, and professional reporting.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Program Information</h3>
+                        <ul class="detail-chip-list detail-chip-list-single">
+                            <li>Certification: International Certification</li>
+                            <li>Mode: Online</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Why Are Excel Skills Important?</h3>
+                        <ul class="detail-feature-list">
+                            <li>Protect data and create formulas</li>
+                            <li>Build interactive and automated dashboards</li>
+                            <li>Manage large datasets using PivotTables</li>
+                            <li>Automate tasks efficiently with Macros</li>
+                            <li>Create dynamic and professional data visualizations</li>
+                        </ul>
+                    </section>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            5: {
+                title: 'Training Procurement',
+                heroTitle: 'Training Procurement',
+                kicker: 'Procurement and Sourcing Program',
+                image: 'imagesav/tp1.png',
+                galleryImages: ['imagesav/tp1.png', 'imagesav/tp2.png', 'imagesav/tp3.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>The Procurement Training program is designed to strengthen participants' capabilities in managing the procurement of goods and services in an efficient, transparent, and well-governed manner.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Key Topics</h3>
+                        <ul class="detail-chip-list">
+                            <li>Procurement planning</li>
+                            <li>Vendor management</li>
+                            <li>Negotiation strategy</li>
+                            <li>Contract fundamentals</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Program Benefits</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Operational Efficiency</strong> Participants learn to optimize cost, quality, and procurement timelines.</li>
+                            <li><strong>Governance Readiness</strong> The materials support accountable procurement practices aligned with organizational standards.</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p><strong>Target Participants</strong> This program is suitable for purchasing staff, operational teams, and managers who aim to enhance their procurement capabilities strategically.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            6: {
+                title: 'Training Persiapan Masa Pensiun',
+                heroTitle: 'Training Persiapan Masa Pensiun',
+                kicker: 'Retirement Readiness Program',
+                image: 'imagesav/pensiun 1.png',
+                galleryImages: ['imagesav/pensiun 1.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>The Retirement Preparation Training program helps employees plan and prepare for retirement in a financially, psychologically, and socially sound manner with full confidence.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Program Information</h3>
+                        <ul class="detail-chip-list detail-chip-list-single">
+                            <li>Certification: Internal Certification</li>
+                            <li>Mode: Offline</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Key Topics</h3>
+                        <ul class="detail-feature-list">
+                            <li>Financial planning for retirement</li>
+                            <li>Mental readiness and psychological transition</li>
+                            <li>Activity planning and meaningful post-retirement life</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p><strong>Program Benefits</strong> This program supports organizations and employees in creating a positive and well-planned retirement process.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            7: {
+                title: 'Training Strengths Based Public Speaking',
+                heroTitle: 'Training Strengths Based Public Speaking',
+                kicker: 'Office Productivity Program',
+                image: 'imagesav/ts1.png',
+                galleryImages: ['imagesav/ts1.png', 'imagesav/ts2.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>The Strengths-Based Public Speaking Training program is designed to help participants develop confident and impactful communication skills by leveraging their unique strengths in delivering messages effectively.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Key Topics</h3>
+                        <ul class="detail-chip-list detail-chip-list-single">
+                            <li>Public speaking fundamentals</li>
+                            <li>Audience analysis</li>
+                            <li>Speech structuring techniques</li>
+                            <li>Voice and body language</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Learning Benefits</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Confident Delivery</strong> Participants gain confidence in presenting ideas clearly and persuasively.</li>
+                            <li><strong>Practical Application</strong> Case-based practice helps participants apply speaking techniques in real-life situations.</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p><strong>Target Participants</strong> This program is ideal for students, fresh graduates, and professionals who want to improve their communication and presentation skills for academic and professional settings.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            },
+            8: {
+                title: 'Human Development Training – FHCPI',
+                heroTitle: 'Human Development Training – FHCPI',
+                kicker: 'Human Capital Development Program',
+                image: 'imagesav/fh1.png',
+                galleryImages: ['imagesav/fh1.png', 'imagesav/fh2.png'],
+                description: `
+                    <div class="detail-intro">
+                        <p>The Human Development Training – FHCPI program focuses on enhancing individual and organizational capacity through a comprehensive approach to competencies, character building, and sustainable leadership development.</p>
+                    </div>
+                    <section class="detail-section">
+                        <h3>Development Areas</h3>
+                        <ul class="detail-chip-list">
+                            <li>Personal growth</li>
+                            <li>Leadership capability</li>
+                            <li>Team collaboration</li>
+                            <li>Professional mindset</li>
+                        </ul>
+                    </section>
+                    <section class="detail-section">
+                        <h3>Expected Outcomes</h3>
+                        <ul class="detail-feature-list">
+                            <li><strong>Stronger Competency</strong> Participants gain practical insights to improve individual and team performance.</li>
+                            <li><strong>Sustainable Growth</strong> The program promotes a culture of continuous learning and long-term development within the organization.</li>
+                        </ul>
+                    </section>
+                    <div class="detail-closing">
+                        <p>This program is suitable for organizations seeking to strengthen their human capital as a foundation for long-term transformation.</p>
+                    </div>
+                `,
+                registerUrl: 'https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website'
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get('id'), 10);
+        const detail = academicDetails[id];
+
+        if (detail) {
+            const detailWrapper = document.querySelector('.academic-detail-wrapper');
+            const mediaWrapper = document.querySelector('.academic-detail-media');
+            const detailTitleEl = document.getElementById('academicDetailTitle');
+            const heroTitleEl = document.getElementById('academicDetailHeroTitle');
+            const detailKickerEl = document.getElementById('academicDetailKicker');
+            const heroText = (detail.heroTitle || detail.title).toUpperCase();
+            document.title = detail.title + ' - PT Atma Jaya Mitra Nusantara';
+            heroTitleEl.textContent = heroText;
+            heroTitleEl.classList.toggle('hero-title-compact', heroText.length > 32);
+            detailKickerEl.textContent = detail.kicker;
+            detailTitleEl.textContent = detail.title;
+            detailTitleEl.classList.toggle('title-strong', id >= 1 && id <= 8);
+
+            detailWrapper.classList.remove('gallery-layout');
+            mediaWrapper.classList.remove('gallery-strip');
+
+            if (id === 4 || id === 6) {
+                detailWrapper.classList.add('gallery-layout');
+                mediaWrapper.innerHTML = '<img id="academicDetailImage" src="images/Amphi1.jpg" alt="Academic detail image">';
+                document.getElementById('academicDetailImage').src = detail.image;
+                document.getElementById('academicDetailImage').alt = detail.title;
+            } else if (Array.isArray(detail.galleryImages) && detail.galleryImages.length > 1) {
+                detailWrapper.classList.add('gallery-layout');
+                mediaWrapper.classList.add('gallery-strip');
+                mediaWrapper.style.gridTemplateColumns = `repeat(${detail.galleryImages.length}, minmax(0, 1fr))`;
+                mediaWrapper.innerHTML = detail.galleryImages
+                    .map((src, index) => `<img src="${src}" alt="${detail.title} image ${index + 1}">`)
+                    .join('');
+            } else {
+                mediaWrapper.style.gridTemplateColumns = '';
+                mediaWrapper.innerHTML = '<img id="academicDetailImage" src="images/Amphi1.jpg" alt="Academic detail image">';
+                document.getElementById('academicDetailImage').src = detail.image;
+                document.getElementById('academicDetailImage').alt = detail.title;
+            }
+            document.getElementById('academicDetailDescription').innerHTML = detail.description;
+            document.getElementById('academicDetailButton').href = detail.registerUrl;
+
+            if (id === 2 || id === 4) {
+                detailTitleEl.style.whiteSpace = 'nowrap';
+                detailTitleEl.style.overflow = 'hidden';
+                detailTitleEl.style.textOverflow = 'ellipsis';
+            } else {
+                detailTitleEl.style.whiteSpace = '';
+                detailTitleEl.style.overflow = '';
+                detailTitleEl.style.textOverflow = '';
+            }
+
+            if (id === 4) {
+                detailTitleEl.style.fontSize = '2.15rem';
+            } else {
+                detailTitleEl.style.fontSize = '';
+            }
+
+            if (id === 2) {
+                document.querySelector('.academic-detail-action').style.display = 'none';
+            }
+        } else {
+            document.querySelector('.academic-detail-page').innerHTML = '<div style="text-align:center;padding:80px 20px;"><h2>Academic detail not found.</h2><p><a href="academic-venture.html" style="color:#b89442;">Back to Academic Venture</a></p></div>';
+        }
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('.navbar nav');
+        const dropdownItems = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        dropdownItems.forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    this.classList.toggle('active');
+                }
+            });
+        });
+    </script>
+    <script src="viewport-scale.js"></script>
+</body>
+</html>
+
+

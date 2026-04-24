@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -28,7 +36,7 @@
                     <li class="dropdown">
                         <a href="#">SERVICES &#9662;</a>
                         <ul class="dropdown-menu">
-                            <li><a href="academic-venture.html">AKADEMIK VENTURE</a></li>
+                            <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                             <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
                         </ul>
                     </li>
@@ -120,17 +128,7 @@
                     <div class="gallery-item-box"><img src="images/v10.png" alt="Venue 10"></div>
                     
                     <!-- Before & After -->
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 1"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 2"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 3"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 4"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 5"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 6"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 7"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 8"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 9"></div>
-                    <div class="gallery-item-box"><img src="images/bg-ruangan.png" alt="Before After 10"></div>
-                </div>
+                    </div>
             </div>
 
             <div class="gallery-category-block" id="corporate">
@@ -218,7 +216,7 @@
         <div class="footer-container">
             <div class="footer-col">
                 <div class="footer-brand">
-                    <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
                 </div>
                 <div class="footer-desc">
                     Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
@@ -226,10 +224,9 @@
 
                 <!-- Social Media -->
                 <div class="social-icons">
-                    <a href="#" class="social-icon-gold" aria-label="Facebook">f</a>
-                    <a href="#" class="social-icon-gold" aria-label="Twitter">T</a>
-                    <a href="https://www.instagram.com/pt.ajmn" target="_blank" class="social-icon-gold" aria-label="Instagram">IG</a>
-                    <a href="#" class="social-icon-gold" aria-label="LinkedIn">in</a>
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
                 </div>
             </div>
 
@@ -247,17 +244,16 @@
                     <li><a href="about.html">ABOUT US</a></li>
                     <li><a href="gallery.html">GALLERY</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
                 <h4>CONTACT US</h4>
                 <div class="contact-info">
-                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
-                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
-                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
-                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
                 </div>
             </div>
         </div>
@@ -341,5 +337,9 @@
             });
         });
     </script>
+    <script src="viewport-scale.js"></script>
 </body>
 </html>
+
+
+

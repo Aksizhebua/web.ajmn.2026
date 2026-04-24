@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -28,7 +36,7 @@
                     <li class="dropdown">
                         <a href="#">SERVICES &#9662;</a>
                         <ul class="dropdown-menu">
-                            <li><a href="academic-venture.html">AKADEMIK VENTURE</a></li>
+                            <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                             <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
                         </ul>
                     </li>
@@ -59,8 +67,6 @@
 
     <!-- EVENTS SECTION -->
     <section class="whatson-section">
-
-        <h2 class="section-title" style="text-align:center; margin-top:40px;">PAST EVENTS</h2>
         <div class="whatson-container" id="past-events">
             <div class="event-card" data-category="seminar">
                 <div class="event-img-wrap">
@@ -82,10 +88,10 @@
 
         <!-- CTA Section -->
         <div class="whatson-cta">
-            <h2>Ingin Menyelenggarakan Event Anda?</h2>
-            <p>Tim profesional kami siap membantu mewujudkan event impian Anda. Hubungi kami untuk konsultasi gratis.</p>
+            <h2>Want to host your own event?</h2>
+            <p>Our professional team is ready to help you make your dream event a reality. Contact us for a free consultation.</p>
             <a href="https://api.whatsapp.com/send/?phone=6285174173247&text=Halo%20AJMN%2C%20saya%20ingin%20konsultasi%20event&type=phone_number&app_absent=0" class="btn-cta-whatson" target="_blank">
-                <i class="fab fa-whatsapp"></i> KONSULTASI GRATIS
+                <i class="fab fa-whatsapp"></i> FREE CONSULTATION
             </a>
         </div>
 
@@ -98,16 +104,20 @@
                 <div class="footer-brand">
                     <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
                 </div>
-                <p class="footer-desc">Professional solutions for commercial area management, event organizing, and trusted venue booking services in Indonesia.</p>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+
+                <!-- Social Media -->
                 <div class="social-icons">
-                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
                 </div>
             </div>
 
             <div class="footer-col">
-                <h4>SERVICES</h4>
+                <h4>OUR SERVICES</h4>
                 <ul>
                     <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                     <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
@@ -115,24 +125,21 @@
             </div>
 
             <div class="footer-col">
-                <h4>COMPANY</h4>
+                <h4>QUICK LINKS</h4>
                 <ul>
                     <li><a href="about.html">ABOUT US</a></li>
                     <li><a href="gallery.html">GALLERY</a></li>
-                    <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
-                    <li><a href="past-events.html">PAST EVENTS</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">Booking</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
                 <h4>CONTACT US</h4>
                 <div class="contact-info">
-                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
-                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
-                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
-                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
                 </div>
             </div>
         </div>
@@ -252,5 +259,9 @@
             });
         });
     </script>
+    <script src="viewport-scale.js"></script>
 </body>
 </html>
+
+
+

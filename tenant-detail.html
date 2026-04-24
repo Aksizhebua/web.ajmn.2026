@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -27,7 +35,7 @@
                     <li class="dropdown">
                         <a href="#">SERVICES &#9662;</a>
                         <ul class="dropdown-menu">
-                            <li><a href="academic-venture.html">AKADEMIK VENTURE</a></li>
+                            <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                             <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
                         </ul>
                     </li>
@@ -61,25 +69,25 @@
                     <img id="detailLogo" src="" alt="">
                 </div>
                 <div class="tenant-info-block">
-                    <h4>Alamat</h4>
+                    <h4>Address</h4>
                     <p id="detailAddress"></p>
                 </div>
                 <div class="tenant-info-block">
-                    <h4>Jam Operasional</h4>
+                    <h4>Operating Hours</h4>
                     <p id="detailHours"></p>
                 </div>
                 <div class="tenant-info-block">
-                    <h4>Kontak</h4>
-                    <p id="detailPhone"></p>
+                    <h4>Contact</h4>
+                    <p id="detailContack"></p>
                 </div>
                 <a id="detailWebsite" href="#" target="_blank" class="btn-tenant-detail-web">
-                    <i class="fas fa-globe"></i> Kunjungi Website
+                    <i class="fas fa-globe"></i> Visit Website
                 </a>
                 <a id="detailLocation" href="#" target="_blank" class="btn-tenant-detail-loc">
-                    <i class="fas fa-map-marker-alt"></i> Lihat Lokasi
+                    <i class="fas fa-map-marker-alt"></i> View Location
                 </a>
-                <a href="index.html#tenants" class="btn-tenant-back">
-                    &larr; Kembali ke Tenants
+                <a href="index.html#our-tenants" class="btn-tenant-back">
+                    &larr; Back to Our Tenants
                 </a>
             </aside>
 
@@ -106,39 +114,46 @@
                 <div class="footer-brand">
                     <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
                 </div>
-                <p class="footer-desc">Professional solutions for commercial area management, event organizing, and trusted venue booking services in Indonesia.</p>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+
+                <!-- Social Media -->
                 <div class="social-icons">
-                    <a href="https://www.instagram.com/atmajayamitra/" class="social-icon-gold" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
                 </div>
             </div>
+
             <div class="footer-col">
-                <h4>SERVICES</h4>
+                <h4>OUR SERVICES</h4>
                 <ul>
                     <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
                     <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
-                <h4>COMPANY</h4>
+                <h4>QUICK LINKS</h4>
                 <ul>
                     <li><a href="about.html">ABOUT US</a></li>
                     <li><a href="gallery.html">GALLERY</a></li>
-                    <li><a href="whats-on.html">WHAT'S ON</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>CONTACT US</h4>
                 <div class="contact-info">
-                    <p><span class="contact-icon">📍</span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
-                    <p><span class="contact-icon">📞</span> <span>085174173247</span></p>
-                    <p><span class="contact-icon">✉️</span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
-                    <p><span class="contact-icon">💬</span> <span>+62 851 7417 3247</span></p>
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
                 </div>
             </div>
         </div>
+
         <div class="footer-bottom">
             <hr>
             <div class="footer-copyright">
@@ -153,17 +168,18 @@
         // =============================================
         const tenants = {
             1: {
-                name: "Tenant 1",
+                  name: "+62 Coffe",
                 category: "Food & Beverages",
-                logo: "images/tenant1.png",
+                  logo: "images/+62.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 1. Ceritakan sejarah, produk unggulan, dan keunikan tenant ini.</p>
-                       <p>Anda bisa menambahkan paragraf lebih banyak di sini untuk memberikan informasi yang komprehensif kepada pengunjung.</p>`,
-                address: "Gedung Yustinus Lt. 1, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+desc: `<p>+62 Coffee provides a comfortable coffee spot on campus, serving various coffee options and trendy drinks perfect for enjoying during breaks. With a relaxed atmosphere and diverse menu, +62 Coffee is the ideal place to relax, discuss, or work on tasks.</p>
+                      <p>Prioritizing taste quality and customer experience, +62 Coffee is ready to accompany your day with delicious beverages and a pleasant ambiance.</p>`,
+                  address: "ATMAterra",
+                  hours: "07.00-22.00",
+                  contack: "62877-0003-6262",
+                  website: "https://linktr.ee/plusenamdua.id?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnwK3cBWm2KdWIfMggXUgQ3MDm0-hoKJxQ3QXlK1ln9H0VXKbKGrxHbntKxrA_aem_R6irblldE_SEk5wKQRaCQg",
+                  location: "https://maps.app.goo.gl/XNptAwzSLp1KA6rf8",
+
                 photos: []
             },
             2: {
@@ -171,53 +187,55 @@
                 category: "Food & Beverages",
                 logo: "images/olie.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Little Olie adalah restoran sajian ayam unik yang menawarkan chicken tender renyah dan berair yang dirancang khusus untuk dicelupkan ke dalam berbagai pilihan saus yang berani dan menggoda. Restoran ini telah sukses menjadi suguhan favorit bagi kalangan remaja, dewasa muda, hingga para orang tua karena menyajikan hidangan yang menarik untuk media sosial dengan harga yang terjangkau.</p>
-                       <p>Mengusung tantangan "Dare to lick? We double DARE YOU!" , Little Olie mengajak pelanggannya untuk menyantap hidangan tanpa garpu dan menikmati saus langsung dari jari-jari mereka. Berbagai hidangan viral ini disajikan dalam paket "Olie Set" yang dapat dikustomisasi sepenuhnya oleh pelanggan, mulai dari pilihan karbohidrat, aneka saus khas, hingga makanan pendamping. Untuk menjaga agar pengalaman kuliner tetap segar, mereka juga secara rutin menghadirkan menu musiman dalam waktu terbatas.</p>
-                       <p>Outlet pertama Little Olie dapat dikunjungi di RTH UNIKA Atma Jaya, Semanggi, Jakarta, dan kehebohan seputar produk mereka bisa dilihat melalui akun Instagram dan TikTok @olie.jkt.</p>`,
+desc: `<p>Little Olie is a unique chicken restaurant offering crispy and juicy chicken tenders designed specifically to be dipped into bold and tempting sauce options. This restaurant has successfully become a favorite for teenagers, young adults, and parents because it serves Instagram-worthy dishes at affordable prices.</p>
+                       <p>Featuring the challenge "Dare to lick? We double DARE YOU!", Little Olie invites customers to enjoy dishes without forks and savor the sauce directly from their fingers. These viral dishes are served in fully customizable "Olie Set" packages, from carbohydrate choices and signature sauces to side dishes. To keep the culinary experience fresh, they regularly introduce limited-time seasonal menus.</p>
+                       <p>The first Little Olie outlet can be visited at RTH UNIKA Atma Jaya, Semanggi, Jakarta. Follow the buzz on Instagram and TikTok @olie.jkt.</p>`,
                 address: "ATMAterra",
-                hours: "07:00 - 10:00",
-                phone: "0857-7620-6046",
+                hours: "07:00 - 22:00",
+                contack: "0857-7620-6046",
                 website: "https://linktr.ee/olie.jkt",
                 location: "https://maps.app.goo.gl/rRbfQe8G6idBLc6q6",
                 photos: []
             },
             3: {
-                name: "Tenant 3",
-                category: "Retail",
-                logo: "images/tenant3.png",
+                name: "HokBen",
+                category: "Food & Beverages",
+                logo: "images/logohokben.jpeg",
+
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 3.</p>`,
-                address: "Gedung Yustinus Lt. 2, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+desc: `<p>HokBen is an Indonesian Japanese-style fast food restaurant serving various practical, delicious, and quality dishes. Featuring a Japanese fast food concept, HokBen offers favorite menus like chicken katsu, beef teriyaki, and various bento served with high cleanliness and service standards.</p><p>With flavors tailored to Indonesian tastes, HokBen is the perfect choice for enjoying fast, affordable Japanese-style food suitable for individuals, families, and group events.</p>`,
+
+                address: "ATMAterra",
+                hours: "07:00 - 22:00",
+                contack: "cs@hokben.co.id",
+                website: "https://hokben.co.id",
+                location: "https://maps.app.goo.gl/rRbfQe8G6idBLc6q6ttps://maps.google.com",
                 photos: []
             },
             4: {
-                name: "Tenant 4",
-                category: "Retail",
-                logo: "images/tenant4.png",
+                name: "Hong Tang x Cafe Canton",
+                category: "Food & Beverages",
+                logo: "images/Hontang.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 4.</p>`,
-                address: "Gedung Yustinus Lt. 2, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+desc: `<p>Hong Tang x Cafe Canton brings Asian culinary fusion with healthy dessert options and diverse signature dishes. Inspired by flavors from Taiwan, Japan, Thailand, to Hong Kong, every menu is served with the best quality and authentic refreshing taste.</p><p>With integrated operational system support, continuously evolving menu innovations, and consistent service, Hong Tang x Cafe Canton is the perfect destination for enjoying desserts or light meals in a comfortable and modern atmosphere.</p>`,
+                address: "ATMAterra",
+                hours: "07.00-22.00",
+                contack: "62812-11857-927",
+                website: "https://hongtang.asia/",
+                location: "https://maps.app.goo.gl/XNptAwzSLp1KA6rf8",
                 photos: []
             },
             5: {
-                name: "Tenant 5",
-                category: "Services",
-                logo: "images/tenant5.png",
+                name: "Mie Star",
+                category: "Food & Beverages",
+                logo: "images/mie.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 5.</p>`,
-                address: "Gedung Yustinus Lt. 3, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+desc: `<p>MieStar offers a variety of delicious noodle dishes inspired by Southeast Asian flavors, perfect for everyday meals. Focusing on freshly made, preservative-free noodles, MieStar delivers comforting and satisfying options for any time of the day.</p><p>By combining regional tastes with adaptations suited to Indonesian preferences, MieStar maintains quality, consistency, and affordability across its outlets. It is an ideal choice for a warm, filling, and convenient meal in between daily activities.</p>`,
+                address: "ATMAterra",
+                hours: "07.00-22.00",
+                contack: "-",
+                website: "https://linktr.ee/miestar.id?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnQI4KE-33i_-T5SY07TQjGZfayX-oifdH0SrXNBKEs9GiP2py5jDtbVK0KJI_aem_g5OkHWZ-j8jKMeq9ZWjHGw",
+                location: "https://maps.app.goo.gl/XNptAwzSLp1KA6rf8",
                 photos: []
             },
             6: {
@@ -225,12 +243,12 @@
                 category: "Food & Beverages",
                 logo: "images/tenant6.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>ATMAcanteen merupakan ruang makan sekaligus area komunal modern yang baru direnovasi, berlokasi di lantai 2 gedung ATMAterra, Kampus Semanggi Universitas Katolik Indonesia Atma Jaya. Fasilitas ini resmi dibuka pada 2 Juni 2025 sebagai bagian dari upaya universitas dalam meningkatkan kualitas infrastruktur bagi mahasiswa dan staf. Letaknya yang strategis, terintegrasi dengan kawasan Ruang Terbuka Hijau kampus yang telah diperbarui, memberikan suasana yang lebih segar dan nyaman bagi para pengunjung.</p>
-                       <p>Kantin ini menghadirkan suasana yang nyaman dan modern, sehingga tidak hanya digunakan untuk makan, tetapi juga menjadi tempat berkumpul, berdiskusi, hingga mengerjakan tugas. Tata ruangnya luas dan tertata rapi, mampu menampung hingga 250 orang sekaligus. Desain yang estetik serta atmosfer yang hidup membuat tempat ini kerap muncul dalam berbagai unggahan media sosial resmi universitas.</p>
-                       <p>Beragam pilihan hidangan lokal tersedia untuk memenuhi selera pengunjung. Mahasiswa dan staf dapat menikmati menu favorit sehari-hari seperti nasi rames, ayam geprek, soto mie, dan bakso. Selain itu, terdapat pula menu yang cukup populer seperti Bakmi Garing Toto, yang semakin menambah daya tarik kuliner di ATMAcanteen.</p>`,
+desc: `<p>ATMAcanteen is a newly renovated modern dining and communal area located on the 2nd floor of ATMAterra building at Semanggi Campus of Universitas Katolik Indonesia Atma Jaya. This facility officially opened on June 2, 2025 as part of the university's efforts to improve infrastructure quality for students and staff. Its strategic location, integrated with the updated Green Open Space, provides a fresher and more comfortable atmosphere for visitors.</p>
+                       <p>The canteen offers a comfortable and modern atmosphere, serving not only as a dining place but also for gathering, discussing, and doing assignments. The spacious and well-arranged layout can accommodate up to 250 people. The aesthetic design and lively atmosphere make it frequently featured in official university social media posts.</p>
+                       <p>Various local dishes are available to satisfy visitors' tastes. Students and staff can enjoy daily favorites like nasi rames, ayam geprek, soto mie, and bakso. There's also the popular Bakmi Garing Toto menu, enhancing ATMAcanteen's culinary appeal.</p>`,
                 address: "ATMAterra",
                 hours: "Senin – Sabtu: 07.00 – 18.00",
-                phone: "0851-7417-3247",
+                contack: "0851-7417-3247",
                 website: "https://www.atmajaya.ac.id/id/",
                 location: "https://share.google/OyZ0O4wgod9kHVpF2",
                 photos: []
@@ -240,79 +258,81 @@
                 category: "Food & Beverages",
                 logo: "images/tenant7.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>AJ Square merupakan kantin yang berada di lingkungan Kampus Atma Jaya Pluit dan menjadi salah satu pusat aktivitas mahasiswa serta staf. Berlokasi di area kampus yang strategis, tempat ini mudah diakses dan selalu ramai dikunjungi, terutama pada jam istirahat dan setelah kegiatan perkuliahan.</p>
-                       <p>Kantin ini menghadirkan suasana yang cukup nyaman untuk bersantap sekaligus berkumpul. Area duduk yang tersedia memungkinkan pengunjung untuk makan bersama teman, berdiskusi, maupun sekadar beristirahat di sela aktivitas kampus. Lingkungannya yang santai membuat AJ Square tidak hanya berfungsi sebagai tempat makan, tetapi juga sebagai ruang interaksi sosial sehari-hari.</p>
-                       <p>Beragam pilihan makanan dan minuman tersedia dengan harga yang terjangkau, menyesuaikan dengan kebutuhan mahasiswa. Mulai dari menu berat hingga camilan, AJ Square menjadi pilihan praktis bagi warga kampus yang ingin menikmati hidangan tanpa harus keluar dari area kampus.</p>`,
+desc: `<p>AJ Square is a canteen located in the Atma Jaya Pluit Campus area and serves as one of the main activity centers for students and staff. Strategically located, it's easily accessible and always busy, especially during breaks and after classes.</p>
+                       <p>The canteen provides a comfortable atmosphere for dining and gathering. The seating area allows visitors to eat with friends, discuss, or rest between campus activities. The relaxed environment makes AJ Square not only a dining place but also a daily social interaction space.</p>
+                       <p>Various food and drink options are available at affordable prices suited for students. From heavy meals to snacks, AJ Square is a practical choice for the campus community to enjoy dishes without leaving the area.</p>`,
                 address: "Jl. Pluit Raya, Daerah Khusus Ibukota Jakarta 14450",
                 hours: "Senin – Sabtu: 07.00 – 22.00",
-                phone: "0851-7417-3247",
+                contack: "0851-7417-3247",
                 website: "https://www.atmajaya.ac.id/id/",
                 location: "https://share.google/TGcKe5s9C26yieGEv",
                 photos: []
             },
             8: {
-                name: "Tenant 8",
+                name: "Vending Machine Holland Bakery",
                 category: "Food & Beverages",
-                logo: "images/tenant8.png",
+                logo: "images/hollan.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 8.</p>`,
-                address: "Gedung Yustinus Lt. 4, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+desc: `<p>Holland Bakery Vending Machine is available on campus for easy access to various bread products, drinks, and snacks quickly and conveniently. With an automatic system, users can directly select their favorite bakery items and pay easily.</p><p>As a modern solution, Holland Bakery Vending Machine is perfect for those needing quick, quality consumption options between activities without queuing.</p>`,
+                address: "Hall G Vending Machine Center",
+                hours: "07.00-16.00",
+                contack: "0818-0691-8181",
+                website: "https://www.hollandbakery.co.id/",
+                location: "https://maps.app.goo.gl/o3WHGxqgBx9M9fLh8",
                 photos: []
             },
             9: {
-                name: "Tenant 9",
-                category: "Retail",
-                logo: "images/tenant9.png",
+                name: "Bank Mandiri",
+                category: "Services",
+                logo: "images/mandiri.png",
+
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 9.</p>`,
-                address: "Gedung Yustinus Lt. 5, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+desc: `<p>Bank Mandiri is located in Hall G Atma Jaya, providing convenient banking services for students, staff, and campus visitors. Offering various services such as account opening, financial transactions, and digital banking, Bank Mandiri is a practical solution for daily financial needs.</p><p>With professional and reliable service, Bank Mandiri supports your activities with fast, secure, and comfortable banking access in the campus environment.</p>`,
+
+                address: "Hall G Unika Atma jaya",
+                hours: "07.00-16.00",
+                contack: "+mandiricare@bankmandiri.co.id",
+                website: "https://www.bankmandiri.co.id/",
+                location: "https://maps.app.goo.gl/tWXp4c47adcnkTsL9",
                 photos: []
             },
             10: {
-                name: "Tenant 10",
+                name: "Bank BCA",
                 category: "Services",
-                logo: "images/tenant10.png",
+                logo: "images/BCA.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 10.</p>`,
-                address: "Gedung Yustinus Lt. 5, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+                desc: `<p>Bank BCA berlokasi di Hall G Atma Jaya dan menghadirkan layanan perbankan yang praktis dan efisien untuk menunjang aktivitas di lingkungan kampus. Dengan berbagai fasilitas seperti layanan transaksi, pembukaan rekening, hingga kemudahan akses mobile banking, Bank BCA membantu pengguna dalam mengelola keuangan secara lebih fleksibel.</p><p>Dikenal dengan kecepatan layanan dan teknologi yang inovatif, Bank BCA menjadi mitra terpercaya bagi kebutuhan finansial yang modern, aman, dan mudah diakses kapan saja.</p>`,
+                address: "Hall G Unika Atma Jaya",
+                hours: "07.00-16.00",
+                contack: "halobca@bca.co.id",
+                website: "https://www.bca.co.id/id",
+                location: "https://maps.app.goo.gl/tWXp4c47adcnkTsL9",
                 photos: []
             },
             11: {
-                name: "Tenant 11",
-                category: "Retail",
-                logo: "images/tenant11.png",
+                name: "Bank CIMB Niaga",
+                category: "Services",
+                logo: "images/CIMN.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 11.</p>`,
-                address: "Gedung Yustinus Lt. 6, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+                desc: `<p>Bank CIMB Niaga berlokasi di Hall G Atma Jaya dan menawarkan layanan perbankan yang nyaman serta mendukung aktivitas produktif di lingkungan kampus. Selain menyediakan berbagai layanan seperti transaksi keuangan dan pembukaan rekening, Bank CIMB Niaga juga dilengkapi dengan area tempat duduk yang dapat dimanfaatkan untuk belajar atau bekerja.</p><p>Dengan suasana yang nyaman dan pelayanan yang ramah, Bank CIMB Niaga menjadi pilihan tepat bagi Anda yang ingin mengurus kebutuhan finansial sekaligus memiliki ruang untuk tetap produktif.</p>`,
+                address: "Hall G Unika Atma Jaya",
+                hours: "07.00-16.00",
+                contack: "14041@cimbniaga.co.id",
+                website: "https://www.cimbniaga.co.id/id",
+                location: "https://maps.app.goo.gl/tWXp4c47adcnkTsL9",
                 photos: []
             },
             12: {
-                name: "Tenant 12",
+                name: "ATM BRI",
                 category: "Services",
-                logo: "images/tenant12.png",
+                logo: "images/BRI.png",
                 heroBg: "images/bg-ruangan.png",
-                desc: `<p>Deskripsi lengkap tentang Tenant 12.</p>`,
-                address: "Gedung Yustinus Lt. 6, Jl. Jend. Sudirman No.51, Jakarta Selatan 12930",
-                hours: "Senin – Jumat: 08.00 – 21.00\nSabtu – Minggu: 09.00 – 22.00",
-                phone: "+62 21 1234 5678",
-                website: "#",
-                location: "https://maps.google.com",
+                desc: `<p>ATM BRI tersedia di Hall Y Atma Jaya, tepatnya di area ATM Center, untuk memberikan kemudahan akses layanan perbankan secara mandiri bagi mahasiswa, staf, dan pengunjung kampus. Melalui fasilitas ini, pengguna dapat melakukan berbagai transaksi seperti penarikan tunai, transfer, cek saldo, hingga pembayaran dengan cepat dan praktis.</p><p>Dengan lokasi yang strategis dan akses yang mudah dijangkau, ATM BRI menjadi solusi efisien untuk memenuhi kebutuhan transaksi keuangan kapan saja di lingkungan kampus.</p>`,
+                address: "Hall Y ATM Center",
+                hours: "07.00-16.00",
+                contack: "callbri@bri.co.id",
+                website: "https://bri.co.id/",
+                location: "https://maps.app.goo.gl/9tRPGSoWfbq6bveE8",
                 photos: []
             }
         };
@@ -335,7 +355,7 @@
             document.getElementById('detailLogo').alt = tenant.name;
             document.getElementById('detailAddress').textContent = tenant.address;
             document.getElementById('detailHours').innerHTML = tenant.hours.replace(/\n/g, '<br>');
-            document.getElementById('detailPhone').textContent = tenant.phone;
+            document.getElementById('detailContack').textContent = tenant.contack;
             document.getElementById('detailWebsite').href = tenant.website;
             document.getElementById('detailLocation').href = tenant.location;
 
@@ -354,7 +374,7 @@
         } else {
             // Tenant not found
             document.querySelector('.tenant-detail-section').innerHTML =
-                '<div style="text-align:center;padding:100px 20px;"><h2>Tenant tidak ditemukan.</h2><a href="index.html" style="color:#d4a742;">Kembali ke Home</a></div>';
+                '<div style="text-align:center;padding:100px 20px;"><h2>Tenant not found.</h2><a href="index.html" style="color:#d4a742;">Back to Home</a></div>';
         }
 
         // Navbar scroll
@@ -387,5 +407,9 @@
             });
         });
     </script>
+    <script src="viewport-scale.js"></script>
 </body>
 </html>
+
+
+
