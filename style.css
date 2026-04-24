@@ -329,76 +329,55 @@ html {
    HAMBURGER MENU FOR MOBILE
    ========================================= */
 
-/* Hamburger button - hidden by default on desktop */
+/* Hamburger button - always hidden */
 .hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    padding: 5px;
-    z-index: 1001;
+    display: none !important;
 }
 
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background-color: #d4a742;
-    margin: 3px 0;
-    transition: 0.3s;
-    border-radius: 2px;
-}
-
-/* Animation for hamburger to X */
-.hamburger.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-6px, 6px);
-}
-
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-6px, -6px);
-}
-
-/* Mobile Navigation Styles */
+/* Mobile Navigation Styles - Always show horizontal nav */
 @media (max-width: 768px) {
-    /* Show hamburger on mobile */
-    .hamburger {
-        display: flex;
-    }
-
-    /* Hide desktop navigation */
-    .navbar nav {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.95);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: left 0.3s ease-in-out;
-        z-index: 1000;
-    }
-
-    /* Show navigation when active */
-    .navbar nav.active {
-        left: 0;
-    }
-
-    /* Mobile menu styling */
-    .navbar nav ul {
+    .navbar {
         flex-direction: column;
-        gap: 30px;
+        padding: 10px 15px;
+    }
+
+    .nav-container {
+        width: 100%;
+        justify-content: center;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .nav-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .navbar nav {
+        position: static;
+        width: 100%;
+        height: auto;
+        background: transparent;
+        display: block;
+        left: auto;
+    }
+
+    .navbar nav ul {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 14px;
         text-align: center;
+        justify-content: center;
+        padding: 8px 0;
+        overflow-x: visible;
     }
 
     .navbar nav ul li a {
-        font-size: 18px;
+        font-size: 11px;
         color: #d4a742;
-        padding: 10px 0;
+        padding: 6px 0;
         display: block;
+        white-space: nowrap;
     }
 
     /* Dropdown in mobile */

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PT Atma Jaya Mitra Nusantara</title>
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -16,6 +16,7 @@
         };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="viewport-scale.js"></script>
 </head>
 <body>
 
@@ -50,8 +51,9 @@
                         </ul>
                     </li>
                     <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
                 </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">BOOKING</a>
         </div>
     </header>
 
@@ -88,7 +90,7 @@
         </div>
     </section>
 
-    
+    <!-- OUR TENANTS SECTION -->
     <section class="tenants-section" id="our-tenants">
         <h2 class="section-title">Our Tenants</h2>
         
@@ -133,7 +135,7 @@
         </div>
     </section>
 
-    
+    <!-- TENANT MODAL -->
 
     <footer class="main-footer">
         <div class="footer-container">
@@ -145,7 +147,7 @@
                     Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
                 </div>
 
-                
+                <!-- Social Media -->
                 <div class="social-icons">
                     <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
                     <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
@@ -189,7 +191,7 @@
         </div>
     </footer>
 
-    
+    <!-- Firebase Dynamic Content Loader -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
@@ -379,6 +381,6 @@
         })();
 
     </script>
-    <script src="viewport-scale.js"></script>
+    
 </body>
 </html>
