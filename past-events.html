@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAST EVENTS - PT ATMA JAYA MITRA NUSANTARA</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -35,6 +35,7 @@
                 <ul>
                     <li><a href="index.html">HOME</a></li>
                     <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="news.html">NEWS</a></li>
                     <li class="dropdown">
                         <a href="#">SERVICES &#9662;</a>
                         <ul class="dropdown-menu">
@@ -70,20 +71,7 @@
     
     <section class="whatson-section">
         <div class="whatson-container" id="past-events">
-            <div class="event-card" data-category="seminar">
-                <div class="event-img-wrap">
-                    <img src="images/w6.png" alt="Bedah Buku The Jealousy Of The West">
-                    <span class="event-badge">SEMINAR & TRAINING</span>
-                </div>
-                <div class="event-info">
-                    <div class="event-meta">
-                        <span class="event-date"><i class="fas fa-calendar-alt"></i> Kamis, 5 Maret 2026</span>
-                        <span class="event-category-tag">SEMINAR & TRAINING</span>
-                    </div>
-                    <h3 class="event-title">Bedah Buku The Jealousy Of The West</h3>
-                    <p class="event-desc">PT Atma Jaya Mitra Nusantara (AJMN) menyelenggarakan kegiatan Bedah Buku berjudul The Jealousy of the West: The Original Sin. Kegiatan ini diselenggarakan sebagai bagian dari upaya menghadirkan ruang diskusi intelektual serta mendorong budaya literasi di lingkungan Atma Jaya.<br><br>Kamis, 5 Maret 2026 di Ruang Seminar Y14.</p>
-                </div>
-            </div>
+            <!-- Event otomatis dimuat -->
         </div>
 
 
@@ -160,42 +148,49 @@
     <script>
     (function(){
         const firebaseConfig = {
-            apiKey:"AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",authDomain:"ajmn-website.firebaseapp.com",
-            projectId:"ajmn-website",storageBucket:"ajmn-website.firebasestorage.app",
-            messagingSenderId:"223460999999",appId:"1:223460999999:web:a0758ffee209e3b49c898a"
+            apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
+            authDomain:        "ajmn-website.firebaseapp.com",
+            projectId:         "ajmn-website",
+            storageBucket:     "ajmn-website.firebasestorage.app",
+            messagingSenderId: "223460999999",
+            appId:             "1:223460999999:web:a0758ffee209e3b49c898a"
         };
-        function buildCard(ev) {
-            return `<div class="event-card" data-category="${ev.category || ''}">
+        
+        function buildCard(ev) {            
+            const linkHtml = `<a href="gallery.html" class="btn-event">LIHAT DOKUMENTASI</a>`;
+            const imgSrc = (ev.img || 'images/av.jpg').replace('i.ibb.co/', 'i.ibb.co.com/');
+            
+            return `<div class="event-card" data-category="${ev.category || 'seminar'}">
                 <div class="event-img-wrap">
-                    <img src="${ev.img || 'images/av.jpg'}" alt="${ev.title || ''}">
-                    <span class="event-badge ${ev.badgeType || ''}">${ev.badge || 'SELESAI'}</span>
+                    <img src="${imgSrc}" alt="${ev.title || ''}">
+                    <span class="event-badge bg-gray-600 text-white">SELESAI</span>
                 </div>
                 <div class="event-info">
                     <div class="event-meta">
                         <span class="event-date"><i class="fas fa-calendar-alt"></i> ${ev.date || ''}</span>
-                        <span class="event-category-tag">${(ev.category || '').toUpperCase()}</span>
+                        <span class="event-category-tag">${(ev.category || '').toUpperCase().replace('-', ' ')}</span>
                     </div>
-                    <h3 class="event-title">${ev.title || ''}</h3>
-                    <p class="event-desc">${ev.desc || ''}</p>
+                    <h3 class="event-title line-clamp-2">${ev.title || ''}</h3>
+                    <p class="event-desc line-clamp-3">${ev.desc || ''}</p>
                     <div class="event-footer">
                         <span class="event-location"><i class="fas fa-map-marker-alt"></i> ${ev.location || ''}</span>
-                        ${ev.link ? `<a href="${ev.link}" class="btn-event" target="_blank">${ev.linkText || 'LIHAT DOKUMENTASI'}</a>` : ''}
+                        ${linkHtml}
                     </div>
                 </div>
             </div>`;
         }
+
         try {
             if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-            firebase.firestore().collection("siteContent").doc("pastEvents").get().then(doc => {
+            firebase.firestore().collection("events").orderBy("dateISO", "desc").get().then(snap => {
+                const now = new Date().toISOString().split('T')[0];
                 const container = document.getElementById("past-events");
-                const noEvEl = document.getElementById("no-events");
-                if (!doc.exists || !doc.data().events || !doc.data().events.length) {
-                    if (noEvEl) noEvEl.style.display = "block";
-                    return;
-                }
-                if (noEvEl) noEvEl.style.display = "none";
-                doc.data().events.forEach(ev => {
-                    container.insertAdjacentHTML('beforeend', buildCard(ev));
+                
+                snap.forEach(doc => {
+                    const ev = { id: doc.id, ...doc.data() };
+                    if (ev.dateISO < now) {
+                        container.insertAdjacentHTML('beforeend', buildCard(ev));
+                    }
                 });
             });
         } catch(e){ console.warn("Past events load error:", e.message); }
@@ -264,6 +259,3 @@
     
 </body>
 </html>
-
-
-

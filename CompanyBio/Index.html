@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Atma Jaya Mitra Nusantara</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons for modern scalable icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0f0500',
+                            blue: '#3e2009',
+                            light: '#ffffff',
+                            accent: '#b89442', // Emas Khas AJMN
+                            accentHover: '#d4a742'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700;800&display=swap');
+
+        body {
+            background-color: #0f0500;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(62, 32, 9, 0.6), transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(184, 148, 66, 0.15), transparent 40%),
+                linear-gradient(rgba(15, 5, 0, 0.8), rgba(15, 5, 0, 0.9)),
+                url('../images/AP4.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(62, 32, 9, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-btn {
+            transition: all 0.3s ease;
+        }
+        .link-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(62, 32, 9, 0.9);
+            border-color: rgba(184, 148, 66, 0.3);
+        }
+
+        .service-card {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(184, 148, 66, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(184, 148, 66, 0.2);
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(184, 148, 66, 0.05), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .service-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #b89442, #d4a742);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(184, 148, 66, 0.4);
+            transform: scale(1.02);
+        }
+
+        /* Loading Screen */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #0f0500;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+        .loader-ring {
+            width: 50px; height: 50px;
+            border: 3px solid rgba(184, 148, 66, 0.2);
+            border-radius: 50%;
+            border-top-color: #b89442;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f0500; }
+        ::-webkit-scrollbar-thumb { background: #3e2009; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b89442; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative pb-10">
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto px-5 pt-12 pb-10 flex-grow flex flex-col relative z-10">
+
+        <!-- Header Profile -->
+        <header class="gsap-fade-in text-center mb-8 flex flex-col items-center">
+            <div class="w-28 h-28 mb-4 flex items-center justify-center drop-shadow-[0_0_15px_rgba(184,148,66,0.3)]">
+                <img src="../images/Logo AJMNp.png" alt="Logo AJMN" class="w-full h-full object-contain">
+            </div>
+            <h1 class="font-display text-2xl md:text-3xl font-bold mb-2 text-white">PT Atma Jaya Mitra Nusantara</h1>
+            <p class="text-brand-light/70 text-sm md:text-base font-light max-w-md mx-auto leading-relaxed">
+                Professional Education, Building Management, and Event Services.
+            </p>
+        </header>
+
+        <!-- Primary Call to Action (Booking) -->
+        <section class="gsap-fade-in w-full mb-10">
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank" class="btn-primary block w-full text-white font-semibold text-center py-4 rounded-xl relative overflow-hidden group">
+                <span class="relative z-10 flex items-center justify-center gap-2 text-lg">
+                    <i class="ph-fill ph-whatsapp-logo text-2xl"></i> Booking & Konsultasi Sekarang
+                </span>
+            </a>
+        </section>
+
+        <!-- Layanan Kami -->
+        <section class="flex flex-col gap-3 mb-10">
+            <h2 class="gsap-scroll-anim text-xs uppercase tracking-widest text-brand-light/50 mb-2 pl-1">Layanan Kami</h2>
+            
+            <a href="https://www.whatsapp.com/product/9870293796431115/6285174173247/?app_absent=0" target="_blank" class="gsap-scroll-anim link-btn glass-panel flex items-center justify-between p-4 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="text-brand-accent"><i class="ph-fill ph-megaphone text-2xl"></i></div>
+                    <span class="font-medium text-brand-light">Amphitheater</span>
+                </div>
+                <i class="ph-bold ph-arrow-up-right text-brand-light/30"></i>
+            </a>
+
+            <a href="https://www.whatsapp.com/product/9870293796431115/6285174173247/?app_absent=0" target="_blank" class="gsap-scroll-anim link-btn glass-panel flex items-center justify-between p-4 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="text-brand-accent"><i class="ph-fill ph-buildings text-2xl"></i></div>
+                    <span class="font-medium text-brand-light">Ballroom Atma Jaya</span>
+                </div>
+                <i class="ph-bold ph-arrow-up-right text-brand-light/30"></i>
+            </a>
+
+            <a href="https://www.whatsapp.com/product/24571819005748798/6285174173247/?app_absent=0" target="_blank" class="gsap-scroll-anim link-btn glass-panel flex items-center justify-between p-4 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="text-brand-accent"><i class="ph-fill ph-map-pin-line text-2xl"></i></div>
+                    <span class="font-medium text-brand-light">Other Venue</span>
+                </div>
+                <i class="ph-bold ph-arrow-up-right text-brand-light/30"></i>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1Q3_fR--LSMmn4iZdRh0pkEQt_IOLKEpn/view" target="_blank" class="gsap-scroll-anim link-btn glass-panel flex items-center justify-between p-4 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="text-brand-accent"><i class="ph-fill ph-file-text text-2xl"></i></div>
+                    <span class="font-medium text-brand-light">Company Profile</span>
+                </div>
+                <i class="ph-bold ph-arrow-up-right text-brand-light/30"></i>
+            </a>
+        </section>
+
+        <!-- Social & Contact -->
+        <section class="flex flex-col gap-3 mb-8">
+            <h2 class="gsap-scroll-anim text-xs uppercase tracking-widest text-brand-light/50 mb-2 pl-1">Hubungi Kami</h2>
+
+            <a href="mailto:marketing.ajmn@atmajaya.ac.id" class="gsap-scroll-anim link-btn glass-panel flex items-center justify-between p-4 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="text-brand-accent"><i class="ph-fill ph-envelope-simple text-2xl"></i></div>
+                    <span class="font-medium text-brand-light">marketing.ajmn@atmajaya.ac.id</span>
+                </div>
+                <i class="ph-bold ph-arrow-up-right text-brand-light/30"></i>
+            </a>
+
+            <a href="https://maps.app.goo.gl/tWXp4c47adcnkTsL9" target="_blank" class="gsap-scroll-anim link-btn glass-panel flex items-center justify-between p-4 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="text-brand-accent"><i class="ph-fill ph-map-pin text-2xl"></i></div>
+                    <div class="flex flex-col">
+                        <span class="font-medium text-brand-light">Lokasi Kantor</span>
+                        <span class="text-[10px] text-brand-light/50 leading-tight mt-0.5">Gedung Yustinus lt. 14, Jl. Jend. Sudirman No.51</span>
+                    </div>
+                </div>
+                <i class="ph-bold ph-arrow-up-right text-brand-light/30"></i>
+            </a>
+        </section>
+
+        <!-- Social Media Grid -->
+        <section class="gsap-scroll-anim grid grid-cols-3 gap-3 mb-4">
+            <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="glass-panel py-3 flex justify-center rounded-xl hover:bg-white/10 transition-colors text-brand-accent">
+                <i class="ph-fill ph-instagram-logo text-2xl"></i>
+            </a>
+            <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="glass-panel py-3 flex justify-center rounded-xl hover:bg-white/10 transition-colors text-brand-accent">
+                <i class="ph-fill ph-tiktok-logo text-2xl"></i>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="glass-panel py-3 flex justify-center rounded-xl hover:bg-white/10 transition-colors text-brand-accent">
+                <i class="ph-fill ph-facebook-logo text-2xl"></i>
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="w-full max-w-2xl mx-auto px-5 text-center z-10 pb-4">
+        <p class="text-[10px] text-brand-light/40 uppercase tracking-widest">&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Remove Loader
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    initAnimations();
+                }, 500);
+            }, 800);
+
+            function initAnimations() {
+                gsap.registerPlugin(ScrollTrigger);
+
+                gsap.from(".gsap-fade-in", {
+                    y: 20, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.15
+                });
+
+                const scrollElements = gsap.utils.toArray('.gsap-scroll-anim');
+                scrollElements.forEach((el) => {
+                    gsap.from(el, {
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 90%",
+                        },
+                        y: 20, opacity: 0, duration: 0.6, ease: "power2.out"
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

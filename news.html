@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEWS - PT ATMA JAYA MITRA NUSANTARA</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="viewport-scale.js"></script>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+        
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="news.html" class="active">NEWS</a></li>
+                    <li class="dropdown">
+                        <a href="#">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                            <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li class="dropdown">
+                        <a href="upcoming-events.html">WHAT'S ON &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
+                            <li><a href="past-events.html">PAST EVENTS</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">BOOKING</a>
+        </div>
+    </header>
+
+    <section class="hero-whatson" id="news-hero">
+        <div class="overlay"></div>
+        <div class="hero-about-content">
+            <h1>NEWS & UPDATES</h1>
+        </div>
+    </section>
+
+    <!-- WRAPPER LIST VIEW -->
+    <div id="news-list-view">
+        
+        <!-- HIGHLIGHT / FEATURED EVENT -->
+        <section class="max-w-6xl mx-auto px-5 py-10 mt-5 hidden" id="featured-section">
+            <div class="flex flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition" id="featured-card">
+                <div class="md:w-3/5 h-64 md:h-auto overflow-hidden relative">
+                    <img id="feat-img" src="" alt="Featured Event" class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                    <div class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded shadow"><i class="fas fa-fire mr-1"></i> FEATURED EVENT</div>
+                </div>
+                <div class="md:w-2/5 p-8 flex flex-col justify-center">
+                    <span id="feat-meta" class="text-sm text-gray-500 font-semibold mb-2"><i class="fas fa-calendar-alt text-gold"></i> ...</span>
+                    <h2 id="feat-title" class="text-2xl font-bold text-gray-800 mb-4 line-clamp-3">...</h2>
+                    <p id="feat-snippet" class="text-gray-600 mb-6 line-clamp-3">...</p>
+                    <button class="bg-gold text-white font-bold py-2 px-6 rounded w-max hover:bg-goldHover transition">READ MORE <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTER BAR -->
+        <section class="whatson-filter-bar !top-20">
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">ALL NEWS</button>
+                <button class="filter-btn" data-filter="corporate">CORPORATE</button>
+                <button class="filter-btn" data-filter="akademik">ACADEMIC</button>
+                <button class="filter-btn" data-filter="entertainment">ENTERTAINMENT</button>
+                <button class="filter-btn" data-filter="charity">CHARITY & CSR</button>
+                <button class="filter-btn" data-filter="umum">GENERAL</button>
+            </div>
+        </section>
+
+        <!-- GRID LIST -->
+        <section class="whatson-section pt-10">
+            <div class="whatson-container !grid-cols-1 md:!grid-cols-3" id="news-grid">
+                <!-- Konten berita list -->
+            </div>
+            <!-- Placeholder jika tidak ada berita -->
+            <div class="no-events" id="no-news" style="display:none;">
+                <i class="fas fa-newspaper"></i>
+                <p>Belum ada berita untuk kategori ini saat ini.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- WRAPPER DETAIL VIEW (Hidden Default) -->
+    <div id="news-detail-view" class="hidden bg-gray-50 pb-20">
+        <!-- Hero Image Header -->
+        <div class="w-full h-80 md:h-[500px] relative">
+            <img id="det-img1" src="" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <button onclick="closeDetail()" class="absolute top-24 left-5 md:left-10 bg-white/20 hover:bg-white/40 backdrop-blur-md text-white px-4 py-2 rounded-full font-semibold transition z-10"><i class="fas fa-arrow-left mr-2"></i> Kembali</button>
+        </div>
+
+        <!-- Content Detail -->
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl -mt-20 relative z-10 p-8 md:p-12 mb-10 border-t-4 border-gold">
+            <div class="text-center mb-10">
+                <span id="det-cat" class="bg-gold/20 text-goldHover text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Kategori</span>
+                <h1 id="det-title" class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Judul Artikel</h1>
+                <div class="text-gray-500 font-medium text-sm flex items-center justify-center gap-4">
+                    <span><i class="fas fa-calendar-alt text-gold mr-1"></i> <span id="det-date"></span></span>
+                    <span id="det-loc-wrap"><i class="fas fa-map-marker-alt text-gold mr-1"></i> <span id="det-location"></span></span>
+                </div>
+            </div>
+
+            <div class="prose max-w-none text-gray-700 leading-loose text-justify text-[1.05rem]">
+                <div id="det-content1" class="mb-8 whitespace-pre-line"></div>
+                
+                <figure id="det-img2-wrap" class="my-8 md:float-left md:w-1/2 md:mr-8 md:mb-4">
+                    <img id="det-img2" src="" class="w-full rounded-lg shadow-md">
+                    <figcaption id="det-caption" class="text-center text-sm text-gray-500 mt-2 italic"></figcaption>
+                </figure>
+
+                <div id="det-content2" class="whitespace-pre-line"></div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-12 pt-6 flex items-center justify-between">
+                <span class="font-bold text-gray-800">Bagikan artikel ini:</span>
+                <div class="flex gap-3">
+                    <button onclick="shareWa()" class="w-10 h-10 rounded-full bg-green-500 text-white hover:bg-green-600 transition flex justify-center items-center"><i class="fab fa-whatsapp text-lg"></i></button>
+                    <button onclick="copyLink()" class="w-10 h-10 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition flex justify-center items-center"><i class="fas fa-link text-lg"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>OUR SERVICES</h4>
+                <ul>
+                    <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA", authDomain: "ajmn-website.firebaseapp.com",
+            projectId: "ajmn-website", storageBucket: "ajmn-website.firebasestorage.app",
+            messagingSenderId: "223460999999", appId: "1:223460999999:web:a0758ffee209e3b49c898a"
+        };
+        if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        let allNews = [];
+        let currentUrl = window.location.href;
+
+        function buildCard(nw) {
+            return `<div class="event-card" data-category="${nw.category}" onclick="openDetail('${nw.id}')" style="cursor:pointer;">
+                <div class="event-img-wrap">
+                    <img src="${nw.img1}" alt="${nw.title}">
+                </div>
+                <div class="event-info">
+                    <div class="event-meta">
+                        <span class="event-date"><i class="fas fa-calendar-alt text-gold"></i> ${nw.date}</span>
+                    </div>
+                    <h3 class="event-title line-clamp-2">${nw.title}</h3>
+                    <p class="event-desc line-clamp-2">${nw.snippet}</p>
+                    <div class="event-footer border-none pt-0">
+                        <span class="text-gold font-bold text-xs uppercase hover:underline">Baca Selengkapnya <i class="fas fa-angle-right"></i></span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        async function loadNews() {
+            try {
+                const snap = await db.collection("news").orderBy("date", "desc").get();
+                allNews = []; snap.forEach(doc => allNews.push({id: doc.id, ...doc.data()}));
+                
+                if(allNews.length === 0) {
+                    document.getElementById('no-news').style.display = 'block';
+                    return;
+                }
+
+                // Setup Featured Event (1 Teratas yang isFeatured, atau data ke-0)
+                const featData = allNews.find(n => n.isFeatured) || allNews[0];
+                if(featData) {
+                    document.getElementById('featured-section').classList.remove('hidden');
+                    document.getElementById('feat-img').src = featData.img1;
+                    document.getElementById('feat-meta').innerHTML = `<i class="fas fa-calendar-alt text-gold mr-1"></i> ${featData.date} &nbsp; <i class="fas fa-map-marker-alt text-gold mx-1"></i> ${featData.location || '-'}`;
+                    document.getElementById('feat-title').textContent = featData.title;
+                    document.getElementById('feat-snippet').textContent = featData.snippet;
+                    document.getElementById('featured-card').onclick = () => openDetail(featData.id);
+                }
+
+                // Setup Grid
+                const grid = document.getElementById('news-grid');
+                grid.innerHTML = '';
+                // Filter yg bukan featured ke grid, tapi karena bisa milih kategori, tampilkan semua aja di grid
+                allNews.forEach(nw => grid.insertAdjacentHTML('beforeend', buildCard(nw)));
+
+                // Cek URL parameter untuk membuka berita secara otomatis jika link di-share
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get('id');
+                if (id) {
+                    window.openDetail(id, false);
+                }
+
+            } catch (e) { console.warn("Load news err:", e); }
+        }
+
+        window.openDetail = (id, pushState = true) => {
+            const nw = allNews.find(n => n.id === id);
+            if(!nw) return;
+            
+            document.getElementById('det-img1').src = nw.img1;
+            document.getElementById('det-cat').textContent = nw.category;
+            document.getElementById('det-title').textContent = nw.title;
+            document.getElementById('det-date').textContent = nw.date;
+            if(nw.location) { document.getElementById('det-location').textContent = nw.location; document.getElementById('det-loc-wrap').classList.remove('hidden'); } 
+            else { document.getElementById('det-loc-wrap').classList.add('hidden'); }
+            
+            document.getElementById('det-content1').textContent = nw.content1 || '';
+            document.getElementById('det-content2').textContent = nw.content2 || '';
+            
+            const img2Wrap = document.getElementById('det-img2-wrap');
+            if(nw.img2) {
+                document.getElementById('det-img2').src = nw.img2;
+                document.getElementById('det-caption').textContent = nw.img2Caption || '';
+                img2Wrap.classList.remove('hidden');
+            } else { img2Wrap.classList.add('hidden'); }
+            
+            document.getElementById('news-hero').classList.add('hidden');
+            document.getElementById('news-list-view').classList.add('hidden');
+            document.getElementById('news-detail-view').classList.remove('hidden');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            if (pushState) {
+                const url = new URL(window.location);
+                url.searchParams.set('id', id);
+                window.history.pushState({ id: id }, '', url);
+                currentUrl = window.location.href; // Update URL untuk fitur share WA & Copy Link
+            }
+        }
+
+        window.closeDetail = (pushState = true) => {
+            document.getElementById('news-detail-view').classList.add('hidden');
+            document.getElementById('news-list-view').classList.remove('hidden');
+            document.getElementById('news-hero').classList.remove('hidden');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            if (pushState) {
+                const url = new URL(window.location);
+                url.searchParams.delete('id');
+                window.history.pushState({ id: null }, '', url);
+                currentUrl = window.location.href;
+            }
+        }
+
+        window.addEventListener('popstate', (event) => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (id) {
+                window.openDetail(id, false);
+            } else {
+                window.closeDetail(false);
+            }
+        });
+
+        window.shareWa = () => window.open(`https://api.whatsapp.com/send?text=Cek berita seru ini dari AJMN: ${currentUrl}`, '_blank');
+        window.copyLink = () => { navigator.clipboard.writeText(currentUrl); Swal.fire({toast:true, position:'top-end', showConfirmButton:false, timer:2000, icon:'success', title:'Link dicopy!'}); }
+
+        // Filter Logic
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(btn => btn.addEventListener('click', function() {
+            btns.forEach(b => b.classList.remove('active')); this.classList.add('active');
+            const f = this.getAttribute('data-filter'); let c = 0;
+            document.querySelectorAll('.event-card').forEach(card => {
+                if(f === 'all' || card.getAttribute('data-category') === f) { card.style.display = 'flex'; c++; } else { card.style.display = 'none'; }
+            });
+            document.getElementById('no-news').style.display = c === 0 ? 'block' : 'none';
+        }));
+
+        window.addEventListener('DOMContentLoaded', loadNews);
+        
+        window.addEventListener('scroll', () => document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50));
+        document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('hamburger').classList.toggle('active'); document.querySelector('.navbar nav').classList.toggle('active'); });
+    </script>
+</body>
+</html>

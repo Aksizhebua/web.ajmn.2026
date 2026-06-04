@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Atma Jaya Mitra Nusantara</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="viewport-scale.js"></script>
+    <style>
+        /* Style untuk Business Card Popup */
+        #card-popup-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #business-card {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        #card-popup-overlay.hidden #business-card {
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+        }
+        .photo-swap {
+            transition: opacity 0.8s ease-in-out;
+        }
+        /* Pastikan QR Code mengisi penuh kotaknya */
+        #card-qr-container img, #card-qr-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        /* --- PENYESUAIAN UKURAN UNTUK HP (SCALED MODE) --- */
+        /* Karena viewport HP di-scale otomatis, kita membesarkan ukuran dengan tetap mempertahankan layout horizontal (Landscape) */
+        html.scaled-mobile #card-popup-overlay {
+            padding: 30px !important;
+        }
+        html.scaled-mobile #business-card {
+            max-width: 1150px !important; /* Lebar optimal untuk layar HP yang di-scale */
+            height: 640px !important; /* Proporsi landscape */
+            flex-direction: row !important; /* Paksa posisi tetap horizontal */
+            border-radius: 35px !important;
+        }
+        html.scaled-mobile #business-card > div:first-child {
+            width: 42% !important; /* Lebar foto di kiri */
+            height: 100% !important;
+        }
+        html.scaled-mobile #business-card > div:last-child {
+            width: 58% !important; /* Lebar info di kanan */
+            padding: 50px 55px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+        }
+        html.scaled-mobile .absolute.top-4.left-4.w-12 {
+            width: 90px !important;
+            height: 90px !important;
+            top: 30px !important;
+            left: 30px !important;
+        }
+        html.scaled-mobile #card-name { font-size: 3.2rem !important; margin-bottom: 12px !important; }
+        html.scaled-mobile #card-title { font-size: 1.7rem !important; }
+        html.scaled-mobile #card-qr-container {
+            width: 170px !important;
+            height: 170px !important;
+            padding: 16px !important;
+            border-radius: 18px !important;
+        }
+        html.scaled-mobile #card-btn-phone,
+        html.scaled-mobile #card-btn-email { font-size: 1.7rem !important; gap: 20px !important; margin-bottom: 18px !important; }
+        html.scaled-mobile #card-btn-phone i,
+        html.scaled-mobile #card-btn-email i { width: 45px !important; font-size: 1.9rem !important; }
+        
+        html.scaled-mobile #business-card .text-\[0\.8rem\] { font-size: 1.5rem !important; margin-top: 25px !important; gap: 20px !important; }
+        html.scaled-mobile #business-card .text-\[0\.8rem\] i { width: 45px !important; font-size: 1.9rem !important; }
+        
+        html.scaled-mobile #business-card .mt-6.pt-4 { margin-top: 40px !important; padding-top: 35px !important; }
+        html.scaled-mobile #card-btn-linkedin,
+        html.scaled-mobile #business-card button[onclick="shareCard()"] {
+            width: 80px !important;
+            height: 80px !important;
+            font-size: 2.2rem !important;
+        }
+        html.scaled-mobile #card-btn-save { font-size: 1.6rem !important; padding: 20px 45px !important; border-radius: 50px !important; }
+        html.scaled-mobile #card-popup-overlay > button.absolute {
+            width: 100px !important;
+            height: 100px !important;
+            top: 35px !important;
+            right: 35px !important;
+        }
+        html.scaled-mobile #card-popup-overlay > button.absolute i { font-size: 3.5rem !important; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="news.html">NEWS</a></li>
+                    <li class="dropdown">
+                        <a href="#">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                            <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li class="dropdown">
+                        <a href="upcoming-events.html">WHAT'S ON &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="upcoming-events.html">UPCOMING EVENTS</a></li>
+                            <li><a href="past-events.html">PAST EVENTS</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html" class="active">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank">BOOKING</a>
+        </div>
+    </header>
+
+    <section class="hero-contact">
+        <div class="overlay"></div>
+        <div class="hero-about-content">
+            <h1>CONTACT US</h1>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="container-contact">
+            <div class="contact-grid">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15865.350445794744!2d106.7971405871582!3d-6.2191336999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f15516af61ff%3A0x424d08d8e5a21a45!2sAtmajaya%20Ballroom%20-%20Gedung%20Yustinus!5e0!3m2!1sid!2sid!4v1774505967984!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+
+                <div class="contact-info-container">
+                    <img src="images/Logo AJMN.png" alt="Logo PT Atma Jaya Mitra Nusantara" class="contact-logo">
+                    
+                    <h3>PT ATMA JAYA MITRA NUSANTARA</h3>
+                    
+                    <p class="address-text">
+                        Gedung Yustinus lantai 14<br>
+                        Jl. Jend. Sudirman No.51, Karet Semanggi, Setiabudi,<br>
+                        Jakarta Selatan 12930
+                    </p>
+
+                    <div class="contact-detail">
+                        <h4>PHONE NUMBER</h4>
+                        <p>085174173247</p>
+                    </div>
+
+                    <div class="contact-detail">
+                        <h4>EMAIL ADDRESS</h4>
+                        <p>marketing.ajmn@atmajaya.ac.id</p>
+                    </div>
+
+                    <div class="contact-hours">
+                        <p><strong>Monday - Friday:</strong> 8:00 AM - 8:00 PM</p>
+                        <p><strong>Saturday - Sunday:</strong> Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUSINESS CARD POPUP -->
+    <div id="card-popup-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 lg:p-8 hidden">
+        
+        <!-- Tombol Close Eksternal -->
+        <button onclick="closeCardPopup()" class="absolute top-4 right-4 lg:top-8 lg:right-8 w-12 h-12 flex items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/40 transition-colors z-50">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+
+        <!-- Container Business Card Compact (Ukuran KTP / Kartu Fisik) -->
+        <div id="business-card" class="w-full max-w-[540px] bg-[#0f0500] rounded-2xl shadow-2xl relative font-sans overflow-hidden flex flex-col sm:flex-row border border-gold/30">
+            
+            <!-- Photo Side (Kiri di Desktop, Atas di HP) -->
+            <div class="relative sm:w-2/5 h-56 sm:h-auto shrink-0 bg-gray-800">
+                <!-- Wadah untuk dua foto yang bisa ditukar -->
+                <img id="card-photo-1" src="" alt="Profile Image 1" class="photo-swap absolute inset-0 w-full h-full object-cover opacity-100">
+                <img id="card-photo-2" src="" alt="Profile Image 2" class="photo-swap absolute inset-0 w-full h-full object-cover opacity-0">
+                
+                <div class="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0f0500] via-transparent to-transparent"></div>
+                <!-- Logo Overlay -->
+                <div class="absolute top-4 left-4 w-12 h-12 opacity-90 drop-shadow-md">
+                    <img src="images/Logo AJMNp.png" alt="Logo AJMN" class="w-full h-full object-contain">
+                </div>
+            </div>
+
+            <!-- Info Side (Kanan di Desktop, Bawah di HP) -->
+            <div class="p-6 sm:p-7 sm:w-3/5 text-white flex flex-col justify-between">
+                
+                <div class="flex justify-between items-start gap-4">
+                    <div>
+                        <h1 id="card-name" class="text-2xl font-bold text-gold leading-tight line-clamp-2 mb-1"></h1>
+                        <p id="card-title" class="text-sm text-gray-300"></p>
+                    </div>
+                    <div class="bg-white p-1.5 rounded-lg w-16 h-16 shrink-0 flex items-center justify-center" id="card-qr-container">
+                        <!-- QR Code akan digenerate di sini -->
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 mt-6">
+                    <a id="card-btn-phone" href="#" class="hidden items-center gap-3 text-sm text-gray-200 hover:text-gold transition-colors">
+                        <i class="fas fa-phone w-4 text-center text-gold"></i> <span id="card-text-phone"></span>
+                    </a>
+                    <a id="card-btn-email" href="#" class="hidden items-center gap-3 text-sm text-gray-200 hover:text-gold transition-colors break-all">
+                        <i class="fas fa-envelope w-4 text-center text-gold"></i> <span id="card-text-email"></span>
+                    </a>
+                    <div class="flex items-center gap-3 text-[0.8rem] text-gray-400 mt-2">
+                        <i class="fas fa-building w-4 text-center text-gold"></i> <span>PT Atma Jaya Mitra Nusantara</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center">
+                    <div class="flex gap-2">
+                        <a id="card-btn-linkedin" href="#" target="_blank" class="hidden bg-blue-600/90 hover:bg-blue-600 text-white w-9 h-9 rounded-full items-center justify-center transition-all text-sm">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <button onclick="shareCard()" class="bg-white/10 hover:bg-white/20 text-white w-9 h-9 rounded-full flex items-center justify-center transition-all text-sm">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                    <a id="card-btn-save" href="#" download="contact.vcf" class="bg-gradient-to-r from-gold to-goldHover hover:from-goldHover hover:to-gold text-[#0f0500] px-5 py-2 rounded-full font-bold text-sm shadow-lg transition-all flex items-center gap-2">
+                        <i class="fas fa-download"></i> Simpan
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>OUR SERVICES</h4>
+                <ul>
+                    <li><a href="academic-venture.html">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture.html">NON-ACADEMIC VENTURE</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank">BOOKING</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // --- MAIN PAGE SCRIPT (COPY DARI INDEX.HTML) ---
+        window.addEventListener('scroll', () => document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50));
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('.navbar nav');
+        hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); nav.classList.toggle('active'); });
+        document.querySelectorAll('.navbar nav ul li a').forEach(link => link.addEventListener('click', () => { hamburger.classList.remove('active'); nav.classList.remove('active'); }));
+        document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.addEventListener('click', function() { if (window.innerWidth <= 768) this.classList.toggle('active'); }));
+
+        // --- BUSINESS CARD POPUP SCRIPT ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA", authDomain: "ajmn-website.firebaseapp.com",
+            projectId: "ajmn-website", storageBucket: "ajmn-website.firebasestorage.app",
+            messagingSenderId: "223460999999", appId: "1:223460999999:web:a0758ffee209e3b49c898a"
+        };
+        if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const popupOverlay = document.getElementById('card-popup-overlay');
+        let photoSwapInterval = null;
+
+        function generateVCF(data) {
+            const vcf = `BEGIN:VCARD
+VERSION:3.0
+FN:${data.name}
+ORG:PT Atma Jaya Mitra Nusantara
+TITLE:${data.title}
+PHOTO;TYPE=JPEG;VALUE=URL:${data.photo || ''}
+TEL;TYPE=CELL,VOICE:${data.phone || ''}
+TEL;TYPE=WORK,VOICE;waid=${data.whatsapp || ''}:${data.whatsapp ? '+'+data.whatsapp : ''}
+EMAIL:${data.email || ''}
+URL;type=linkedin:${data.linkedin || ''}
+END:VCARD`;
+            return 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcf);
+        }
+
+        async function showBusinessCard(id) {
+            try {
+                const doc = await db.collection("business_cards").doc(id).get();
+                if (!doc.exists) {
+                    Swal.fire('Error', 'Kartu nama tidak ditemukan.', 'error');
+                    return;
+                }
+                const data = doc.data();
+
+                // Populate data
+                document.title = `${data.name} - PT AJMN`;
+                const photo1 = document.getElementById('card-photo-1');
+                const photo2 = document.getElementById('card-photo-2');
+                document.getElementById('card-name').textContent = data.name;
+                document.getElementById('card-title').textContent = data.title;
+
+                const btnPhone = document.getElementById('card-btn-phone');
+                const btnEmail = document.getElementById('card-btn-email');
+                const btnLinkedin = document.getElementById('card-btn-linkedin');
+                const btnSave = document.getElementById('card-btn-save');
+
+                const textPhone = document.getElementById('card-text-phone');
+                const textEmail = document.getElementById('card-text-email');
+
+                // Cek nomor telepon (prioritas whatsapp)
+                let contactNumber = data.phone || data.whatsapp || '';
+                if (contactNumber) {
+                    textPhone.textContent = contactNumber;
+                    if (data.whatsapp) {
+                        btnPhone.href = `https://wa.me/${data.whatsapp.replace(/\D/g,'')}`;
+                    } else {
+                        btnPhone.href = `tel:${contactNumber}`;
+                    }
+                    btnPhone.classList.remove('hidden');
+                    btnPhone.classList.add('flex');
+                } else {
+                    btnPhone.classList.add('hidden');
+                    btnPhone.classList.remove('flex');
+                }
+
+                if (data.email) { 
+                    btnEmail.href = `mailto:${data.email}`; 
+                    textEmail.textContent = data.email;
+                    btnEmail.classList.remove('hidden'); 
+                    btnEmail.classList.add('flex');
+                } else {
+                    btnEmail.classList.add('hidden');
+                    btnEmail.classList.remove('flex');
+                }
+
+                if (data.linkedin) { 
+                    btnLinkedin.href = data.linkedin; 
+                    btnLinkedin.classList.remove('hidden');
+                    btnLinkedin.classList.add('flex');
+                } else {
+                    btnLinkedin.classList.add('hidden');
+                    btnLinkedin.classList.remove('flex');
+                }
+                
+                btnSave.href = generateVCF(data);
+                btnSave.download = `${data.name.replace(/\s/g, '_')}.vcf`;
+
+                // Handle Photo Swapping
+                photo1.src = data.photo || '';
+                if (data.photo2) {
+                    photo2.src = data.photo2;
+                    // Hentikan interval sebelumnya jika ada
+                    if (photoSwapInterval) clearInterval(photoSwapInterval);
+                    // Mulai interval baru
+                    photoSwapInterval = setInterval(() => {
+                        photo1.classList.toggle('opacity-0');
+                        photo2.classList.toggle('opacity-0');
+                    }, 4000); // Ganti gambar setiap 4 detik
+                } else {
+                    photo2.src = ''; // Kosongkan jika tidak ada foto kedua
+                }
+
+                // Generate QR Code secara lokal tanpa butuh internet luar
+                const qrContainer = document.getElementById('card-qr-container');
+                qrContainer.innerHTML = '';
+                new QRCode(qrContainer, {
+                    text: window.location.href,
+                    width: 100,
+                    height: 100,
+                    colorDark : "#0f0500", // Warna gelap AJMN
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.M
+                });
+
+                // Show popup
+                popupOverlay.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error getting business card:", error);
+                Swal.fire('Error', 'Gagal memuat data kartu nama.', 'error');
+            }
+        }
+
+        function shareCard() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: `Lihat kartu nama digital dari ${document.getElementById('card-name').textContent}.`,
+                    url: window.location.href,
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                Swal.fire({toast:true, position:'top-end', showConfirmButton:false, timer:2000, icon:'success', title:'Link kartu nama dicopy!'});
+            }
+        }
+
+        function closeCardPopup() {
+            popupOverlay.classList.add('hidden');
+            // Hentikan interval saat popup ditutup untuk hemat resource
+            if (photoSwapInterval) clearInterval(photoSwapInterval);
+        }
+
+        // Close on overlay click
+        popupOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCardPopup();
+            }
+        });
+
+        // Check URL on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const cardId = params.get('id');
+            if (cardId) {
+                showBusinessCard(cardId);
+            }
+        });
+    </script>
+</body>
+</html>

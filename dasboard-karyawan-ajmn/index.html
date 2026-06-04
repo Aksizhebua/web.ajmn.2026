@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Karyawan - Penomoran Surat PT AJMN</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ajmn: {
+                            dark: '#0f0500',
+                            gold: '#b89442',
+                            goldHover: '#d4a742',
+                            light: '#f8f9fb'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ajmn-light text-gray-800 font-sans antialiased pb-20">
+
+<!-- Navbar / Header -->
+<div class="bg-ajmn-dark shadow-md border-b-4 border-ajmn-gold">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1">
+                <img src="../images/Logo AJMNp.png" onerror="this.src='https://via.placeholder.com/40'" alt="Logo AJMN" class="w-full h-full object-contain">
+            </div>
+            <h1 class="font-display font-bold text-xl text-white tracking-wide">AJMN <span class="text-ajmn-gold">Portal</span></h1>
+        </div>
+        <div class="text-white/80 text-sm hidden sm:block"><i class="fas fa-user-circle mr-1"></i> Dashboard Karyawan</div>
+    </div>
+</div>
+
+<div class="max-w-6xl mx-auto px-5 mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Bagian Kiri: Form -->
+    <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <h2 class="font-display font-bold text-xl text-ajmn-dark mb-5 border-b border-gray-100 pb-3"><i class="fas fa-plus-circle text-ajmn-gold mr-2"></i> Buat Nomor Surat</h2>
+            
+            <div id="loadingInfo" class="bg-blue-50 text-blue-600 p-3 rounded-lg text-sm mb-5 border border-blue-100 flex items-center gap-2">
+                <i class="fas fa-spinner fa-spin"></i> Menghubungkan ke database...
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Nomor Berikutnya</label>
+                    <input type="number" id="nextNumber" readonly class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg font-bold text-gray-700 outline-none cursor-not-allowed">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Kode Surat</label>
+                        <select id="kodeSurat" class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajmn-gold focus:border-ajmn-gold outline-none transition-all">
+                            <option value="BOD">BOD</option>
+                            <option value="MAP" selected>MAP</option>
+                            <option value="PKS">PKS</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Sifat</label>
+                        <select id="sifatSurat" class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajmn-gold focus:border-ajmn-gold outline-none transition-all">
+                            <option value="Internal" selected>Internal</option>
+                            <option value="Eksternal">Eksternal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Tanggal Surat</label>
+                    <input type="date" id="tanggalSurat" required class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajmn-gold focus:border-ajmn-gold outline-none transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Tujuan Surat</label>
+                    <input type="text" id="tujuanSurat" placeholder="Contoh: Bpk. Aksi Zebua" required class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajmn-gold focus:border-ajmn-gold outline-none transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Subjek / Keterangan</label>
+                    <textarea id="subjekSurat" placeholder="Surat Pembukaan Area Parkir..." required class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajmn-gold focus:border-ajmn-gold outline-none transition-all resize-none h-24"></textarea>
+                </div>
+
+                <button id="btnSimpan" onclick="simpanSurat()" disabled class="w-full bg-gradient-to-r from-ajmn-gold to-ajmn-goldHover text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-2">
+                    <i class="fas fa-save mr-1"></i> Simpan & Generate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bagian Kanan: Tabel Data -->
+    <div class="lg:col-span-2">
+        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-5 border-b border-gray-100 pb-3">
+                <h2 class="font-display font-bold text-xl text-ajmn-dark"><i class="fas fa-history text-ajmn-gold mr-2"></i> Riwayat Surat</h2>
+                <button onclick="loadTableData()" class="text-sm text-gray-500 hover:text-ajmn-gold transition-colors"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            
+            <div class="overflow-x-auto flex-1">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider">
+                            <th class="py-3 px-4 rounded-tl-lg">Nomor Surat</th>
+                            <th class="py-3 px-4">Tanggal</th>
+                            <th class="py-3 px-4">Tujuan</th>
+                            <th class="py-3 px-4 rounded-tr-lg">Subjek</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody" class="text-sm">
+                        <tr><td colspan="4" class="text-center py-8 text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat data surat...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Set tanggal default hari ini
+    document.getElementById('tanggalSurat').valueAsDate = new Date();
+
+    // URL Web App Google Apps Script Anda (PASTIKAN MENGGANTI DENGAN URL YANG BARU)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBufW_RGyIS85RX1pEeodAO3zlHwbTwkU6woHCHTfNnvpQeQtPaNZ9pPcF7q5biipnBA/exec'; // GANTI JIKA URL BERUBAH
+
+    window.onload = function() {
+        // 1. Minta Nomor Terakhir
+        fetch(SCRIPT_URL + '?action=getNextNumber')
+            .then(response => response.text())
+            .then(nextNum => {
+                document.getElementById('nextNumber').value = nextNum;
+                document.getElementById('loadingInfo').style.display = 'none';
+                document.getElementById('btnSimpan').disabled = false;
+            })
+            .catch(error => {
+                const info = document.getElementById('loadingInfo');
+                info.classList.replace('bg-blue-50', 'bg-red-50');
+                info.classList.replace('text-blue-600', 'text-red-600');
+                info.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal terhubung. Cek koneksi & URL Script.';
+            });
+            
+        // 2. Minta Semua Data untuk Tabel
+        loadTableData();
+    };
+    
+    // Fungsi Memuat Tabel Data
+    function loadTableData() {
+        const tbody = document.getElementById('dataTableBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat data surat...</td></tr>';
+        
+        fetch(SCRIPT_URL + '?action=getAllData')
+            .then(res => res.json())
+            .then(data => {
+                tbody.innerHTML = '';
+                if(data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400">Belum ada data surat.</td></tr>';
+                    return;
+                }
+                // Cetak maksimal 20 data terakhir agar web tidak berat
+                data.slice(0, 20).forEach(item => {
+                    let badgeClass = item.sifat === 'Internal' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700';
+                    tbody.innerHTML += `
+                        <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                            <td class="py-3 px-4 font-semibold text-ajmn-dark whitespace-nowrap">${item.nomorSurat}</td>
+                            <td class="py-3 px-4 text-gray-500 whitespace-nowrap">${item.tanggal}</td>
+                            <td class="py-3 px-4">
+                                <div class="font-medium text-gray-800">${item.tujuan}</div>
+                                <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${badgeClass}">${item.sifat}</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600 line-clamp-2 max-w-xs">${item.subjek}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(err => {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-red-400"><i class="fas fa-times-circle"></i> Gagal memuat tabel riwayat.</td></tr>';
+            });
+    }
+
+    // Fungsi menyimpan data
+    function simpanSurat() {
+        const tglInput = document.getElementById('tanggalSurat').value;
+        if(!tglInput || !document.getElementById('tujuanSurat').value || !document.getElementById('subjekSurat').value) {
+            alert("⚠️ Harap lengkapi semua kolom (Tanggal, Tujuan, Subjek)!");
+            return;
+        }
+
+        // Matikan tombol agar tidak di-klik 2 kali
+        document.getElementById('btnSimpan').disabled = true;
+        document.getElementById('btnSimpan').innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan...';
+
+        const dateObj = new Date(tglInput);
+        const bulanAngka = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+        const tahun = dateObj.getFullYear();
+        
+        const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const teksBulan = namaBulan[dateObj.getMonth()] + " " + tahun;
+
+        const urutan = document.getElementById('nextNumber').value;
+        const strNomor = urutan.toString().padStart(3, '0');
+        const kodeSurat = document.getElementById('kodeSurat').value;
+        
+        const formatNomorSurat = `${strNomor}/PT AJMN/${kodeSurat}/${bulanAngka}/${tahun}`;
+        const tglFormatExcel = `${dateObj.getDate().toString().padStart(2, '0')}/${bulanAngka}/${tahun}`;
+
+        // Objek data untuk dikirim ke backend Code.gs (Murni hanya Internal atau Eksternal)
+        const data = {
+            action: 'saveData', // Penanda action untuk doPost
+            urutan: urutan,
+            nomorSurat: formatNomorSurat,
+            bulanTahun: teksBulan,
+            sifat: document.getElementById('sifatSurat').value,
+            tanggal: tglFormatExcel,
+            subjek: document.getElementById('subjekSurat').value,
+            tujuan: document.getElementById('tujuanSurat').value
+        };
+
+        // Kirim ke Google Script menggunakan fetch API
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(response => {
+            alert("✅ " + response + "\n\nNomor Surat Anda: " + formatNomorSurat);
+            // Refresh halaman agar siap untuk surat berikutnya
+            location.reload(); 
+        })
+        .catch(error => {
+            console.error('Error saving data:', error);
+            alert("❌ Gagal menyimpan data surat. Cek koneksi internet Anda.");
+            document.getElementById('btnSimpan').disabled = false;
+            document.getElementById('btnSimpan').innerHTML = '<i class="fas fa-save mr-1"></i> Simpan & Generate';
+        });
+    }
+</script>
+
+</body>
+</html>

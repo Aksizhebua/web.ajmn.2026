@@ -1,0 +1,7 @@
+{
+  "name": "ajmn-website",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "npx firebase deploy --only hosting"
+  }
+}
