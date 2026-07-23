@@ -723,8 +723,9 @@ window.openGalleryModal = () => {
     if(form) form.reset();
     document.getElementById('gal-id').value = '';
     document.getElementById('gal-img-url').value = '';
-    const preview = document.getElementById('gal-img-preview');
-    if(preview) preview.classList.add('hidden');
+    const previewContainer = document.getElementById('gal-img-preview-container');
+    previewContainer.innerHTML = '';
+    previewContainer.classList.add('hidden');
     document.getElementById('gallery-modal-title').textContent = 'Tambah Gambar Galeri';
     const modal = document.getElementById('gallery-modal');
     if(modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); }
@@ -738,11 +739,19 @@ window.closeGalleryModal = () => {
 const galImgFile = document.getElementById('gal-img-file');
 if(galImgFile) {
     galImgFile.addEventListener('change', function(){ 
-        if(this.files[0]) { 
-            const preview = document.getElementById('gal-img-preview');
-            preview.src = URL.createObjectURL(this.files[0]); 
-            preview.classList.remove('hidden'); 
-        } 
+        const previewContainer = document.getElementById('gal-img-preview-container');
+        previewContainer.innerHTML = ''; // Kosongkan pratinjau lama
+        if (this.files.length > 0) {
+            previewContainer.classList.remove('hidden');
+            Array.from(this.files).forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'h-24 w-full object-cover rounded-lg border border-gray-200 shadow-sm';
+                previewContainer.appendChild(img);
+            });
+        } else {
+            previewContainer.classList.add('hidden');
+        }
     });
 }
 
@@ -755,8 +764,11 @@ window.editGallery = (id) => {
     document.getElementById('gal-alt').value = gal.alt || '';
     document.getElementById('gal-img-url').value = gal.img || '';
     
-    const preview = document.getElementById('gal-img-preview');
-    if(gal.img) { preview.src = gal.img; preview.classList.remove('hidden'); }
+    const previewContainer = document.getElementById('gal-img-preview-container');
+    previewContainer.innerHTML = '';
+    if(gal.img) { 
+        previewContainer.innerHTML = `<img src="${gal.img}" class="h-24 w-full object-cover rounded-lg border border-gray-200 shadow-sm">`;
+        previewContainer.classList.remove('hidden'); }
     
     const modal = document.getElementById('gallery-modal');
     modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -770,24 +782,38 @@ if(galForm) {
         btn.classList.add('btn-loading');
         
         try {
-            let imgUrl = document.getElementById('gal-img-url').value;
-            const file = document.getElementById('gal-img-file').files[0];
-            if(file) imgUrl = await uploadToImgBB(file);
-            if(!imgUrl) throw new Error("Gambar wajib diunggah!");
-
             const id = document.getElementById('gal-id').value;
-            const galData = {
-                img: imgUrl,
-                category: document.getElementById('gal-category').value,
-                alt: document.getElementById('gal-alt').value,
-                id: id || 'gal_' + Date.now()
-            };
 
             if (id) {
+                // Mode Edit (hanya 1 gambar)
+                let imgUrl = document.getElementById('gal-img-url').value;
+                const file = document.getElementById('gal-img-file').files[0];
+                if(file) imgUrl = await uploadToImgBB(file);
+                if(!imgUrl) throw new Error("Gambar wajib diunggah!");
+
+                const galData = {
+                    img: imgUrl,
+                    category: document.getElementById('gal-category').value,
+                    alt: document.getElementById('gal-alt').value,
+                    id: id
+                };
                 const idx = allGalleryItems.findIndex(g => g.id === id);
                 if(idx > -1) allGalleryItems[idx] = galData;
             } else {
-                allGalleryItems.unshift(galData); // Tambahkan foto terbaru di urutan paling depan
+                // Mode Tambah Baru (bisa banyak gambar)
+                const files = document.getElementById('gal-img-file').files;
+                if (files.length === 0) throw new Error("Pilih setidaknya satu gambar untuk diunggah!");
+
+                const uploadPromises = Array.from(files).map(file => uploadToImgBB(file));
+                const uploadedUrls = await Promise.all(uploadPromises);
+
+                const newItems = uploadedUrls.map((url, index) => ({
+                    img: url,
+                    category: document.getElementById('gal-category').value,
+                    alt: document.getElementById('gal-alt').value || `Image ${index + 1}`,
+                    id: 'gal_' + Date.now() + '_' + index
+                }));
+                allGalleryItems.unshift(...newItems); // Tambahkan semua foto baru di urutan paling depan
             }
 
             await db.collection("siteContent").doc("gallery").set({ items: allGalleryItems });

@@ -440,10 +440,12 @@
                 </div>
                 
                 <div class="space-y-4 p-6 bg-gray-50/50 rounded-2xl border-2 border-dashed border-gray-200 hover:border-gold/50 transition-colors">
-                    <label class="block font-bold text-gray-700 text-sm mb-1.5">Upload Gambar <span class="text-red-500">*</span></label>
-                    <input type="file" id="gal-img-file" accept="image/*" class="w-full mb-2 text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gold/10 file:text-goldHover hover:file:bg-gold/20 transition-all">
-                    <p class="text-xs text-gray-500">Pilih gambar resolusi tinggi untuk galeri.</p>
-                    <img id="gal-img-preview" src="" class="hidden mt-3 h-32 w-full object-cover rounded-xl border border-gray-200 shadow-sm">
+                    <label class="block font-bold text-gray-700 text-sm mb-1.5">Upload Gambar (Bisa Pilih Banyak) <span class="text-red-500">*</span></label>
+                    <input type="file" id="gal-img-file" accept="image/*" multiple class="w-full mb-2 text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gold/10 file:text-goldHover hover:file:bg-gold/20 transition-all">
+                    <p class="text-xs text-gray-500">Pilih satu atau lebih gambar untuk diunggah ke kategori yang sama.</p>
+                    <div id="gal-img-preview-container" class="hidden mt-3 grid grid-cols-3 gap-3">
+                        <!-- Pratinjau gambar akan muncul di sini -->
+                    </div>
                 </div>
                 
                 <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">

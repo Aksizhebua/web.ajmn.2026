@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Visit Venue Atma Jaya - Registrasi</title>
+    <style>
+        /* Import font yang serasi: Cursive untuk Neon, Sans-serif untuk teks formal */
+        @import url('https://fonts.googleapis.com/css2?family=Niconne&family=Montserrat:wght@300;400;600&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Latar Belakang menggunakan Gambar Referensi dengan Blur dan Overlay Gelap */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('formvisitvenueajmn/SEM_8252-2.jpg'); /* Pastikan file gambar satu folder dengan HTML ini */
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            z-index: -2;
+        }
+
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Gaya Teks Neon Putih untuk Judul Utama */
+        .neon-title {
+            font-family: 'Niconne', cursive;
+            font-size: 50px;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #fff;
+        }
+
+        .description-text {
+            font-weight: 300;
+            font-size: 14px;
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Gaya Kontainer Formulir yang Rapi */
+        .form-container {
+            background-color: rgba(25, 25, 25, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #ddd;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], 
+        input[type="number"], 
+        input[type="tel"], 
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        /* PERBAIKAN RESPONSIVITAS SELEKSI SESI DI HP */
+        .radio-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default 1 kolom penuh di layar HP kecil */
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 400px) {
+            .radio-grid {
+                grid-template-columns: repeat(2, 1fr); /* Otomatis pecah 2 kolom jika layar cukup */
+            }
+        }
+
+        .radio-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: transparent; /* Menghilangkan efek kedip biru di HP */
+        }
+
+        /* Menyembunyikan input asli namun tetap fungsional untuk sistem */
+        .radio-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-card span {
+            font-size: 13px;
+            font-weight: 400;
+            color: #ccc;
+        }
+
+        /* Efek Hover untuk Laptop/Desktop */
+        .radio-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Tampilan saat Sesi dipilih (Aktif) */
+        .radio-card input[type="radio"]:checked + span {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .radio-card has(:checked), /* Modern CSS support */
+        .radio-card.selected-active {
+            background-color: rgba(0, 77, 64, 0.4); /* Hijau Emerald Transparan */
+            border-color: #004d40;
+            box-shadow: 0 0 10px rgba(0, 77, 64, 0.5);
+        }
+
+        /* Gaya Tombol Kirim */
+        .submit-btn {
+            background-color: #004d40;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background-color: #c62828;
+        }
+
+        .submit-btn:disabled {
+            background-color: #444 !important;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* Bagian Informasi Acara (Tanggal & Tempat) */
+        .event-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .event-date, .event-venue {
+            font-weight: 400;
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        /* Galeri Gambar Kolase */
+        .collage-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .collage-gallery img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 600px) {
+            .neon-title {
+                font-size: 36px;
+            }
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-container"></div>
+    <div class="dark-overlay"></div>
+
+    <div class="main-container">
+        <h1 class="neon-title">Open Visit Venue Atma Jaya</h1>
+        
+        <p class="description-text">Silakan mengisi data diri dan memilih jadwal kunjungan Anda. Temukan kesempurnaan untuk momen spesial Anda di Ballroom Yustinus Lt. 15, Unika Atma Jaya.</p>
+
+        <div class="form-container">
+            <form id="visitForm">
+                
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" placeholder="Contoh: John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="instansi">Instansi / Perusahaan</label>
+                    <input type="text" id="instansi" name="instansi" placeholder="Contoh: PT. Maju Bersama">
+                </div>
+
+                <div class="form-group">
+                    <label for="whatsapp">Nomor WhatsApp</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" placeholder="Contoh: 08123456789" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah_peserta">Jumlah Peserta Visit</label>
+                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" placeholder="Contoh: 5" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Pilihan Sesi Kunjungan</label>
+                    <div class="radio-grid">
+                        <label class="radio-card" id="labelSesi1">
+                            <input type="radio" name="jam_kunjungan" value="Sesi 1 (10:00 - 15:00)" required onclick="highlightCard('labelSesi1')">
+                            <span>Sesi 1<br><b>10:00 - 15:00</b></span>
+                        </label>
+                        <label class="radio-card" id="labelSesi2">
+                            <input type="radio" name="jam_kunjungan" value="Sesi 2 (15:00 - 20:00)" onclick="highlightCard('labelSesi2')">
+                            <span>Sesi 2<br><b>15:00 - 20:00</b></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="catatan">Catatan Tambahan (Opsional)</label>
+                    <textarea id="catatan" name="catatan" rows="4" placeholder="Sampaikan kebutuhan khusus Anda..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Kirim Jadwal Kunjungan</button>
+            </form>
+        </div>
+
+        <div class="event-info">
+            <p class="event-date">Sabtu, 18 Juli 2026</p>
+            <p class="event-venue">Ballroom Yustinus Lt. 15</p>
+        </div>
+
+        <div class="collage-gallery">
+            <img src="formvisitvenueajmn/w1.png" alt="Dekorasi 1">
+            <img src="formvisitvenueajmn/w4.png" alt="Dekorasi 2">
+            <img src="formvisitvenueajmn/w5.png" alt="Dekorasi 3">
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // --- 1. PENGATURAN DATABASE GOOGLE APPS SCRIPT ---
+        // MASUKKAN URL DEPLOYMENT WEB APP APPS SCRIPT ANDA DI SINI
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzSh4oGITJPn1onuL4G4ZYzBxu_p5_V71p2_4IWfwBmR1FmH2JxnxiDcriMKFzE-4ji/exec';
+
+        // --- 2. LOGIKA SELEKSI KARTU SESI (UNTUK HP) ---
+        function highlightCard(selectedId) {
+            // Hapus status aktif dari semua kartu sesi
+            document.querySelectorAll('.radio-card').forEach(card => {
+                card.classList.remove('selected-active');
+            });
+            // Tambahkan status aktif ke kartu yang diklik pengguna
+            document.getElementById(selectedId).classList.add('selected-active');
+        }
+
+        // --- 3. LOGIKA FORM SUBMIT KE GOOGLE SHEETS ---
+        const visitForm = document.getElementById('visitForm');
+        
+        visitForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah form melakukan refresh halaman asli
+
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'MENGIRIM...';
+
+            // Membuat kompilasi muatan data form secara otomatis
+            const dataKirim = new FormData(visitForm);
+
+            // Melakukan request POST ke URL Google Apps Script Anda
+            fetch(scriptURL, { method: 'POST', body: dataKirim })
+                .then(response => {
+                    // Notifikasi Sukses yang Estetik & Senada
+                    Swal.fire({
+                        title: 'Terima Kasih!',
+                        text: 'Jadwal kunjungan Anda telah kami terima. Tim kami akan segera menghubungi Anda.',
+                        icon: 'success',
+                        confirmButtonText: 'Selesai',
+                        background: '#191919',
+                        color: '#fff',
+                        confirmButtonColor: '#004d40'
+                    });
+                    
+                    // Reset Form & Seleksi Gaya Visual Kartu
+                    visitForm.reset();
+                    document.querySelectorAll('.radio-card').forEach(card => {
+                        card.classList.remove('selected-active');
+                    });
+                })
+                .catch(error => {
+                    console.error("Error mengirim data: ", error);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Terjadi kegagalan koneksi. Silakan periksa kembali konfigurasi AppScript URL Anda.',
+                        icon: 'error',
+                        confirmButtonText: 'Coba Lagi',
+                        background: '#191919',
+                        color: '#fff',
+                        confirmButtonColor: '#c62828'
+                    });
+                })
+                .finally(() => {
+                    // Mengembalikan tombol ke keadaan semula
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kirim Jadwal Kunjungan';
+                });
+        });
+    </script>
+</body>
+</html>

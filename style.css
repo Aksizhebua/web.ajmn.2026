@@ -3854,3 +3854,38 @@ html.embed-mode .map-container {
 html.embed-mode .map-container iframe {
     min-height: 260px;
 }
+
+/* =========================================
+   GALLERY LIGHTBOX (SWEETALERT2 CUSTOM)
+   ========================================= */
+.swal2-popup.gallery-lightbox {
+    background: transparent !important;
+    padding: 0 !important;
+    justify-content: center !important; /* KUNCI: Memaksa pop-up selalu di tengah */
+}
+
+.swal2-image.gallery-lightbox-image {
+    max-width: 90vw !important;
+    max-height: 85vh !important;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border: 3px solid #d4a742;
+}
+
+.swal2-title.gallery-lightbox-title {
+    color: #fff !important;
+    margin-top: 15px !important;
+}
+
+/* Customisasi Tombol Close ('x') pada Lightbox Galeri */
+.swal2-close {
+    color: #ffffff !important; /* Warna ikon 'x' jadi putih */
+    font-size: 2rem !important; /* Ukuran ikon 'x' dikecilkan */
+    transition: transform 0.2s ease, color 0.2s ease;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.swal2-close:hover {
+    transform: scale(1.2); /* Sedikit membesar saat disentuh */
+}

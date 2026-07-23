@@ -17,6 +17,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="viewport-scale.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -291,6 +292,60 @@
             });
         } catch(e){ console.warn("Gallery load error:", e.message); }
     })();
+    </script>
+    <script>
+        // Fungsi untuk membuka gambar di lightbox
+        function openImageInLightbox(imgElement) {
+            const imgSrc = imgElement.src;
+            const imgAlt = imgElement.alt || 'Galeri AJMN';
+    
+            Swal.fire({
+                title: imgAlt,
+                imageUrl: imgSrc,
+                imageAlt: imgAlt,
+                showConfirmButton: false,
+                showCloseButton: true,
+                allowOutsideClick: true,
+                backdrop: `rgba(0,0,0,0.85)`,
+                customClass: {
+                    popup: 'gallery-lightbox',
+                    image: 'gallery-lightbox-image',
+                    title: 'gallery-lightbox-title'
+                }
+            });
+        }
+    
+        // Fungsi untuk menambahkan event listener ke item galeri
+        function addClickListener(item) {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                if (img) {
+                    openImageInLightbox(img);
+                }
+            });
+        }
+    
+        // Menunggu DOM siap, lalu siapkan observer dan pasang listener
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryContainer = document.querySelector('.gallery-grid-section');
+            if (!galleryContainer) return;
+
+            // 1. Pasang listener ke semua gambar yang sudah ada di HTML saat halaman dimuat
+            document.querySelectorAll('.gallery-item-box').forEach(addClickListener);
+
+            // Siapkan MutationObserver untuk menangani gambar yang dimuat dari Firebase
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) { // Pastikan ini adalah elemen
+                        // Jika node itu sendiri adalah item yang kita cari
+                        if (node.matches('.gallery-item-box')) addClickListener(node);
+                        // Cari juga di dalam anak-anaknya
+                        node.querySelectorAll('.gallery-item-box').forEach(addClickListener);
+                    }
+                }));
+            });
+            observer.observe(galleryContainer, { childList: true, subtree: true });
+        });
     </script>
 
     <script>

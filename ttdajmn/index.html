@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Mass PDF Signer - AJ Square</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF-Lib untuk Manipulasi PDF -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <!-- PDF.js untuk Visual Preview -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- JSZip untuk membuat file .zip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <style>
+        /* Mencegah highlight teks saat men-drag tanda tangan */
+        .no-select { user-select: none; -webkit-user-select: none; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="border-b border-slate-700 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-sky-400">Visual Mass PDF Signer</h1>
+            <p class="text-slate-400 mt-1">Upload, geser tanda tangan ke posisi yang pas, lalu proses massal.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Kolom Kiri: Pengaturan & Upload -->
+            <div class="lg:col-span-1 space-y-5">
+                
+                <!-- Upload Files -->
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-xl space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">1. Upload Tanda Tangan (PNG Transparan)</label>
+                        <input type="file" id="signatureInput" accept="image/png, image/jpeg" 
+                            class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:font-semibold file:bg-sky-500 file:text-white hover:file:bg-sky-600 cursor-pointer"/>
+                    </div>
+                    <div class="pt-2 border-t border-slate-700">
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">2. Pilih Semua File PDF Kontrak</label>
+                        <input type="file" id="pdfInput" accept="application/pdf" multiple 
+                            class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600 cursor-pointer"/>
+                        <p id="fileCount" class="mt-2 text-xs text-sky-400 font-semibold"></p>
+                    </div>
+                </div>
+
+                <!-- Pengaturan Ukuran (Otomatis update visual) -->
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-xl space-y-3">
+                    <h3 class="text-sm font-semibold text-slate-300">Pengaturan Ukuran (Otomatis)</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Lebar (Width)</label>
+                            <input type="number" id="sigWidth" value="140" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-sky-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Tinggi (Height)</label>
+                            <input type="number" id="sigHeight" value="70" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-sky-500">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 opacity-50">
+                        <!-- X dan Y sekarang read-only karena diatur via Drag & Drop -->
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Posisi X (Otomatis)</label>
+                            <input type="number" id="xPos" readonly class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-1 text-sm text-slate-500 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Posisi Y (Otomatis)</label>
+                            <input type="number" id="yPos" readonly class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-1 text-sm text-slate-500 cursor-not-allowed">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Eksekusi -->
+                <button id="processBtn" disabled
+                    class="w-full bg-slate-700 text-slate-400 font-bold py-3 px-6 rounded-xl cursor-not-allowed transition duration-200">
+                    Proses & Download Massal
+                </button>
+
+                <!-- Log -->
+                <div id="logSection" class="bg-slate-950 rounded-xl p-3 border border-slate-800 font-mono text-[10px] text-slate-400 hidden max-h-32 overflow-y-auto">
+                    <div id="logOutput" class="space-y-1"></div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan: Visual Preview -->
+            <div class="lg:col-span-2">
+                <div class="bg-slate-800 p-2 rounded-xl border border-slate-700 shadow-xl h-full flex flex-col">
+                    <div class="flex justify-between items-center px-2 pb-2 mb-2 border-b border-slate-700">
+                        <h3 class="text-sm font-semibold text-slate-300">3. Preview & Posisi (Geser TTD di bawah)</h3>
+                        <span class="text-xs text-slate-400">Menampilkan Halaman 1 dari PDF Pertama</span>
+                    </div>
+                    
+                    <!-- Container Canvas (Relative) -->
+                    <div id="previewContainer" class="relative w-full bg-slate-900 rounded-lg overflow-hidden flex justify-center items-start border border-slate-700" style="min-height: 600px;">
+                        <p id="placeholderText" class="absolute inset-0 flex items-center justify-center text-slate-500 text-sm">
+                            Upload PDF dan Tanda Tangan untuk melihat preview.
+                        </p>
+                        
+                        <!-- Canvas untuk me-render PDF -->
+                        <canvas id="pdfCanvas" class="shadow-2xl hidden"></canvas>
+                        
+                        <!-- Gambar Tanda Tangan yang bisa digeser -->
+                        <img id="sigOverlay" class="absolute hidden cursor-move border-2 border-dashed border-sky-500 bg-sky-500/20 no-select" alt="Tanda Tangan" style="top: 50px; left: 50px;">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const signatureInput = document.getElementById('signatureInput');
+        const pdfInput = document.getElementById('pdfInput');
+        const fileCount = document.getElementById('fileCount');
+        const processBtn = document.getElementById('processBtn');
+        const logSection = document.getElementById('logSection');
+        const logOutput = document.getElementById('logOutput');
+        
+        // Preview Elements
+        const previewContainer = document.getElementById('previewContainer');
+        const pdfCanvas = document.getElementById('pdfCanvas');
+        const ctx = pdfCanvas.getContext('2d');
+        const sigOverlay = document.getElementById('sigOverlay');
+        const placeholderText = document.getElementById('placeholderText');
+        
+        // Settings Elements
+        const sigWidth = document.getElementById('sigWidth');
+        const sigHeight = document.getElementById('sigHeight');
+        const xPos = document.getElementById('xPos');
+        const yPos = document.getElementById('yPos');
+
+        // State variables
+        let pdfOriginalWidth = 0;
+        let pdfOriginalHeight = 0;
+        let currentScale = 1;
+
+        // Validasi & Update Status
+        function updateUI() {
+            const hasSig = signatureInput.files.length > 0;
+            const hasPdf = pdfInput.files.length > 0;
+            
+            if (hasSig && hasPdf) {
+                processBtn.disabled = false;
+                processBtn.className = "w-full bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-200 cursor-pointer";
+                placeholderText.classList.add('hidden');
+                pdfCanvas.classList.remove('hidden');
+                sigOverlay.classList.remove('hidden');
+            } else {
+                processBtn.disabled = true;
+                processBtn.className = "w-full bg-slate-700 text-slate-400 font-bold py-3 px-6 rounded-xl cursor-not-allowed transition duration-200";
+            }
+        }
+
+        function addLog(msg, success = true) {
+            logSection.classList.remove('hidden');
+            const p = document.createElement('p');
+            p.className = success ? "text-emerald-400" : "text-rose-400";
+            p.innerText = `> ${msg}`;
+            logOutput.appendChild(p);
+            logSection.scrollTop = logSection.scrollHeight;
+        }
+
+        // ==========================================
+        // 1. RENDER PDF PREVIEW (PDF.js)
+        // ==========================================
+        pdfInput.addEventListener('change', async (e) => {
+            if (e.target.files.length === 0) return;
+            
+            fileCount.innerText = `${e.target.files.length} file PDF terpilih.`;
+            updateUI();
+
+            // Ambil PDF pertama untuk preview
+            const file = e.target.files[0];
+            const fileReader = new FileReader();
+            
+            fileReader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                try {
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    const page = await pdf.getPage(1); // Render Halaman 1
+                    
+                    // Hitung skala agar pas dengan container (lebar container)
+                    const viewportUnscaled = page.getViewport({ scale: 1.0 });
+                    pdfOriginalWidth = viewportUnscaled.width;
+                    pdfOriginalHeight = viewportUnscaled.height;
+                    
+                    const containerWidth = previewContainer.clientWidth - 32; // margin
+                    currentScale = containerWidth / pdfOriginalWidth;
+                    
+                    const viewport = page.getViewport({ scale: currentScale });
+                    
+                    pdfCanvas.width = viewport.width;
+                    pdfCanvas.height = viewport.height;
+                    
+                    const renderContext = { canvasContext: ctx, viewport: viewport };
+                    await page.render(renderContext).promise;
+                    
+                    updateOverlaySizeAndPos();
+                } catch (err) {
+                    console.error(err);
+                    alert("Gagal me-render preview PDF.");
+                }
+            };
+            fileReader.readAsArrayBuffer(file);
+        });
+
+        // ==========================================
+        // 2. RENDER SIGNATURE PREVIEW
+        // ==========================================
+        signatureInput.addEventListener('change', (e) => {
+            if (e.target.files.length === 0) return;
+            const file = e.target.files[0];
+            sigOverlay.src = URL.createObjectURL(file);
+            updateUI();
+        });
+
+        // Update visual size TTD & kalkulasi ulang X/Y
+        function updateOverlaySizeAndPos() {
+            if (!pdfOriginalWidth) return; // Jika PDF belum diload
+            
+            // Set ukuran visual di layar (Scale Pixel)
+            const w = parseFloat(sigWidth.value) * currentScale;
+            const h = parseFloat(sigHeight.value) * currentScale;
+            sigOverlay.style.width = `${w}px`;
+            sigOverlay.style.height = `${h}px`;
+            
+            calculatePDFCoordinates();
+        }
+
+        sigWidth.addEventListener('input', updateOverlaySizeAndPos);
+        sigHeight.addEventListener('input', updateOverlaySizeAndPos);
+
+        // ==========================================
+        // 3. LOGIKA DRAG & DROP
+        // ==========================================
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        sigOverlay.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            if (e.target === sigOverlay) { isDragging = true; }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+            calculatePDFCoordinates(); // Hitung kordinat saat drag selesai
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                // Batasi pergerakan agar tidak keluar canvas
+                const maxX = pdfCanvas.width - sigOverlay.offsetWidth;
+                const maxY = pdfCanvas.height - sigOverlay.offsetHeight;
+                
+                // Kalkulasi margin dari Canvas (karena canvas di-center)
+                const canvasRect = pdfCanvas.getBoundingClientRect();
+                const containerRect = previewContainer.getBoundingClientRect();
+                const canvasOffsetX = canvasRect.left - containerRect.left;
+
+                // Set posisi secara visual
+                let newLeft = canvasOffsetX + currentX;
+                let newTop = currentY;
+                
+                sigOverlay.style.transform = `translate3d(${newLeft}px, ${newTop}px, 0)`;
+                calculatePDFCoordinates(); // Real-time update text box
+            }
+        }
+
+        // Menerjemahkan kordinat Layar (Visual) ke Kordinat PDF (pdf-lib)
+        function calculatePDFCoordinates() {
+            if (!pdfOriginalWidth) return;
+
+            // Ambil posisi elemen overlay relatif terhadap layar
+            const overlayRect = sigOverlay.getBoundingClientRect();
+            const canvasRect = pdfCanvas.getBoundingClientRect();
+
+            // Jarak aktual dari kiri dan atas PDF canvas (dalam pixel layar)
+            const visualLeft = overlayRect.left - canvasRect.left;
+            const visualTop = overlayRect.top - canvasRect.top;
+
+            // Konversi dari pixel layar (Visual) ke ukuran PDF (Points)
+            const pdfX_calc = visualLeft / currentScale;
+            
+            // PENTING: pdf-lib (0,0) dimulai dari Kiri-BAWAH, sedangkan web dari Kiri-ATAS.
+            const sigHeightPDF = parseFloat(sigHeight.value);
+            const pdfY_calc = pdfOriginalHeight - (visualTop / currentScale) - sigHeightPDF;
+
+            // Update ke input readonly
+            xPos.value = Math.round(pdfX_calc);
+            yPos.value = Math.round(pdfY_calc);
+        }
+
+        // ==========================================
+        // 4. PROSES MASSAL (PDF-lib)
+        // ==========================================
+        processBtn.addEventListener('click', async () => {
+            logOutput.innerHTML = '';
+            addLog('Memulai pemrosesan massal...');
+            
+            const sigFile = signatureInput.files[0];
+            const pdfFiles = pdfInput.files;
+            
+            // Ambil parameter yang sudah diterjemahkan dari Drag & Drop
+            const finalX = parseFloat(xPos.value);
+            const finalY = parseFloat(yPos.value);
+            const finalW = parseFloat(sigWidth.value);
+            const finalH = parseFloat(sigHeight.value);
+
+            try {
+                const zip = new JSZip();
+                const sigBytes = await sigFile.arrayBuffer();
+                
+                for (let i = 0; i < pdfFiles.length; i++) {
+                    const file = pdfFiles[i];
+                    addLog(`Memproses: ${file.name}`);
+
+                    const pdfBytes = await file.arrayBuffer();
+                    const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+                    
+                    let embeddedSig;
+                    if (sigFile.type === "image/png") {
+                        embeddedSig = await pdfDoc.embedPng(sigBytes);
+                    } else if (sigFile.type === "image/jpeg" || sigFile.type === "image/jpg") {
+                        embeddedSig = await pdfDoc.embedJpg(sigBytes);
+                    }
+
+                    // Terapkan ke semua halaman terakhir dari tiap PDF
+                    const pages = pdfDoc.getPages();
+                    const targetPage = pages[pages.length - 1]; // Default halaman terakhir kontrak
+
+                    targetPage.drawImage(embeddedSig, {
+                        x: finalX,
+                        y: finalY,
+                        width: finalW,
+                        height: finalH
+                    });
+
+                    const modifiedPdfBytes = await pdfDoc.save();
+
+                    // Tambahkan file yang sudah dimodifikasi ke dalam zip
+                    const newFileName = file.name.replace(/\.pdf$/i, "_Signed.pdf");
+                    zip.file(newFileName, modifiedPdfBytes);
+                }
+
+                addLog('Membuat file zip...');
+                const zipBlob = await zip.generateAsync({ type: "blob" });
+
+                // Auto Download untuk file zip
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(zipBlob);
+                link.download = "signed_documents.zip";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                addLog('Selesai! File zip berhasil diunduh.', true);
+            } catch (error) {
+                console.error(error);
+                addLog(`Terjadi kesalahan: ${error.message}`, false);
+            }
+        });
+    </script>
+</body>
+</html>

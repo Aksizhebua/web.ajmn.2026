@@ -1,3 +1,9 @@
 {
-    "geminicodeassist.outlines.automaticOutlineGeneration": true
+    "geminicodeassist.outlines.automaticOutlineGeneration": true,
+    "terminal.integrated.profiles.windows": {
+        "PowerShell 7 (Portable)": {
+            "path": "C:\\Users\\Desktop AJMN\\Downloads\\PowerShell-7.6.2-win-x64\\pwsh.exe"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell 7 (Portable)"
 }
