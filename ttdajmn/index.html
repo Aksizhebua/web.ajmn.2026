@@ -24,9 +24,15 @@
 
     <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Header -->
-        <div class="border-b border-slate-700 pb-4 mb-6">
-            <h1 class="text-3xl font-bold text-sky-400">Visual Mass PDF Signer</h1>
-            <p class="text-slate-400 mt-1">Upload, geser tanda tangan ke posisi yang pas, lalu proses massal.</p>
+        <div class="border-b border-slate-700 pb-4 mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-sky-400">Visual Mass PDF Signer</h1>
+                <p class="text-slate-400 mt-1">Upload, geser tanda tangan ke posisi yang pas, lalu proses massal.</p>
+            </div>
+            <a href="ppt-converter.html" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-ppt" viewBox="0 0 16 16"><path d="M7 5.5a1 1 0 0 0-1 1v1.5a.5.5 0 0 0 1 0V7h.5a.5.5 0 0 0 0-1H7z"/><path d="M2 2a2 2 0 0 1 2-2h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm7.5 1.5v-2l3 3h-2a1 1 0 0 1-1-1zM5.5 8H8v1H5.5a.5.5 0 0 1 0-1zm0 2H8v1H5.5a.5.5 0 0 1 0-1zM5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/></svg>
+                <span>PPT to PDF Converter</span>
+            </a>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -47,6 +53,19 @@
                             class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600 cursor-pointer"/>
                         <p id="fileCount" class="mt-2 text-xs text-sky-400 font-semibold"></p>
                     </div>
+                    <div class="pt-2 border-t border-slate-700">
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">3. Halaman untuk TTD</label>
+                        <div class="flex items-center gap-4">
+                            <select id="pageSelection" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-sky-500">
+                                <option value="last">Halaman Terakhir</option>
+                                <option value="first">Halaman Pertama</option>
+                                <option value="specific">Halaman Spesifik</option>
+                            </select>
+                            <input type="number" id="specificPage" value="1" min="1" 
+                                class="w-20 bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-sky-500 hidden">
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Pengaturan Ukuran (Otomatis update visual) -->
@@ -134,12 +153,19 @@
         const sigWidth = document.getElementById('sigWidth');
         const sigHeight = document.getElementById('sigHeight');
         const xPos = document.getElementById('xPos');
+        const pageSelection = document.getElementById('pageSelection');
+        const specificPageInput = document.getElementById('specificPage');
         const yPos = document.getElementById('yPos');
 
         // State variables
         let pdfOriginalWidth = 0;
         let pdfOriginalHeight = 0;
         let currentScale = 1;
+
+        pageSelection.addEventListener('change', (e) => {
+            specificPageInput.classList.toggle('hidden', e.target.value !== 'specific');
+            renderFirstPdf(); // Re-render preview based on new page selection
+        });
 
         // Validasi & Update Status
         function updateUI() {
@@ -171,20 +197,33 @@
         // 1. RENDER PDF PREVIEW (PDF.js)
         // ==========================================
         pdfInput.addEventListener('change', async (e) => {
-            if (e.target.files.length === 0) return;
-            
+            if (e.target.files.length === 0) {
+                fileCount.innerText = '';
+                return;
+            }
             fileCount.innerText = `${e.target.files.length} file PDF terpilih.`;
             updateUI();
+            renderFirstPdf();
+        });
 
-            // Ambil PDF pertama untuk preview
-            const file = e.target.files[0];
+        async function renderFirstPdf() {
+            if (pdfInput.files.length === 0) return;
+
+            const file = pdfInput.files[0];
             const fileReader = new FileReader();
             
             fileReader.onload = async function() {
                 const typedarray = new Uint8Array(this.result);
                 try {
+                    const pageSelectionMode = pageSelection.value;
+                    const specificPage = parseInt(specificPageInput.value, 10);
+
                     const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    const page = await pdf.getPage(1); // Render Halaman 1
+                    let pageNumberToRender = 1;
+                    if (pageSelectionMode === 'last') pageNumberToRender = pdf.numPages;
+                    else if (pageSelectionMode === 'specific') pageNumberToRender = Math.max(1, Math.min(specificPage, pdf.numPages));
+                    
+                    const page = await pdf.getPage(pageNumberToRender);
                     
                     // Hitung skala agar pas dengan container (lebar container)
                     const viewportUnscaled = page.getViewport({ scale: 1.0 });
@@ -209,7 +248,7 @@
                 }
             };
             fileReader.readAsArrayBuffer(file);
-        });
+        }
 
         // ==========================================
         // 2. RENDER SIGNATURE PREVIEW
@@ -331,6 +370,8 @@
             const finalY = parseFloat(yPos.value);
             const finalW = parseFloat(sigWidth.value);
             const finalH = parseFloat(sigHeight.value);
+            const pageMode = pageSelection.value;
+            const specificPageNum = parseInt(specificPageInput.value, 10);
 
             try {
                 const zip = new JSZip();
@@ -350,9 +391,17 @@
                         embeddedSig = await pdfDoc.embedJpg(sigBytes);
                     }
 
-                    // Terapkan ke semua halaman terakhir dari tiap PDF
+                    // Terapkan ke halaman yang dipilih
                     const pages = pdfDoc.getPages();
-                    const targetPage = pages[pages.length - 1]; // Default halaman terakhir kontrak
+                    let targetPage;
+
+                    if (pageMode === 'first') {
+                        targetPage = pages[0];
+                    } else if (pageMode === 'specific') {
+                        targetPage = pages[Math.max(0, Math.min(specificPageNum - 1, pages.length - 1))];
+                    } else { // Default to 'last'
+                        targetPage = pages[pages.length - 1];
+                    }
 
                     targetPage.drawImage(embeddedSig, {
                         x: finalX,
