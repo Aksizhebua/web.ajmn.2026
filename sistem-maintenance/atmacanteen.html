@@ -274,7 +274,10 @@
                     method: "POST",
                     body: JSON.stringify(payload)
                 });
-                await response.json();
+                const result = await response.json();
+                if (result.status !== 'sukses') {
+                    throw new Error(result.pesan || 'Apps Script menolak data.');
+                }
 
                 Swal.fire({
                     title: 'Berhasil!',
@@ -320,7 +323,10 @@
                     method: "POST",
                     body: JSON.stringify(payload)
                 });
-                await response.json();
+                const result = await response.json();
+                if (result.status !== 'sukses') {
+                    throw new Error(result.pesan || 'Apps Script menolak data.');
+                }
 
                 Swal.fire({
                     title: 'Berhasil!',

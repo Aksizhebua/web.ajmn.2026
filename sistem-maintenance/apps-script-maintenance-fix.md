@@ -8,10 +8,25 @@ Gunakan script ini untuk menggantikan `doPost()` dan `doGet()` yang lama.
 - Foto dikembalikan sebagai `fotoUrls` dan `fotoCount`.
 
 ```javascript
+var SPREADSHEET_ID = "PASTE_SPREADSHEET_ID_ANDA_DI_SINI";
+
+function getSpreadsheet_() {
+  if (SPREADSHEET_ID && SPREADSHEET_ID !== "PASTE_SPREADSHEET_ID_ANDA_DI_SINI") {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  }
+
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (!active) {
+    throw new Error("Spreadsheet tidak ditemukan. Isi SPREADSHEET_ID atau bind script ke spreadsheet.");
+  }
+
+  return active;
+}
+
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet_();
     var timestamp = new Date();
 
     if (data.tipeForm === "bulanan") {
@@ -89,7 +104,7 @@ function doPost(e) {
 
 function doGet(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet_();
     var action = e && e.parameter && e.parameter.action ? e.parameter.action : "reports";
 
     if (action === "reports") {
