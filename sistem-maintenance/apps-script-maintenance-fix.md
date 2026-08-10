@@ -49,7 +49,7 @@ function doPost(e) {
           var blob = Utilities.newBlob(decodedData, foto.mimeType, namaFileUnik);
           var file = folder.createFile(blob);
           file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-          urls.push(file.getUrl());
+          urls.push("https://drive.google.com/thumbnail?id=" + file.getId() + "&sz=w1200");
         }
       }
 
@@ -232,3 +232,32 @@ function normalizeItemList(value) {
 - `fotoUrls` dipakai untuk hitung jumlah foto.
 - `bulanTahun` dipakai untuk filter bulan.
 - `lokasi` dipakai untuk filter AJ SQUARE / ATMACANTEEN.
+
+## Kalau Muncul Error DriveApp
+
+Kalau muncul error seperti `Anda tidak memiliki izin untuk memanggil DriveApp.getFoldersByName`, artinya project Apps Script belum diberi scope Drive atau belum diotorisasi ulang.
+
+Tambahkan atau cek file `appsscript.json` dengan scope seperti ini:
+
+```json
+{
+  "timeZone": "Asia/Jakarta",
+  "dependencies": {},
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+  ]
+}
+```
+
+Langkah yang harus dilakukan:
+
+1. Buka Apps Script project Anda.
+2. Pastikan `appsscript.json` sudah punya scope `spreadsheets` dan `drive`.
+3. Simpan, lalu jalankan salah satu fungsi dari editor sekali untuk memunculkan layar izin.
+4. Izinkan akses Drive dan Spreadsheet.
+5. Deploy ulang web app sebagai versi baru.
+6. Pastikan web app dijalankan sebagai Anda sendiri, bukan user lain.
+
+Kalau Anda ingin menghindari error Drive sama sekali, hapus bagian penyimpanan foto ke Drive dari `doPost()` dan simpan hanya data teks ke Sheet. Tetapi kalau foto tetap ingin disimpan, scope Drive wajib ada.
