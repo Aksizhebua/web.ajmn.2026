@@ -8,9 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- SweetAlert2 untuk notifikasi yang lebih baik -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Firebase untuk dashboard laporan -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <!-- Font dari Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,24 +158,6 @@
         // --- KONFIGURASI API ---
         // Ganti string di bawah ini dengan Web App URL dari Google Apps Script Anda
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwX2RIg24zTalqqL7fUtzAb6N0uzjgGYfDVx758jutqqVeB9FmfjoLEG21RzEZl0d4nUw/exec"; 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
-            authDomain: "ajmn-website.firebaseapp.com",
-            projectId: "ajmn-website",
-            storageBucket: "ajmn-website.firebasestorage.app",
-            messagingSenderId: "223460999999",
-            appId: "1:223460999999:web:a0758ffee209e3b49c898a"
-        };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const MAINTENANCE_COLLECTION = "maintenance_reports";
-
-        async function saveMaintenanceReport(payload) {
-            await db.collection(MAINTENANCE_COLLECTION).add({
-                ...payload,
-                submittedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-        }
 
         // Fungsi berpindah tab
         function switchTab(tabId) {
@@ -297,22 +276,6 @@
                 });
                 await response.json();
 
-                try {
-                    await saveMaintenanceReport({
-                        tipeForm: "bulanan",
-                        lokasi: payload.lokasi,
-                        bulanTahun: payload.bulanTahun,
-                        namaPetugas: payload.namaPetugas,
-                        itemDibersihkan: itemList,
-                        fogging: payload.fogging,
-                        catatan: payload.catatan,
-                        fotoCount: fotoArray.length,
-                        fotoData: fotoArray
-                    });
-                } catch (dashboardError) {
-                    console.warn("Laporan berhasil dikirim, tetapi gagal disimpan ke dashboard:", dashboardError);
-                }
-
                 Swal.fire({
                     title: 'Berhasil!',
                     text: 'Laporan bulanan berhasil disimpan.',
@@ -358,17 +321,6 @@
                     body: JSON.stringify(payload)
                 });
                 await response.json();
-
-                try {
-                    await saveMaintenanceReport({
-                        tipeForm: "ondemand",
-                        lokasi: payload.lokasi,
-                        areaSpesifik: payload.areaSpesifik,
-                        deskripsi: payload.deskripsi
-                    });
-                } catch (dashboardError) {
-                    console.warn("Laporan on-demand berhasil dikirim, tetapi gagal disimpan ke dashboard:", dashboardError);
-                }
 
                 Swal.fire({
                     title: 'Berhasil!',
