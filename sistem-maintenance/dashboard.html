@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Tarikan Kebersihan - AJMN</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: '#d4a742', goldHover: '#b89442', dark: '#0f0500' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #f7f7f3; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #f1efe7; }
+        ::-webkit-scrollbar-thumb { background: #c8b07a; border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b89442; }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+    <div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(212,167,66,0.14),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(0,0,0,0.05),_transparent_24%),linear-gradient(180deg,#fbfaf6_0%,#f7f4eb_100%)]">
+        <header class="sticky top-0 z-20 border-b border-black/5 bg-white/80 backdrop-blur-xl">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <p class="text-xs font-bold tracking-[0.35em] text-gold uppercase">Sistem Maintenance</p>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">Dashboard Tarikan Kebersihan</h1>
+                    <p class="text-sm text-gray-500 mt-1">Ringkasan checklist bulanan dan laporan on-demand dari venue maintenance.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="ajsquare.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-gray-700 border border-gray-200 hover:border-gold hover:text-goldHover shadow-sm transition-colors">
+                        <i class="fas fa-store"></i> AJ Square
+                    </a>
+                    <a href="atmacanteen.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-gray-700 border border-gray-200 hover:border-gold hover:text-goldHover shadow-sm transition-colors">
+                        <i class="fas fa-utensils"></i> Atma Canteen
+                    </a>
+                    <button id="refresh-btn" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-gold to-goldHover text-white font-semibold shadow-lg shadow-gold/20 hover:from-goldHover hover:to-gold transition-colors">
+                        <i class="fas fa-rotate-right"></i> Muat Ulang
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+            <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                <div class="rounded-3xl bg-white/90 backdrop-blur border border-white shadow-[0_20px_60px_rgba(15,5,0,0.08)] p-6">
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400">Total Laporan</p>
+                    <div id="total-count" class="text-4xl font-extrabold text-gray-900 mt-3">0</div>
+                    <p class="text-sm text-gray-500 mt-2">Semua data yang tersimpan di koleksi laporan.</p>
+                </div>
+                <div class="rounded-3xl bg-white/90 backdrop-blur border border-white shadow-[0_20px_60px_rgba(15,5,0,0.08)] p-6">
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400">Checklist Bulanan</p>
+                    <div id="bulanan-count" class="text-4xl font-extrabold text-gray-900 mt-3">0</div>
+                    <p class="text-sm text-gray-500 mt-2">Laporan rutin kebersihan venue.</p>
+                </div>
+                <div class="rounded-3xl bg-white/90 backdrop-blur border border-white shadow-[0_20px_60px_rgba(15,5,0,0.08)] p-6">
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400">On-Demand</p>
+                    <div id="ondemand-count" class="text-4xl font-extrabold text-gray-900 mt-3">0</div>
+                    <p class="text-sm text-gray-500 mt-2">Temuan atau laporan tindakan mendesak.</p>
+                </div>
+                <div class="rounded-3xl bg-white/90 backdrop-blur border border-white shadow-[0_20px_60px_rgba(15,5,0,0.08)] p-6">
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400">Foto Bukti</p>
+                    <div id="photo-count" class="text-4xl font-extrabold text-gray-900 mt-3">0</div>
+                    <p class="text-sm text-gray-500 mt-2">Jumlah foto yang ikut dilampirkan.</p>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 xl:grid-cols-[320px_1fr] gap-6">
+                <div class="rounded-3xl bg-[#0f0500] text-white shadow-2xl shadow-black/10 border border-white/10 p-6 space-y-6">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-gold/80">Filter</p>
+                        <h2 class="text-xl font-extrabold mt-2">Saring laporan</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-2">Jenis</label>
+                            <select id="type-filter" class="w-full px-4 py-3 rounded-2xl bg-white text-gray-800 border border-white/10 focus:outline-none focus:ring-4 focus:ring-gold/20">
+                                <option value="all">Semua Jenis</option>
+                                <option value="bulanan">Checklist Bulanan</option>
+                                <option value="ondemand">On-Demand</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-2">Bulan</label>
+                            <input id="month-filter" type="month" class="w-full px-4 py-3 rounded-2xl bg-white text-gray-800 border border-white/10 focus:outline-none focus:ring-4 focus:ring-gold/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-2">Lokasi</label>
+                            <select id="location-filter" class="w-full px-4 py-3 rounded-2xl bg-white text-gray-800 border border-white/10 focus:outline-none focus:ring-4 focus:ring-gold/20">
+                                <option value="all">Semua Lokasi</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-white/50">Legenda</p>
+                        <div class="mt-3 space-y-2 text-sm text-white/80">
+                            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span> Checklist bulanan</div>
+                            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span> On-demand</div>
+                            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-sky-400"></span> Ada foto bukti</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl bg-white/90 backdrop-blur border border-white shadow-[0_20px_60px_rgba(15,5,0,0.08)] overflow-hidden">
+                    <div class="px-6 py-5 border-b border-gray-100 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h2 class="text-xl font-extrabold text-gray-900">Daftar Laporan</h2>
+                            <p class="text-sm text-gray-500">Data terbaru tampil di bagian atas.</p>
+                        </div>
+                        <div id="last-updated" class="text-sm font-medium text-gray-500"></div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-widest font-semibold border-b border-gray-100">
+                                    <th class="px-6 py-4 border-b border-gray-100">Tanggal</th>
+                                    <th class="px-6 py-4 border-b border-gray-100">Jenis</th>
+                                    <th class="px-6 py-4 border-b border-gray-100">Lokasi</th>
+                                    <th class="px-6 py-4 border-b border-gray-100">Petugas / Area</th>
+                                    <th class="px-6 py-4 border-b border-gray-100">Ringkasan</th>
+                                    <th class="px-6 py-4 border-b border-gray-100">Foto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reports-body" class="divide-y divide-gray-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="empty-state" class="hidden px-6 py-16 text-center text-gray-500">
+                        <i class="fas fa-folder-open text-4xl text-gray-300 mb-4"></i>
+                        <p class="font-semibold text-gray-700">Belum ada laporan yang cocok dengan filter ini.</p>
+                        <p class="text-sm mt-1">Coba ubah filter jenis atau lokasi.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwX2RIg24zTalqqL7fUtzAb6N0uzjgGYfDVx758jutqqVeB9FmfjoLEG21RzEZl0d4nUw/exec";
+
+        const state = {
+            reports: [],
+            typeFilter: 'all',
+            monthFilter: '',
+            locationFilter: 'all'
+        };
+
+        const typeFilterEl = document.getElementById('type-filter');
+        const monthFilterEl = document.getElementById('month-filter');
+        const locationFilterEl = document.getElementById('location-filter');
+        const reportsBody = document.getElementById('reports-body');
+        const emptyState = document.getElementById('empty-state');
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function normalizeItems(report) {
+            if (Array.isArray(report.itemDibersihkan)) return report.itemDibersihkan;
+            if (typeof report.itemDibersihkan === 'string' && report.itemDibersihkan.trim()) {
+                return report.itemDibersihkan.split(',').map(item => item.trim()).filter(Boolean);
+            }
+            return [];
+        }
+
+        function getReportTime(report) {
+            const raw = report.submittedAt || report.createdAt || report.timestamp;
+            if (!raw) return 0;
+            if (typeof raw.toDate === 'function') return raw.toDate().getTime();
+            if (raw.seconds) return raw.seconds * 1000;
+            const parsed = new Date(raw).getTime();
+            return Number.isNaN(parsed) ? 0 : parsed;
+        }
+
+        function formatTime(report) {
+            const value = getReportTime(report);
+            if (!value) return '-';
+            return new Intl.DateTimeFormat('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(new Date(value));
+        }
+
+        function getReportMonthKey(report) {
+            if (report.tipeForm === 'bulanan' && typeof report.bulanTahun === 'string' && /^\d{4}-\d{2}$/.test(report.bulanTahun)) {
+                return report.bulanTahun;
+            }
+            const value = getReportTime(report);
+            if (!value) return '';
+            const date = new Date(value);
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        }
+
+        function getReportDateLabel(report) {
+            if (report.tipeForm === 'bulanan' && report.bulanTahun) {
+                return `Bulan ${report.bulanTahun}`;
+            }
+            return `Input ${formatTime(report)}`;
+        }
+
+        function getLocationLabel(location) {
+            if (location === 'AJ SQUARE') return 'AJ SQUARE';
+            if (location === 'ATMACANTEEN') return 'ATMACANTEEN';
+            return location;
+        }
+
+        function populateLocationFilter() {
+            const current = locationFilterEl.value || 'all';
+            const defaultLocations = ['AJ SQUARE', 'ATMACANTEEN'];
+            const locations = [...new Set([...defaultLocations, ...state.reports.map(report => report.lokasi).filter(Boolean)])].sort((a, b) => a.localeCompare(b));
+            locationFilterEl.innerHTML = '<option value="all">Semua Lokasi</option>' + locations.map(location => `<option value="${escapeHtml(location)}">${escapeHtml(location)}</option>`).join('');
+            locationFilterEl.value = locations.includes(current) ? current : 'all';
+        }
+
+        function renderReports() {
+            const filtered = state.reports.filter(report => {
+                const matchesType = state.typeFilter === 'all' || report.tipeForm === state.typeFilter;
+                const matchesMonth = !state.monthFilter || getReportMonthKey(report) === state.monthFilter;
+                const matchesLocation = state.locationFilter === 'all' || report.lokasi === state.locationFilter;
+                return matchesType && matchesMonth && matchesLocation;
+            });
+
+            document.getElementById('total-count').textContent = state.reports.length;
+            document.getElementById('bulanan-count').textContent = state.reports.filter(report => report.tipeForm === 'bulanan').length;
+            document.getElementById('ondemand-count').textContent = state.reports.filter(report => report.tipeForm === 'ondemand').length;
+            document.getElementById('photo-count').textContent = state.reports.reduce((sum, report) => sum + Number(report.fotoCount || 0), 0);
+
+            if (!filtered.length) {
+                reportsBody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            reportsBody.innerHTML = filtered.map(report => {
+                const typeBadge = report.tipeForm === 'bulanan'
+                    ? '<span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Checklist Bulanan</span>'
+                    : '<span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">On-Demand</span>';
+                const items = normalizeItems(report);
+                const displayItems = [...items];
+                if (report.tipeForm === 'bulanan' && String(report.fogging || '').toLowerCase() === 'selesai') {
+                    displayItems.push('Fogging');
+                }
+                const itemPreview = items.length
+                    ? displayItems.slice(0, 3).map(item => `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">${escapeHtml(item)}</span>`).join(' ') + (displayItems.length > 3 ? `<span class="text-xs text-gray-400 ml-1">+${displayItems.length - 3}</span>` : '')
+                    : '<span class="text-gray-400">-</span>';
+                const detail = report.tipeForm === 'bulanan'
+                    ? `<div class="space-y-2"><div class="flex flex-wrap gap-2">${itemPreview}</div><div class="text-xs text-gray-500">Catatan: ${escapeHtml(report.catatan || '-')}</div></div>`
+                    : `<div><div class="font-semibold text-gray-800">${escapeHtml(report.areaSpesifik || '-')}</div><div class="text-xs text-gray-500 mt-2">${escapeHtml(report.deskripsi || '-')}</div></div>`;
+                const person = report.tipeForm === 'bulanan' ? escapeHtml(report.namaPetugas || '-') : escapeHtml(report.areaSpesifik || '-');
+                const photoBadge = Number(report.fotoCount || 0) > 0
+                    ? `<span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200"><i class="fas fa-camera mr-1"></i>${Number(report.fotoCount || 0)} foto</span>`
+                    : '<span class="text-gray-400">-</span>';
+
+                return `
+                    <tr class="hover:bg-gray-50/80 transition-colors align-top">
+                        <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap text-gray-600">
+                            <div class="font-medium">${escapeHtml(formatTime(report))}</div>
+                            <div class="text-xs text-gray-400 mt-1">${escapeHtml(getReportDateLabel(report))}</div>
+                        </td>
+                        <td class="px-6 py-4 border-b border-gray-100">${typeBadge}</td>
+                        <td class="px-6 py-4 border-b border-gray-100 font-medium text-gray-800">${escapeHtml(getLocationLabel(report.lokasi || '-'))}</td>
+                        <td class="px-6 py-4 border-b border-gray-100 text-gray-700">${person}</td>
+                        <td class="px-6 py-4 border-b border-gray-100 text-gray-700">${detail}</td>
+                        <td class="px-6 py-4 border-b border-gray-100">${photoBadge}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('last-updated').textContent = `Diperbarui: ${new Intl.DateTimeFormat('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            }).format(new Date())}`;
+        }
+
+        async function fetchReports() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=reports&t=${Date.now()}`);
+                const result = await response.json();
+
+                if (result.status !== 'sukses') {
+                    throw new Error(result.pesan || 'Respons Apps Script tidak valid.');
+                }
+
+                const bulanan = Array.isArray(result.bulanan) ? result.bulanan.map((item, index) => ({
+                    id: item.id || `bulanan_${index}`,
+                    ...item,
+                    tipeForm: 'bulanan'
+                })) : [];
+
+                const ondemand = Array.isArray(result.ondemand) ? result.ondemand.map((item, index) => ({
+                    id: item.id || `ondemand_${index}`,
+                    ...item,
+                    tipeForm: 'ondemand'
+                })) : [];
+
+                state.reports = [...bulanan, ...ondemand];
+                state.reports.sort((a, b) => getReportTime(b) - getReportTime(a));
+                populateLocationFilter();
+                renderReports();
+            } catch (error) {
+                Swal.fire('Gagal', 'Tidak bisa memuat data laporan: ' + error.message, 'error');
+            }
+        }
+
+        typeFilterEl.addEventListener('change', (event) => {
+            state.typeFilter = event.target.value;
+            renderReports();
+        });
+
+        monthFilterEl.addEventListener('change', (event) => {
+            state.monthFilter = event.target.value;
+            renderReports();
+        });
+
+        locationFilterEl.addEventListener('change', (event) => {
+            state.locationFilter = event.target.value;
+            renderReports();
+        });
+
+        document.getElementById('refresh-btn').addEventListener('click', fetchReports);
+
+        fetchReports();
+    </script>
+</body>
+</html>
