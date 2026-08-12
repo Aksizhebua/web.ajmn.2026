@@ -142,6 +142,12 @@
                             <input id="month-filter" type="month" class="w-full px-2.5 py-2 rounded-2xl bg-white text-gray-800 border border-white/10 focus:outline-none focus:ring-4 focus:ring-gold/20 text-sm">
                         </div>
                         <div>
+                            <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-1.5 sm:mb-2">Pekerjaan Kebersihan</label>
+                            <select id="item-filter" class="w-full px-2.5 py-2 rounded-2xl bg-white text-gray-800 border border-white/10 focus:outline-none focus:ring-4 focus:ring-gold/20 text-sm">
+                                <option value="all">Semua Pekerjaan</option>
+                            </select>
+                        </div>
+                        <div>
                             <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-1.5 sm:mb-2">Lokasi</label>
                             <select id="location-filter" class="w-full px-2.5 py-2 rounded-2xl bg-white text-gray-800 border border-white/10 focus:outline-none focus:ring-4 focus:ring-gold/20 text-sm">
                                 <option value="all">Semua Lokasi</option>
@@ -218,11 +224,13 @@
             reports: [],
             typeFilter: 'all',
             monthFilter: '',
+            itemFilter: 'all',
             locationFilter: 'all'
         };
 
         const typeFilterEl = document.getElementById('type-filter');
         const monthFilterEl = document.getElementById('month-filter');
+        const itemFilterEl = document.getElementById('item-filter');
         const locationFilterEl = document.getElementById('location-filter');
         const reportsBody = document.getElementById('reports-body');
         const reportsCards = document.getElementById('reports-cards');
@@ -247,6 +255,13 @@
                 return report.itemDibersihkan.split(',').map(item => item.trim()).filter(Boolean);
             }
             return [];
+        }
+
+        function populateItemFilter() {
+            const current = itemFilterEl.value || 'all';
+            const items = [...new Set(state.reports.flatMap(report => normalizeItems(report)).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+            itemFilterEl.innerHTML = '<option value="all">Semua Pekerjaan</option>' + items.map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join('');
+            itemFilterEl.value = items.includes(current) ? current : 'all';
         }
 
         function normalizePhotoUrls(report) {
@@ -338,8 +353,10 @@
             const filtered = state.reports.filter(report => {
                 const matchesType = state.typeFilter === 'all' || report.tipeForm === state.typeFilter;
                 const matchesMonth = !state.monthFilter || getReportMonthKey(report) === state.monthFilter;
+                const reportItems = normalizeItems(report);
+                const matchesItem = state.itemFilter === 'all' || reportItems.includes(state.itemFilter);
                 const matchesLocation = state.locationFilter === 'all' || report.lokasi === state.locationFilter;
-                return matchesType && matchesMonth && matchesLocation;
+                return matchesType && matchesMonth && matchesItem && matchesLocation;
             });
 
             document.getElementById('total-count').textContent = state.reports.length;
@@ -460,6 +477,7 @@
 
                 state.reports = [...bulanan, ...ondemand];
                 state.reports.sort((a, b) => getReportTime(b) - getReportTime(a));
+                populateItemFilter();
                 populateLocationFilter();
                 renderReports();
             } catch (error) {
@@ -474,6 +492,11 @@
 
         monthFilterEl.addEventListener('change', (event) => {
             state.monthFilter = event.target.value;
+            renderReports();
+        });
+
+        itemFilterEl.addEventListener('change', (event) => {
+            state.itemFilter = event.target.value;
             renderReports();
         });
 
