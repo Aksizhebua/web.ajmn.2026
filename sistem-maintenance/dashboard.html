@@ -91,7 +91,7 @@
                     <a href="atmacanteen.html" class="inline-flex w-full justify-center items-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-700 border border-gray-200 hover:border-gold hover:text-goldHover shadow-sm transition-colors text-sm">
                         <i class="fas fa-utensils"></i> Atma Canteen
                     </a>
-                    <button id="refresh-btn" class="inline-flex w-full justify-center items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-gold to-goldHover text-white font-semibold shadow-lg shadow-gold/20 hover:from-goldHover hover:to-gold transition-colors text-sm">
+                    <button type="button" id="refresh-btn" class="inline-flex w-full justify-center items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-gold to-goldHover text-white font-semibold shadow-lg shadow-gold/20 hover:from-goldHover hover:to-gold transition-colors text-sm cursor-pointer">
                         <i class="fas fa-rotate-right"></i> Muat Ulang
                     </button>
                 </div>
@@ -485,6 +485,32 @@
             }
         }
 
+        async function refreshReports() {
+            const refreshBtn = document.getElementById('refresh-btn');
+            const originalHtml = refreshBtn.innerHTML;
+
+            refreshBtn.disabled = true;
+            refreshBtn.classList.add('opacity-80', 'cursor-wait');
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat...';
+
+            try {
+                await fetchReports();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data diperbarui',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1800,
+                    timerProgressBar: true
+                });
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.classList.remove('opacity-80', 'cursor-wait');
+                refreshBtn.innerHTML = originalHtml;
+            }
+        }
+
         typeFilterEl.addEventListener('change', (event) => {
             state.typeFilter = event.target.value;
             renderReports();
@@ -545,7 +571,7 @@
             }
         });
 
-        document.getElementById('refresh-btn').addEventListener('click', fetchReports);
+        document.getElementById('refresh-btn').addEventListener('click', refreshReports);
 
         fetchReports();
     </script>
