@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin WHAT'S ON - PT AJMN</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#d4a742',
+                        goldDark: '#b88d2d',
+                        ink: '#101114'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background:
+            radial-gradient(circle at top left, rgba(212,167,66,.14), transparent 28%),
+            radial-gradient(circle at 90% 10%, rgba(15,23,42,.08), transparent 26%),
+            linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%); }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .glass { backdrop-filter: blur(18px); background: rgba(255,255,255,.84); }
+        .loader { border: 3px solid rgba(255,255,255,.25); border-radius: 999px; border-top: 3px solid white; width: 18px; height: 18px; animation: spin 1s linear infinite; display: none; }
+        .btn-loading .loader { display: inline-block; }
+        .btn-loading .btn-text { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="antialiased text-slate-800 selection:bg-gold/25 selection:text-ink">
+    <div id="dashboard-screen" class="min-h-screen">
+        <div class="flex min-h-screen">
+            <aside class="hidden lg:flex w-[300px] shrink-0 flex-col bg-[#0f1115] text-white shadow-2xl">
+                <div class="p-8 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <img src="images/Logo AJMNp.png" alt="AJMN" class="h-11">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-[0.3em] text-gold/80 font-bold">Event Control</p>
+                            <h2 class="text-lg font-extrabold">WHAT'S ON</h2>
+                        </div>
+                    </div>
+                    <p id="admin-meta" class="mt-4 text-sm text-slate-400 leading-relaxed">Mode terbuka. Data bisa dilihat langsung, sedangkan simpan/hapus tetap memakai sesi admin yang aktif.</p>
+                </div>
+                <nav class="p-5 space-y-2 flex-1">
+                    <button class="w-full text-left px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white font-semibold">
+                        <i class="fas fa-calendar-day mr-2 text-gold"></i> Kelola Event
+                    </button>
+                    <a href="admin/index.html" class="block px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors">
+                        <i class="fas fa-layer-group mr-2"></i> Dashboard Admin Utama
+                    </a>
+                    <a href="upcoming-events.html" target="_blank" class="block px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors">
+                        <i class="fas fa-arrow-up-right-from-square mr-2"></i> Lihat Halaman Publik
+                    </a>
+                </nav>
+                <div class="p-5 border-t border-white/10">
+                    <button id="logout-btn" class="w-full px-4 py-3 rounded-xl text-left text-slate-300 hover:bg-red-500/10 hover:text-red-300 transition-colors font-semibold">
+                        <i class="fas fa-right-from-bracket mr-2"></i> Logout
+                    </button>
+                </div>
+            </aside>
+
+            <main class="flex-1 min-w-0">
+                <div class="sticky top-0 z-20 glass border-b border-white/60">
+                    <div class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.32em] text-goldDark font-bold">Admin Panel</p>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950">WHAT'S ON Manager</h1>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div class="hidden sm:flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-slate-200 shadow-sm">
+                                <div class="w-10 h-10 rounded-lg bg-gold/10 text-goldDark flex items-center justify-center">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500">Sesi admin</p>
+                                    <p id="user-label" class="font-bold text-slate-900">Belum terdeteksi</p>
+                                </div>
+                            </div>
+                            <a href="upcoming-events.html" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors">
+                                <i class="fas fa-eye"></i>
+                                <span>Lihat Publik</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+                    <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-5">
+                            <p class="text-xs uppercase tracking-[0.3em] text-slate-500 font-bold">Total Event</p>
+                            <div class="mt-3 flex items-end justify-between">
+                                <div>
+                                    <h3 id="total-count" class="text-3xl font-extrabold text-slate-950">0</h3>
+                                    <p class="text-sm text-slate-500 mt-1">Seluruh data yang tersimpan</p>
+                                </div>
+                                <i class="fas fa-calendar-check text-2xl text-goldDark/70"></i>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-5">
+                            <p class="text-xs uppercase tracking-[0.3em] text-slate-500 font-bold">Upcoming</p>
+                            <div class="mt-3 flex items-end justify-between">
+                                <div>
+                                    <h3 id="upcoming-count" class="text-3xl font-extrabold text-emerald-600">0</h3>
+                                    <p class="text-sm text-slate-500 mt-1">Event yang belum lewat</p>
+                                </div>
+                                <i class="fas fa-arrow-trend-up text-2xl text-emerald-500/80"></i>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-5">
+                            <p class="text-xs uppercase tracking-[0.3em] text-slate-500 font-bold">Past</p>
+                            <div class="mt-3 flex items-end justify-between">
+                                <div>
+                                    <h3 id="past-count" class="text-3xl font-extrabold text-slate-900">0</h3>
+                                    <p class="text-sm text-slate-500 mt-1">Event yang sudah selesai</p>
+                                </div>
+                                <i class="fas fa-clock-rotate-left text-2xl text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl bg-gradient-to-br from-slate-950 to-slate-800 text-white shadow-lg shadow-slate-950/20 p-5">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/60 font-bold">Aksi Cepat</p>
+                            <button type="button" onclick="openEventModal()" class="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold text-slate-950 font-extrabold hover:bg-goldDark transition-colors">
+                                <i class="fas fa-plus"></i>
+                                <span>Tambah Event</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-5 sm:p-6 border-b border-slate-200">
+                            <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-goldDark font-bold">Daftar Event</p>
+                                    <h2 class="mt-1 text-2xl font-extrabold text-slate-950">Kelola semua konten WHAT'S ON</h2>
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
+                                    <div class="relative w-full sm:w-80">
+                                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input id="search-input" type="search" placeholder="Cari judul, lokasi, kategori..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                                    </div>
+                                    <select id="filter-category" class="w-full sm:w-56 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                                        <option value="all">Semua Kategori</option>
+                                        <option value="seminar">Seminar & Training</option>
+                                        <option value="corporate">Corporate Event</option>
+                                        <option value="entertainment">Concert & Entertainment</option>
+                                        <option value="promo">Promo & Penawaran</option>
+                                    </select>
+                                    <button type="button" onclick="openEventModal()" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-950 text-white font-bold hover:bg-slate-800 transition-colors">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-widest font-bold border-b border-slate-200">
+                                        <th class="px-6 py-4">Poster</th>
+                                        <th class="px-6 py-4">Detail Event</th>
+                                        <th class="px-6 py-4">Jadwal</th>
+                                        <th class="px-6 py-4">Status</th>
+                                        <th class="px-6 py-4 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="events-table-body" class="divide-y divide-slate-200"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="event-modal" class="fixed inset-0 hidden items-center justify-center z-50 bg-slate-950/70 backdrop-blur-sm p-4">
+        <div class="w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-[2rem] bg-white shadow-2xl border border-white/60">
+            <div class="sticky top-0 z-10 flex items-center justify-between gap-4 px-6 sm:px-8 py-5 bg-white/95 backdrop-blur-sm border-b border-slate-200">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.3em] text-goldDark font-bold">Event Form</p>
+                    <h2 id="modal-title" class="text-2xl font-extrabold text-slate-950">Tambah Event Baru</h2>
+                </div>
+                <button type="button" onclick="closeEventModal()" class="w-11 h-11 rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="event-form" class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <input type="hidden" id="ev-id">
+                <input type="hidden" id="ev-img-url">
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Judul Event <span class="text-red-500">*</span></label>
+                    <input id="ev-title" type="text" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Tanggal Sistem <span class="text-red-500">*</span></label>
+                    <input id="ev-dateISO" type="date" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Tanggal Tampil <span class="text-red-500">*</span></label>
+                    <input id="ev-dateStr" type="text" required placeholder="Contoh: 5 - 10 Mei 2026" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Kategori</label>
+                    <select id="ev-category" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                        <option value="seminar">Seminar & Training</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="entertainment">Concert & Entertainment</option>
+                        <option value="promo">Promo & Penawaran</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
+                    <input id="ev-location" type="text" required placeholder="Gedung Yustinus Lt. 14" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Link Pendaftaran / WhatsApp</label>
+                    <input id="ev-link" type="url" placeholder="https://..." class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Deskripsi Singkat</label>
+                    <textarea id="ev-desc" rows="4" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all"></textarea>
+                </div>
+
+                <div class="md:col-span-2 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/80 p-5 sm:p-6">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Poster / Gambar <span class="text-red-500">*</span></label>
+                            <p class="text-xs text-slate-500">Maksimal 100 KB untuk upload baru.</p>
+                        </div>
+                        <div class="text-xs text-slate-500">
+                            <i class="fas fa-image mr-1"></i>
+                            Disarankan rasio poster vertikal
+                        </div>
+                    </div>
+                    <input id="ev-img-file" type="file" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:bg-gold/10 file:text-goldDark file:font-semibold hover:file:bg-gold/20 transition-all">
+                    <div id="img-preview-container" class="hidden mt-4">
+                        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 mb-2">Preview</p>
+                        <img id="ev-img-preview" alt="Preview" class="max-h-52 rounded-2xl border border-slate-200 shadow-sm object-contain bg-white">
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeEventModal()" class="px-5 py-3.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">Batal</button>
+                    <button type="submit" id="save-event-btn" class="px-5 py-3.5 rounded-xl font-extrabold text-white bg-gradient-to-r from-gold to-goldDark shadow-lg shadow-gold/25 hover:from-goldDark hover:to-gold transition-all inline-flex items-center justify-center gap-3">
+                        <span class="btn-text">Simpan Event</span>
+                        <span class="loader"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const API_BASE_URL = window.API_BASE_URL || 'http://localhost:3000';
+        const AUTH_TOKEN_KEY = 'ajmn_admin_token';
+
+        let adminToken = localStorage.getItem(AUTH_TOKEN_KEY) || '';
+        let currentAdmin = null;
+        let allEvents = [];
+        let activeCategory = 'all';
+        let activeSearch = '';
+
+        function apiHeaders(extra = {}) {
+            const headers = new Headers(extra);
+            if (adminToken) headers.set('Authorization', `Bearer ${adminToken}`);
+            return headers;
+        }
+
+        async function apiRequest(path, options = {}) {
+            const headers = apiHeaders(options.headers || {});
+            const init = { ...options, headers };
+
+            if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
+                headers.set('Content-Type', 'application/json');
+            }
+
+            const response = await fetch(`${API_BASE_URL}${path}`, init);
+            const contentType = response.headers.get('content-type') || '';
+            const payload = contentType.includes('application/json') ? await response.json() : await response.text();
+
+            if (!response.ok) {
+                const message = payload && typeof payload === 'object'
+                    ? (payload.message || payload.error || `HTTP ${response.status}`)
+                    : (payload || `HTTP ${response.status}`);
+                throw new Error(message);
+            }
+
+            return payload;
+        }
+
+        function setToken(token) {
+            adminToken = token || '';
+            if (adminToken) {
+                localStorage.setItem(AUTH_TOKEN_KEY, adminToken);
+            } else {
+                localStorage.removeItem(AUTH_TOKEN_KEY);
+            }
+        }
+
+        function formatCategoryLabel(value) {
+            const mapping = {
+                seminar: 'Seminar & Training',
+                corporate: 'Corporate Event',
+                entertainment: 'Concert & Entertainment',
+                promo: 'Promo & Penawaran'
+            };
+            return mapping[String(value || '').toLowerCase()] || String(value || '-');
+        }
+
+        function normalizeDateValue(value) {
+            if (!value) return '';
+            const text = String(value);
+            return text.includes('T') ? text.split('T')[0] : text;
+        }
+
+        function normalizeEvent(item) {
+            return {
+                id: item.id || item.Id || '',
+                title: item.title || item.Title || '',
+                dateISO: normalizeDateValue(item.dateISO || item.DateISO || item.date || item.Date),
+                dateStr: item.dateStr || item.DateStr || '',
+                category: item.category || item.Category || 'seminar',
+                location: item.location || item.Location || '',
+                link: item.link || item.Link || '',
+                desc: item.desc || item.Desc || '',
+                img: item.img || item.Img || ''
+            };
+        }
+
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const total = allEvents.length;
+            const upcoming = allEvents.filter(event => event.dateISO >= today).length;
+            const past = total - upcoming;
+
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('upcoming-count').textContent = upcoming;
+            document.getElementById('past-count').textContent = past;
+        }
+
+        function matchesFilters(event) {
+            const search = activeSearch.trim().toLowerCase();
+            const categoryOk = activeCategory === 'all' || String(event.category || '').toLowerCase() === activeCategory;
+            const haystack = [event.title, event.location, event.category, event.dateStr, event.desc]
+                .filter(Boolean)
+                .join(' ')
+                .toLowerCase();
+            const searchOk = !search || haystack.includes(search);
+            return categoryOk && searchOk;
+        }
+
+        function renderEvents() {
+            const tbody = document.getElementById('events-table-body');
+            const today = new Date().toISOString().split('T')[0];
+            const items = allEvents
+                .slice()
+                .sort((a, b) => String(b.dateISO || '').localeCompare(String(a.dateISO || '')))
+                .filter(matchesFilters);
+
+            tbody.innerHTML = '';
+
+            if (!items.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-14 text-center text-slate-500">
+                            <div class="max-w-sm mx-auto">
+                                <div class="mx-auto w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 text-xl mb-4">
+                                    <i class="fas fa-calendar-xmark"></i>
+                                </div>
+                                <p class="font-semibold text-slate-700">Belum ada event yang cocok dengan filter ini.</p>
+                                <p class="text-sm mt-1">Tambahkan event baru atau ubah kata kunci pencarian.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            items.forEach(event => {
+                const isPast = event.dateISO < today;
+                const statusClass = isPast
+                    ? 'bg-slate-100 text-slate-600 border-slate-200'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                const statusLabel = isPast ? 'PAST' : 'UPCOMING';
+                const imageSrc = event.img || 'images/av.jpg';
+
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="px-6 py-5 align-top">
+                            <img src="${imageSrc}" alt="${event.title || ''}" class="h-20 w-28 object-cover rounded-xl border border-slate-200 shadow-sm bg-slate-100">
+                        </td>
+                        <td class="px-6 py-5 align-top">
+                            <div class="font-extrabold text-slate-950 leading-snug">${event.title || '-'}</div>
+                            <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200"><i class="fas fa-tag text-slate-400"></i>${formatCategoryLabel(event.category)}</span>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200"><i class="fas fa-location-dot text-slate-400"></i>${event.location || '-'}</span>
+                            </div>
+                            <p class="mt-3 text-sm text-slate-600 line-clamp-2">${event.desc || '-'}</p>
+                        </td>
+                        <td class="px-6 py-5 align-top text-sm text-slate-700">
+                            <div class="font-bold text-slate-950">${event.dateISO || '-'}</div>
+                            <div class="text-slate-500 mt-1">${event.dateStr || '-'}</div>
+                        </td>
+                        <td class="px-6 py-5 align-top">
+                            <span class="inline-flex items-center px-3 py-1.5 rounded-full border text-xs font-extrabold tracking-wide ${statusClass}">${statusLabel}</span>
+                        </td>
+                        <td class="px-6 py-5 align-top text-right">
+                            <div class="inline-flex gap-2">
+                                <button type="button" onclick="editEvent('${event.id}')" class="w-10 h-10 inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-colors" title="Edit">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                                <button type="button" onclick="deleteEvent('${event.id}')" class="w-10 h-10 inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-colors" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+
+        async function bootstrapAuth() {
+            const meta = document.getElementById('admin-meta');
+            const userLabel = document.getElementById('user-label');
+
+            if (!adminToken) {
+                meta.textContent = 'Mode terbuka aktif. Data bisa dibuka langsung, tetapi simpan/hapus butuh token admin yang sudah login di browser ini.';
+                userLabel.textContent = 'Tidak ada sesi';
+                await fetchEvents();
+                return;
+            }
+
+            try {
+                currentAdmin = await apiRequest('/api/admin/me');
+                if (String(currentAdmin?.role || '').toLowerCase() !== 'admin') {
+                    throw new Error('Halaman ini hanya untuk admin penuh yang mengelola event.');
+                }
+                meta.textContent = `${currentAdmin.name || 'Admin'} • ${currentAdmin.role || 'admin'}`;
+                userLabel.textContent = currentAdmin.email || currentAdmin.name || '-';
+                await fetchEvents();
+            } catch (error) {
+                setToken('');
+                currentAdmin = null;
+                meta.textContent = 'Token admin tidak valid atau kedaluwarsa. Halaman tetap terbuka, tetapi aksi simpan/hapus tidak aktif sampai sesi baru tersedia.';
+                userLabel.textContent = 'Token tidak valid';
+                await fetchEvents();
+            }
+        }
+
+        async function fetchEvents() {
+            try {
+                const response = await apiRequest('/api/events');
+                const items = Array.isArray(response) ? response : (response.data || response.items || []);
+                allEvents = items.map(normalizeEvent);
+                updateStats();
+                renderEvents();
+            } catch (error) {
+                Swal.fire('Gagal', `Tidak bisa memuat event: ${error.message}`, 'error');
+            }
+        }
+
+        function openEventModal() {
+            document.getElementById('event-form').reset();
+            document.getElementById('ev-id').value = '';
+            document.getElementById('ev-img-url').value = '';
+            document.getElementById('ev-img-preview').src = '';
+            document.getElementById('img-preview-container').classList.add('hidden');
+            document.getElementById('modal-title').textContent = 'Tambah Event Baru';
+            document.getElementById('event-modal').classList.remove('hidden');
+            document.getElementById('event-modal').classList.add('flex');
+        }
+
+        function closeEventModal() {
+            document.getElementById('event-modal').classList.add('hidden');
+            document.getElementById('event-modal').classList.remove('flex');
+        }
+
+        async function uploadImageToServer(file) {
+            const maxSizeBytes = 100 * 1024;
+            if (file.size > maxSizeBytes) {
+                throw new Error('Ukuran gambar terlalu besar. Maksimal 100 KB.');
+            }
+
+            const formData = new FormData();
+            formData.append('image', file);
+            const response = await fetch(`${API_BASE_URL}/api/uploads/image`, {
+                method: 'POST',
+                headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {},
+                body: formData
+            });
+
+            const payload = await response.json();
+            if (!response.ok) {
+                throw new Error(payload.message || payload.error || 'Gagal upload gambar.');
+            }
+
+            return payload.url || payload.path || '';
+        }
+
+        window.editEvent = (id) => {
+            const event = allEvents.find(item => item.id === id);
+            if (!event) return;
+
+            document.getElementById('modal-title').textContent = 'Edit Event';
+            document.getElementById('ev-id').value = event.id;
+            document.getElementById('ev-title').value = event.title || '';
+            document.getElementById('ev-dateISO').value = event.dateISO || '';
+            document.getElementById('ev-dateStr').value = event.dateStr || '';
+            document.getElementById('ev-category').value = event.category || 'seminar';
+            document.getElementById('ev-location').value = event.location || '';
+            document.getElementById('ev-link').value = event.link || '';
+            document.getElementById('ev-desc').value = event.desc || '';
+            document.getElementById('ev-img-url').value = event.img || '';
+
+            if (event.img) {
+                document.getElementById('ev-img-preview').src = event.img;
+                document.getElementById('img-preview-container').classList.remove('hidden');
+            } else {
+                document.getElementById('ev-img-preview').src = '';
+                document.getElementById('img-preview-container').classList.add('hidden');
+            }
+
+            document.getElementById('event-modal').classList.remove('hidden');
+            document.getElementById('event-modal').classList.add('flex');
+        };
+
+        window.deleteEvent = async (id) => {
+            const confirmation = await Swal.fire({
+                title: 'Hapus event ini?',
+                text: 'Tindakan ini tidak bisa dibatalkan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                confirmButtonColor: '#dc2626',
+                cancelButtonText: 'Batal'
+            });
+
+            if (!confirmation.isConfirmed) return;
+
+            try {
+                await apiRequest(`/api/events/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                Swal.fire('Terhapus', 'Event berhasil dihapus.', 'success');
+                await fetchEvents();
+            } catch (error) {
+                Swal.fire('Gagal', error.message, 'error');
+            }
+        };
+
+        document.getElementById('ev-img-file').addEventListener('change', function() {
+            const file = this.files && this.files[0];
+            if (!file) return;
+            document.getElementById('ev-img-preview').src = URL.createObjectURL(file);
+            document.getElementById('img-preview-container').classList.remove('hidden');
+        });
+
+        document.getElementById('search-input').addEventListener('input', (event) => {
+            activeSearch = event.target.value || '';
+            renderEvents();
+        });
+
+        document.getElementById('filter-category').addEventListener('change', (event) => {
+            activeCategory = event.target.value || 'all';
+            renderEvents();
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await apiRequest('/api/admin/logout', { method: 'POST' });
+            } catch (error) {
+                console.warn('Logout warning:', error);
+            } finally {
+                setToken('');
+                currentAdmin = null;
+                document.getElementById('admin-meta').textContent = 'Mode terbuka. Data bisa dilihat langsung, sedangkan simpan/hapus tetap memakai sesi admin yang aktif.';
+                document.getElementById('user-label').textContent = 'Tidak ada sesi';
+                await fetchEvents();
+            }
+        });
+
+        document.getElementById('event-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const button = document.getElementById('save-event-btn');
+            button.classList.add('btn-loading');
+
+            try {
+                let imageUrl = document.getElementById('ev-img-url').value.trim();
+                const file = document.getElementById('ev-img-file').files[0];
+                if (file) {
+                    imageUrl = await uploadImageToServer(file);
+                }
+
+                const eventData = {
+                    title: document.getElementById('ev-title').value.trim(),
+                    dateISO: document.getElementById('ev-dateISO').value,
+                    dateStr: document.getElementById('ev-dateStr').value.trim(),
+                    category: document.getElementById('ev-category').value,
+                    location: document.getElementById('ev-location').value.trim(),
+                    link: document.getElementById('ev-link').value.trim(),
+                    desc: document.getElementById('ev-desc').value.trim(),
+                    img: imageUrl
+                };
+
+                if (!eventData.title) throw new Error('Judul event wajib diisi.');
+                if (!eventData.dateISO) throw new Error('Tanggal sistem wajib diisi.');
+                if (!eventData.dateStr) throw new Error('Tanggal tampil wajib diisi.');
+                if (!eventData.location) throw new Error('Lokasi wajib diisi.');
+                if (!eventData.desc) throw new Error('Deskripsi wajib diisi.');
+
+                const id = document.getElementById('ev-id').value;
+                if (id) {
+                    await apiRequest(`/api/events/${encodeURIComponent(id)}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(eventData)
+                    });
+                    Swal.fire('Berhasil', 'Event berhasil diperbarui.', 'success');
+                } else {
+                    if (!imageUrl) throw new Error('Gambar wajib diunggah untuk event baru.');
+                    await apiRequest('/api/events', {
+                        method: 'POST',
+                        body: JSON.stringify(eventData)
+                    });
+                    Swal.fire('Berhasil', 'Event baru berhasil ditambahkan.', 'success');
+                }
+
+                closeEventModal();
+                await fetchEvents();
+            } catch (error) {
+                Swal.fire('Gagal', error.message, 'error');
+            } finally {
+                button.classList.remove('btn-loading');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bootstrapAuth();
+        });
+    </script>
+</body>
+</html>

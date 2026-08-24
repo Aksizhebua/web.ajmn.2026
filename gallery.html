@@ -264,31 +264,33 @@
         </div>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
-    (function(){
-        const firebaseConfig = {
-            apiKey:"AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",authDomain:"ajmn-website.firebaseapp.com",
-            projectId:"ajmn-website",storageBucket:"ajmn-website.firebasestorage.app",
-            messagingSenderId:"223460999999",appId:"1:223460999999:web:a0758ffee209e3b49c898a"
-        };
+    (async function(){
+        const API_BASE_URL = ''; // Sudah menggunakan reverse proxy IIS
+
         try {
-            if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-            firebase.firestore().collection("siteContent").doc("gallery").get().then(doc => {
-                if (!doc.exists || !doc.data().items || !doc.data().items.length) return;
-                const items = doc.data().items;
-                const categoryGrids = { corporate: null, konser: null, wedding: null, venue: null };
-                Object.keys(categoryGrids).forEach(cat => {
-                    const sec = document.getElementById(cat);
-                    if (sec) categoryGrids[cat] = sec.querySelector('.gallery-grid-5x2');
-                });
-                const allGrid = document.querySelector('#semua .gallery-grid-5x2');
-                items.forEach(item => {
-                    const box = `<div class="gallery-item-box"><img src="${item.img}" alt="${item.alt || ''}"></div>`;
-                    if (allGrid) allGrid.insertAdjacentHTML('afterbegin', box);
-                    if (categoryGrids[item.category]) categoryGrids[item.category].insertAdjacentHTML('afterbegin', box);
-                });
+            const response = await fetch(`${API_BASE_URL}/api/gallery`);
+            if (!response.ok) throw new Error('Gagal memuat galeri');
+            
+            const items = await response.json();
+            
+            const categoryGrids = { corporate: null, konser: null, wedding: null, venue: null };
+            Object.keys(categoryGrids).forEach(cat => {
+                const sec = document.getElementById(cat);
+                if (sec) categoryGrids[cat] = sec.querySelector('.gallery-grid-5x2');
+            });
+            const allGrid = document.querySelector('#semua .gallery-grid-5x2');
+            
+            items.forEach(item => {
+                // Pastikan format URL gambarnya benar
+                const imgSrc = item.ImgPath ? `${API_BASE_URL}${item.ImgPath}` : 'images/placeholder.png';
+                const box = `<div class="gallery-item-box"><img src="${imgSrc}" alt="${item.AltText || ''}"></div>`;
+                
+                // Gunakan afterbegin agar foto yang baru diupload selalu muncul di URUTAN PERTAMA
+                if (allGrid) allGrid.insertAdjacentHTML('afterbegin', box);
+                if (item.Category && categoryGrids[item.Category]) {
+                    categoryGrids[item.Category].insertAdjacentHTML('afterbegin', box);
+                }
             });
         } catch(e){ console.warn("Gallery load error:", e.message); }
     })();

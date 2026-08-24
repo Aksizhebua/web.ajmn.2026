@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin News - PT AJMN</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: '#d4a742', goldHover: '#b89442', dark: '#1a1a1a' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; }
+        .loader { border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #d4a742; width: 24px; height: 24px; animation: spin 1s linear infinite; display: none; }
+        .btn-loading .loader { display: inline-block; }
+        .btn-loading .btn-text { display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f8f9fa; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="antialiased text-gray-800 selection:bg-gold/30 selection:text-goldHover">
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gray-50 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.04] bg-[url('images/bg-ruangan.png')] bg-cover bg-center"></div>
+        <div class="absolute w-[500px] h-[500px] bg-gold/20 rounded-full blur-3xl -top-40 -left-40 animate-pulse"></div>
+        <div class="bg-white/95 backdrop-blur-xl p-10 rounded-[2rem] shadow-2xl shadow-gray-200/60 border border-white w-full max-w-md relative z-10 text-center">
+            <img src="images/Logo AJMNp.png" alt="Logo" class="h-16 mx-auto mb-6 bg-[#0f0500] p-3 rounded-2xl shadow-md">
+            <h2 class="text-2xl font-extrabold mb-4 text-gray-900 tracking-tight">Memuat Panel News</h2>
+            <p class="text-sm text-gray-500 mb-6">Silakan tunggu sebentar, sistem akan masuk otomatis.</p>
+            <div class="flex justify-center">
+                <div class="loader" style="display:inline-block;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="hidden min-h-screen flex flex-col bg-[#f8f9fa]">
+        <header class="bg-[#0f0500] text-white shadow-2xl border-b border-white/5">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <img src="images/Logo AJMNp.png" alt="Logo" class="h-11 bg-black/20 p-2 rounded-xl">
+                    <div>
+                        <p class="text-gold font-bold text-xs tracking-[0.35em] uppercase">News Editor</p>
+                        <h1 class="text-lg md:text-xl font-extrabold tracking-tight">Panel Khusus Berita</h1>
+                    </div>
+                </div>
+                <button id="logout-btn" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-red-500/15 text-gray-200 hover:text-red-300 transition-all font-semibold text-sm">
+                    <i class="fas fa-right-from-bracket mr-2"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 p-5 md:p-10">
+            <section class="max-w-[1600px] mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Daftar Berita</h2>
+                        <p class="text-sm text-gray-500 mt-1">Kelola artikel berita, featured news, dan gambar langsung dari panel ini.</p>
+                    </div>
+                    <button onclick="openNewsModal()" class="bg-gradient-to-r from-gold to-goldHover hover:from-goldHover hover:to-gold text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-gold/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Tambah Berita
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-widest font-semibold border-b border-gray-100">
+                                    <th class="px-6 py-5 border-b border-gray-100">Cover</th>
+                                    <th class="px-6 py-5 border-b border-gray-100">Judul & Kategori</th>
+                                    <th class="px-6 py-5 border-b border-gray-100">Tanggal</th>
+                                    <th class="px-6 py-5 border-b border-gray-100">Highlight</th>
+                                    <th class="px-6 py-5 border-b border-gray-100 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="news-table-body" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="news-modal" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-opacity">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[95vh] overflow-y-auto transform transition-transform">
+            <div class="flex justify-between items-center px-8 py-6 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-10">
+                <h2 id="news-modal-title" class="text-2xl font-bold text-gray-900">Tambah Berita Baru</h2>
+                <button type="button" onclick="closeNewsModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-500 transition-colors"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <form id="news-form" class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input type="hidden" id="nw-id">
+                <input type="hidden" id="nw-img1-url">
+                <input type="hidden" id="nw-img2-url">
+
+                <div class="space-y-4 md:col-span-2">
+                    <label class="block font-bold text-gray-700 text-sm mb-1.5">Judul Artikel <span class="text-red-500">*</span></label>
+                    <input type="text" id="nw-title" required class="w-full px-5 py-3.5 border border-gray-200 bg-gray-50 focus:bg-white rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all text-sm">
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block font-bold text-gray-700 text-sm mb-1.5">Kategori <span class="text-red-500">*</span></label>
+                    <select id="nw-category" class="w-full px-5 py-3.5 border border-gray-200 bg-gray-50 focus:bg-white rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all text-sm text-gray-800">
+                        <option value="umum">Berita Umum</option>
+                        <option value="akademik">Academic</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="entertainment">Entertainment & Music</option>
+                        <option value="charity">Charity & CSR</option>
+                    </select>
+                </div>
+                <div class="space-y-4 flex items-end pb-2">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="nw-featured" class="w-5 h-5 text-gold rounded focus:ring-gold">
+                        <span class="font-semibold text-gray-700">Jadikan Featured</span>
+                    </label>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block font-semibold text-gray-700">Tanggal Acara <span class="text-red-500">*</span></label>
+                    <input type="date" id="nw-date" required class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none">
+                </div>
+                <div class="space-y-4">
+                    <label class="block font-semibold text-gray-700">Lokasi Acara</label>
+                    <input type="text" id="nw-location" placeholder="Cth: Atma Kantin" class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none">
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block font-semibold text-gray-700">Event ID (Opsional)</label>
+                    <input type="text" id="nw-event-link" placeholder="Kosongkan jika tidak ada" class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none">
+                </div>
+
+                <div class="space-y-4 md:col-span-2">
+                    <label class="block font-semibold text-gray-700">Snippet / Cuplikan Singkat <span class="text-red-500">*</span></label>
+                    <textarea id="nw-snippet" rows="2" placeholder="Pembuka singkat untuk card luar..." required class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none"></textarea>
+                </div>
+
+                <div class="space-y-4 md:col-span-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label class="block font-semibold text-gray-700">Foto 1 (Hero/Cover Image) <span class="text-red-500">*</span></label>
+                    <input type="file" id="nw-img1-file" accept="image/*" class="w-full mb-2">
+                    <img id="nw-img1-preview" src="" class="hidden h-32 object-contain rounded border mt-2">
+                </div>
+
+                <div class="space-y-4 md:col-span-2">
+                    <label class="block font-semibold text-gray-700">Teks Bagian 1</label>
+                    <textarea id="nw-content1" rows="4" class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none"></textarea>
+                </div>
+
+                <div class="space-y-4 md:col-span-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label class="block font-semibold text-gray-700">Foto 2 (Opsional)</label>
+                    <input type="file" id="nw-img2-file" accept="image/*" class="w-full mb-2">
+                    <input type="text" id="nw-img2-caption" placeholder="Caption Foto 2" class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none mt-2">
+                    <img id="nw-img2-preview" src="" class="hidden h-32 object-contain rounded border mt-2">
+                </div>
+
+                <div class="space-y-4 md:col-span-2">
+                    <label class="block font-semibold text-gray-700">Teks Bagian 2</label>
+                    <textarea id="nw-content2" rows="4" class="w-full px-4 py-2 border rounded-lg focus:border-gold outline-none"></textarea>
+                </div>
+
+                <div class="md:col-span-2 flex justify-end gap-3 mt-4">
+                    <button type="button" onclick="closeNewsModal()" class="px-6 py-2 rounded-lg font-bold text-gray-600 bg-gray-200 hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" id="save-news-btn" class="px-6 py-2 rounded-lg font-bold text-white bg-gold hover:bg-goldHover transition flex items-center">
+                        <span class="btn-text">Simpan Berita</span>
+                        <div class="loader ml-2"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+        const AUTH_TOKEN_KEY = 'ajmn_admin_token';
+        let adminToken = localStorage.getItem(AUTH_TOKEN_KEY) || '';
+        const AUTO_NEWS_EMAIL = 'adminnews@ajmn.com';
+        const AUTO_NEWS_PASSWORD = 'adminajmn123';
+        let currentAdmin = null;
+
+        async function apiRequest(path, options = {}) {
+            const headers = new Headers(options.headers || {});
+            const init = { ...options, headers };
+
+            if (adminToken) headers.set('Authorization', `Bearer ${adminToken}`);
+            if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+
+            const response = await fetch(`${API_BASE_URL}${path}`, init);
+            const contentType = response.headers.get('content-type') || '';
+            const payload = contentType.includes('application/json') ? await response.json() : await response.text();
+            if (!response.ok) throw new Error(payload?.message || payload?.error || payload || `HTTP ${response.status}`);
+            return payload;
+        }
+
+        function setAdminToken(token) {
+            adminToken = token || '';
+            if (adminToken) localStorage.setItem(AUTH_TOKEN_KEY, adminToken);
+            else localStorage.removeItem(AUTH_TOKEN_KEY);
+        }
+
+        function showLoginScreen() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('dashboard-screen').classList.add('hidden');
+        }
+
+        function showDashboardScreen() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+        }
+
+        function normalizeDate(value) {
+            if (!value) return '';
+            const text = String(value);
+            return text.includes('T') ? text.split('T')[0] : text;
+        }
+
+        function pickValue(source, keys, fallback = '') {
+            for (const key of keys) {
+                if (source && source[key] !== undefined && source[key] !== null) return source[key];
+            }
+            return fallback;
+        }
+
+        function normalizeNewsItem(item) {
+            // Mengambil path asli dari database
+            let img1Path = pickValue(item, ['img1', 'Img1', 'Img1Url']);
+            let img2Path = pickValue(item, ['img2', 'Img2', 'Img2Url']);
+
+            // Menambahkan API_BASE_URL agar browser mencari ke server Node.js (Port 3000)
+            let fullImg1 = img1Path ? (img1Path.startsWith('http') ? img1Path : API_BASE_URL + img1Path) : '';
+            let fullImg2 = img2Path ? (img2Path.startsWith('http') ? img2Path : API_BASE_URL + img2Path) : '';
+
+            return {
+                id: pickValue(item, ['id', 'Id']),
+                title: pickValue(item, ['title', 'Title']),
+                category: pickValue(item, ['category', 'Category']),
+                isFeatured: Boolean(pickValue(item, ['isFeatured', 'IsFeatured'], false)),
+                date: normalizeDate(pickValue(item, ['date', 'Date', 'EventDate'])),
+                location: pickValue(item, ['location', 'Location']),
+                snippet: pickValue(item, ['snippet', 'Snippet']),
+                content1: pickValue(item, ['content1', 'Content1']),
+                content2: pickValue(item, ['content2', 'Content2']),
+                img1: fullImg1,
+                img2: fullImg2,
+                img2Caption: pickValue(item, ['img2Caption', 'Img2Caption']),
+                linkedEventId: pickValue(item, ['linkedEventId', 'LinkedEventId'])
+            };
+        }
+
+        async function bootstrapAuth() {
+            if (!adminToken) return showLoginScreen();
+            try {
+                currentAdmin = await apiRequest('/api/admin/me');
+                if (String(currentAdmin.role || '').toLowerCase() !== 'news_editor' && String(currentAdmin.role || '').toLowerCase() !== 'admin') {
+                    throw new Error('Akun ini tidak punya akses news.');
+                }
+                showDashboardScreen();
+                loadNews();
+            } catch (error) {
+                setAdminToken('');
+                currentAdmin = null;
+                showLoginScreen();
+            }
+        }
+
+        async function autoLoginNewsAdmin() {
+            try {
+                const result = await apiRequest('/api/admin/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: AUTO_NEWS_EMAIL, password: AUTO_NEWS_PASSWORD })
+                });
+
+                const token = result.token || result.accessToken || result.data?.token;
+                if (!token) throw new Error('Token login tidak ditemukan.');
+
+                setAdminToken(token);
+                currentAdmin = result.user || result.data?.user || null;
+                showDashboardScreen();
+                loadNews();
+            } catch (error) {
+                document.getElementById('login-screen').innerHTML = `
+                    <div class="bg-white/95 backdrop-blur-xl p-10 rounded-[2rem] shadow-2xl shadow-gray-200/60 border border-white w-full max-w-md relative z-10 text-center">
+                        <img src="images/Logo AJMNp.png" alt="Logo" class="h-16 mx-auto mb-6 bg-[#0f0500] p-3 rounded-2xl shadow-md">
+                        <h2 class="text-2xl font-extrabold mb-4 text-gray-900 tracking-tight">Gagal Masuk Otomatis</h2>
+                        <p class="text-sm text-gray-500">${error.message}</p>
+                    </div>`;
+            }
+        }
+
+        function openNewsModal() {
+            document.getElementById('news-form').reset();
+            document.getElementById('nw-id').value = '';
+            document.getElementById('nw-img1-url').value = '';
+            document.getElementById('nw-img2-url').value = '';
+            document.getElementById('nw-img1-preview').classList.add('hidden');
+            document.getElementById('nw-img2-preview').classList.add('hidden');
+            document.getElementById('news-modal-title').textContent = 'Tambah Berita Baru';
+            document.getElementById('news-modal').classList.remove('hidden');
+            document.getElementById('news-modal').classList.add('flex');
+        }
+
+        function closeNewsModal() {
+            document.getElementById('news-modal').classList.add('hidden');
+            document.getElementById('news-modal').classList.remove('flex');
+        }
+
+        async function uploadImage(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            const response = await fetch(`${API_BASE_URL}/api/uploads/image`, {
+                method: 'POST',
+                headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {},
+                body: formData
+            });
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.message || 'Upload gambar gagal.');
+            return payload.url || payload.path;
+        }
+
+        async function loadNews() {
+            try {
+                const data = await apiRequest('/api/news');
+                const items = Array.isArray(data) ? data : (data.data || data.items || []);
+                const rows = items.map(normalizeNewsItem);
+                const tbody = document.getElementById('news-table-body');
+                tbody.innerHTML = '';
+
+                if (rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Belum ada berita.</td></tr>`;
+                    return;
+                }
+
+                rows.forEach(nw => {
+                    const imgSrc = nw.img1 || 'images/av.jpg';
+                    const featBadge = nw.isFeatured ? `<span class="bg-amber-50 text-amber-600 px-3 py-1.5 rounded-md text-xs font-bold tracking-wide border border-amber-200"><i class="fas fa-star mr-1"></i> Featured</span>` : '';
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr class="hover:bg-gray-50/80 transition-colors group">
+                            <td class="px-6 py-4 border-b border-gray-100"><img src="${imgSrc}" class="h-16 w-24 object-cover rounded-lg shadow-sm border border-gray-100"></td>
+                            <td class="px-6 py-4 border-b border-gray-100">
+                                <div class="font-bold text-gray-800">${nw.title || '-'}</div>
+                                <div class="text-xs text-gray-500 mt-1 capitalize flex items-center gap-1.5"><i class="fas fa-tag text-gray-400"></i> ${nw.category || '-'}</div>
+                            </td>
+                            <td class="px-6 py-4 border-b border-gray-100 font-medium text-sm text-gray-600">${nw.date || '-'}</td>
+                            <td class="px-6 py-4 border-b border-gray-100">${featBadge}</td>
+                            <td class="px-6 py-4 border-b border-gray-100 text-right">
+                                <button onclick="editNews('${nw.id}')" class="text-gray-400 hover:text-blue-600 bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-200 p-2.5 rounded-lg mr-2 transition-all shadow-sm"><i class="fas fa-edit"></i></button>
+                                <button onclick="deleteNews('${nw.id}')" class="text-gray-400 hover:text-red-600 bg-white hover:bg-red-50 border border-gray-200 hover:border-red-200 p-2.5 rounded-lg transition-all shadow-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            } catch (error) {
+                Swal.fire('Error', 'Gagal memuat berita: ' + error.message, 'error');
+            }
+        }
+
+        window.editNews = async (id) => {
+            try {
+                const items = await apiRequest('/api/news');
+                const nw = (Array.isArray(items) ? items : []).map(normalizeNewsItem).find(n => String(n.id) === String(id));
+                if (!nw) return;
+                document.getElementById('news-modal-title').textContent = 'Edit Berita';
+                document.getElementById('nw-id').value = nw.id;
+                document.getElementById('nw-title').value = nw.title || '';
+                document.getElementById('nw-category').value = nw.category || 'umum';
+                document.getElementById('nw-featured').checked = !!nw.isFeatured;
+                document.getElementById('nw-date').value = normalizeDate(nw.date);
+                document.getElementById('nw-location').value = nw.location || '';
+                document.getElementById('nw-snippet').value = nw.snippet || '';
+                document.getElementById('nw-content1').value = nw.content1 || '';
+                document.getElementById('nw-content2').value = nw.content2 || '';
+                document.getElementById('nw-img2-caption').value = nw.img2Caption || '';
+                document.getElementById('nw-event-link').value = nw.linkedEventId || '';
+                document.getElementById('nw-img1-url').value = nw.img1 || '';
+                document.getElementById('nw-img2-url').value = nw.img2 || '';
+                if (nw.img1) {
+                    document.getElementById('nw-img1-preview').src = nw.img1;
+                    document.getElementById('nw-img1-preview').classList.remove('hidden');
+                }
+                if (nw.img2) {
+                    document.getElementById('nw-img2-preview').src = nw.img2;
+                    document.getElementById('nw-img2-preview').classList.remove('hidden');
+                }
+                document.getElementById('news-modal').classList.remove('hidden');
+                document.getElementById('news-modal').classList.add('flex');
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        };
+
+        window.deleteNews = async (id) => {
+            const result = await Swal.fire({
+                title: 'Hapus berita ini?',
+                text: 'Tindakan ini tidak dapat dibatalkan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!'
+            });
+            if (result.isConfirmed) {
+                await apiRequest(`/api/news/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                Swal.fire('Terhapus!', 'Berita berhasil dihapus.', 'success');
+                loadNews();
+            }
+        };
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await apiRequest('/api/admin/logout', { method: 'POST' });
+            } catch (error) {
+                console.warn(error);
+            } finally {
+                setAdminToken('');
+                currentAdmin = null;
+                showLoginScreen();
+            }
+        });
+
+        document.getElementById('nw-img1-file').addEventListener('change', function () {
+            if (this.files[0]) {
+                document.getElementById('nw-img1-preview').src = URL.createObjectURL(this.files[0]);
+                document.getElementById('nw-img1-preview').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('nw-img2-file').addEventListener('change', function () {
+            if (this.files[0]) {
+                document.getElementById('nw-img2-preview').src = URL.createObjectURL(this.files[0]);
+                document.getElementById('nw-img2-preview').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('news-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('save-news-btn');
+            btn.classList.add('btn-loading');
+            try {
+                let img1Url = document.getElementById('nw-img1-url').value;
+                let img2Url = document.getElementById('nw-img2-url').value;
+                const file1 = document.getElementById('nw-img1-file').files[0];
+                const file2 = document.getElementById('nw-img2-file').files[0];
+                if (file1) img1Url = await uploadImage(file1);
+                if (file2) img2Url = await uploadImage(file2);
+
+                const newsData = {
+                    title: document.getElementById('nw-title').value,
+                    category: document.getElementById('nw-category').value,
+                    isFeatured: document.getElementById('nw-featured').checked,
+                    date: document.getElementById('nw-date').value,
+                    location: document.getElementById('nw-location').value,
+                    snippet: document.getElementById('nw-snippet').value,
+                    content1: document.getElementById('nw-content1').value,
+                    content2: document.getElementById('nw-content2').value,
+                    img2Caption: document.getElementById('nw-img2-caption').value,
+                    img1: img1Url,
+                    img2: img2Url,
+                    linkedEventId: document.getElementById('nw-event-link').value
+                };
+
+                const id = document.getElementById('nw-id').value;
+                if (id) {
+                    await apiRequest(`/api/news/${encodeURIComponent(id)}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(newsData)
+                    });
+                    Swal.fire('Berhasil', 'Berita berhasil diperbarui', 'success');
+                } else {
+                    if (!img1Url) throw new Error('Gambar Utama wajib diunggah!');
+                    const customId = newsData.title.toLowerCase().trim().replace(/[\s\W-]+/g, '-');
+                    await apiRequest('/api/news', {
+                        method: 'POST',
+                        body: JSON.stringify({ id: customId, ...newsData })
+                    });
+                    Swal.fire('Berhasil', 'Berita baru berhasil ditambahkan', 'success');
+                }
+                closeNewsModal();
+                loadNews();
+            } catch (error) {
+                Swal.fire('Gagal', error.message, 'error');
+            } finally {
+                btn.classList.remove('btn-loading');
+            }
+        });
+
+        autoLoginNewsAdmin();
+    </script>
+</body>
+</html>

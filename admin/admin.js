@@ -1,5 +1,173 @@
-const auth    = firebase.auth();
-const db      = firebase.firestore();
+const API_BASE_URL = window.API_BASE_URL || 'http://localhost:3000';
+const AUTH_TOKEN_KEY = 'ajmn_admin_token';
+
+let adminToken = localStorage.getItem(AUTH_TOKEN_KEY) || '';
+let currentAdmin = null;
+let registerRole = 'admin';
+let isNewsOnlyAdmin = false;
+
+async function apiRequest(path, options = {}) {
+    const headers = new Headers(options.headers || {});
+    const init = { ...options, headers };
+
+    if (adminToken) {
+        headers.set('Authorization', `Bearer ${adminToken}`);
+    }
+
+    if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
+        headers.set('Content-Type', 'application/json');
+    }
+
+    const response = await fetch(`${API_BASE_URL}${path}`, init);
+    const contentType = response.headers.get('content-type') || '';
+    const payload = contentType.includes('application/json') ? await response.json() : await response.text();
+
+    if (!response.ok) {
+        const message = payload && typeof payload === 'object'
+            ? (payload.message || payload.error || `HTTP ${response.status}`)
+            : (payload || `HTTP ${response.status}`);
+        throw new Error(message);
+    }
+
+    return payload;
+}
+
+function setAdminToken(token) {
+    adminToken = token || '';
+    if (adminToken) {
+        localStorage.setItem(AUTH_TOKEN_KEY, adminToken);
+    } else {
+        localStorage.removeItem(AUTH_TOKEN_KEY);
+    }
+}
+
+function showLoginScreen() {
+    const loginScreen = document.getElementById('login-screen');
+    const dashboardScreen = document.getElementById('dashboard-screen');
+    if (loginScreen) loginScreen.classList.remove('hidden');
+    if (dashboardScreen) dashboardScreen.classList.add('hidden');
+}
+
+function showDashboardScreen() {
+    const loginScreen = document.getElementById('login-screen');
+    const dashboardScreen = document.getElementById('dashboard-screen');
+    if (loginScreen) loginScreen.classList.add('hidden');
+    if (dashboardScreen) dashboardScreen.classList.remove('hidden');
+}
+
+function applyRolePermissions() {
+    const role = String(currentAdmin?.role || '').toLowerCase();
+    isNewsOnlyAdmin = role === 'news_editor';
+
+    const tabs = [
+        document.getElementById('tab-events'),
+        document.getElementById('tab-cards'),
+        document.getElementById('tab-gallery')
+    ];
+    const sections = [
+        document.getElementById('section-events'),
+        document.getElementById('section-cards'),
+        document.getElementById('section-gallery')
+    ];
+
+    tabs.forEach(el => { if (el) el.classList.toggle('hidden', isNewsOnlyAdmin); });
+    sections.forEach(el => { if (el) el.classList.toggle('hidden', isNewsOnlyAdmin); });
+
+    const navLabel = document.querySelector('aside p.text-gold');
+    if (navLabel) navLabel.textContent = isNewsOnlyAdmin ? 'NEWS EDITOR' : 'EVENT MANAGER';
+
+    if (isNewsOnlyAdmin) {
+        switchTab('news');
+    }
+}
+
+async function bootstrapAuth() {
+    if (!adminToken) {
+        showLoginScreen();
+        return;
+    }
+
+    try {
+        currentAdmin = await apiRequest('/api/admin/me');
+        showDashboardScreen();
+        applyRolePermissions();
+        switchTab(isNewsOnlyAdmin ? 'news' : 'events');
+    } catch (error) {
+        setAdminToken('');
+        currentAdmin = null;
+        showLoginScreen();
+    }
+}
+
+function pickValue(source, keys, fallback = '') {
+    for (const key of keys) {
+        if (source && source[key] !== undefined && source[key] !== null) {
+            return source[key];
+        }
+    }
+    return fallback;
+}
+
+function normalizeDateValue(value) {
+    if (!value) return '';
+    const text = String(value);
+    return text.includes('T') ? text.split('T')[0] : text;
+}
+
+function normalizeEventItem(item) {
+    return {
+        id: pickValue(item, ['id', 'Id']),
+        title: pickValue(item, ['title', 'Title']),
+        dateISO: normalizeDateValue(pickValue(item, ['dateISO', 'DateISO', 'EventDate', 'eventDate'])),
+        dateStr: pickValue(item, ['dateStr', 'DateStr', 'DateLabel', 'dateLabel']),
+        category: pickValue(item, ['category', 'Category']),
+        location: pickValue(item, ['location', 'Location']),
+        link: pickValue(item, ['link', 'Link']),
+        desc: pickValue(item, ['desc', 'Desc']),
+        img: pickValue(item, ['img', 'Img', 'imgUrl', 'ImgUrl', 'imageUrl', 'ImageUrl'])
+    };
+}
+
+function normalizeNewsItem(item) {
+    return {
+        id: pickValue(item, ['id', 'Id']),
+        title: pickValue(item, ['title', 'Title']),
+        category: pickValue(item, ['category', 'Category']),
+        isFeatured: Boolean(pickValue(item, ['isFeatured', 'IsFeatured'], false)),
+        date: normalizeDateValue(pickValue(item, ['date', 'Date', 'EventDate', 'eventDate'])),
+        location: pickValue(item, ['location', 'Location']),
+        snippet: pickValue(item, ['snippet', 'Snippet']),
+        content1: pickValue(item, ['content1', 'Content1']),
+        content2: pickValue(item, ['content2', 'Content2']),
+        img1: pickValue(item, ['img1', 'Img1Url', 'Img1', 'imgUrl', 'ImageUrl']),
+        img2: pickValue(item, ['img2', 'Img2Url', 'Img2']),
+        img2Caption: pickValue(item, ['img2Caption', 'Img2Caption']),
+        linkedEventId: pickValue(item, ['linkedEventId', 'LinkedEventId'])
+    };
+}
+
+function normalizeCardItem(item) {
+    return {
+        id: pickValue(item, ['id', 'Id']),
+        name: pickValue(item, ['name', 'Name']),
+        title: pickValue(item, ['title', 'Title']),
+        phone: pickValue(item, ['phone', 'Phone']),
+        whatsapp: pickValue(item, ['whatsapp', 'WhatsApp', 'Whatsapp']),
+        email: pickValue(item, ['email', 'Email']),
+        linkedin: pickValue(item, ['linkedin', 'Linkedin', 'LinkedIn']),
+        photo: pickValue(item, ['photo', 'Photo']),
+        photo2: pickValue(item, ['photo2', 'Photo2'])
+    };
+}
+
+function normalizeGalleryItem(item, index = 0) {
+    return {
+        id: pickValue(item, ['id', 'Id'], `gal_${Date.now()}_${index}`),
+        img: pickValue(item, ['img', 'Img', 'image', 'Image']),
+        category: pickValue(item, ['category', 'Category']),
+        alt: pickValue(item, ['alt', 'Alt'])
+    };
+}
 
 // Mencegah efek berkedip (flash) ke halaman login saat di-refresh
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,6 +192,7 @@ const sectionGallery = document.getElementById('section-gallery');
 
 function switchTab(tabId) {
     // Fallback: Jika tabId tidak valid, kembalikan ke tab events secara otomatis
+    if (isNewsOnlyAdmin) tabId = 'news';
     if (tabId !== 'events' && tabId !== 'news' && tabId !== 'cards' && tabId !== 'gallery') tabId = 'events';
     
     const activeClass = "w-full flex items-center gap-3 bg-gradient-to-r from-gold to-goldHover text-white shadow-md shadow-gold/20 font-bold px-5 py-3.5 rounded-xl mb-2 transition-all";
@@ -64,21 +233,12 @@ tabCardsBtn.addEventListener('click', () => switchTab('cards'));
 if (tabGalleryBtn) tabGalleryBtn.addEventListener('click', () => switchTab('gallery'));
 
 // --- AUTHENTICATION ---
-auth.onAuthStateChanged(user => {
-    if (user) {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('dashboard-screen').classList.remove('hidden');
-        
-        switchTab('events');
-    } else {
-        document.getElementById('login-screen').classList.remove('hidden');
-        document.getElementById('dashboard-screen').classList.add('hidden');
-    }
-});
+bootstrapAuth();
 
 let isRegisterMode = false;
 document.getElementById('toggle-auth').addEventListener('click', () => {
     isRegisterMode = !isRegisterMode;
+    registerRole = 'admin';
     const authTitle = document.getElementById('auth-title');
     const toggleAuthBtn = document.getElementById('toggle-auth');
     const submitBtnText = document.querySelector('#login-btn .btn-text');
@@ -94,6 +254,14 @@ document.getElementById('toggle-auth').addEventListener('click', () => {
     }
 });
 
+document.getElementById('toggle-news-auth').addEventListener('click', () => {
+    isRegisterMode = true;
+    registerRole = 'news_editor';
+    document.getElementById('auth-title').textContent = 'Daftar Admin News';
+    document.querySelector('#login-btn .btn-text').textContent = 'DAFTAR';
+    document.getElementById('toggle-auth').textContent = 'Daftar Admin Baru';
+});
+
 document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('login-btn');
@@ -101,11 +269,27 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     try {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
+        const registerEndpoint = registerRole === 'news_editor' ? '/api/admin/register-news' : '/api/admin/register';
+        const result = await apiRequest(isRegisterMode ? registerEndpoint : '/api/admin/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password: pass, role: registerRole })
+        });
+
+        const token = result.token || result.accessToken || result.data?.token;
+        if (!token) {
+            throw new Error('Server tidak mengembalikan token login.');
+        }
+
+        setAdminToken(token);
+        currentAdmin = result.user || result.data?.user || null;
+        showDashboardScreen();
+        applyRolePermissions();
+        switchTab(isNewsOnlyAdmin ? 'news' : 'events');
+
         if (isRegisterMode) {
-            await auth.createUserWithEmailAndPassword(email, pass);
-            Swal.fire('Berhasil', 'Akun admin berhasil dibuat dan Anda telah login secara otomatis!', 'success');
+            Swal.fire('Berhasil', isNewsOnlyAdmin ? 'Akun admin news berhasil dibuat dan Anda telah login secara otomatis!' : 'Akun admin berhasil dibuat dan Anda telah login secara otomatis!', 'success');
         } else {
-            await auth.signInWithEmailAndPassword(email, pass);
+            Swal.fire('Berhasil', 'Login berhasil', 'success');
         }
     } catch (error) {
         console.error("Auth Error Detail:", error);
@@ -115,10 +299,22 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     }
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => auth.signOut());
+document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+        await apiRequest('/api/admin/logout', { method: 'POST' });
+    } catch (error) {
+        console.warn('Logout warning:', error);
+    } finally {
+        setAdminToken('');
+        currentAdmin = null;
+        isNewsOnlyAdmin = false;
+        registerRole = 'admin';
+        showLoginScreen();
+    }
+});
 
-// --- HELPER: UPLOAD TO IMGBB ---
-async function uploadToImgBB(file) {
+// --- HELPER: UPLOAD TO SERVER ---
+async function uploadImageToServer(file) {
     // Batas ukuran file (dalam KB)
     const MAX_SIZE_KB = 100;
     const MAX_SIZE_BYTES = MAX_SIZE_KB * 1024;
@@ -129,42 +325,32 @@ async function uploadToImgBB(file) {
 
     const formData = new FormData();
     formData.append('image', file);
-    const IMGBB_API_KEY = 'e3112a88722d9ee022c18c7c7f824183'; 
-    const targetUrl = `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`;
-    
-    try {
-        const response = await fetch(targetUrl, { method: 'POST', body: formData });
-        const data = await response.json();
-        if (data.success) {
-            let finalUrl = data.data.url;
-            if (finalUrl.includes('i.ibb.co') && !finalUrl.includes('i.ibb.co.com')) finalUrl = finalUrl.replace('i.ibb.co', 'i.ibb.co.com');
-            return finalUrl;
-        }
-        throw new Error(data.error ? data.error.message : "Gagal menerima respons dari server ImgBB.");
-    } catch (error) {
-        if (error.message.startsWith('Ukuran file')) {
-            throw error; // Lemparkan kembali error spesifik tentang ukuran
-        }
-        throw new Error("Gagal mengunggah gambar. Pastikan koneksi internet Anda stabil.");
+    const response = await fetch(`${API_BASE_URL}/api/uploads/image`, {
+        method: 'POST',
+        headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {},
+        body: formData
+    });
+
+    const payload = await response.json();
+    if (!response.ok) {
+        throw new Error(payload.message || payload.error || 'Gagal mengunggah gambar ke server.');
     }
+
+    return payload.url || payload.path || payload.data?.url || payload.data?.path;
 }
 
 // --- FETCH DATA ---
 async function fetchEvents() {
     try {
-        const snapshot = await db.collection("events").orderBy("dateISO", "desc").get({ source: 'server' });
-        allEvents = [];
+        const response = await apiRequest('/api/events');
+        const items = Array.isArray(response) ? response : (response.data || response.items || []);
+        allEvents = items.map((item, index) => normalizeEventItem(item, index));
         const tbody = document.getElementById('events-table-body');
         tbody.innerHTML = '';
         const today = new Date().toISOString().split('T')[0];
 
-        snapshot.forEach(doc => {
-            const ev = { id: doc.id, ...doc.data() };
+        allEvents.forEach(ev => {
             let imgSrc = ev.img || '../images/av.jpg';
-            if (imgSrc.includes('i.ibb.co') && !imgSrc.includes('i.ibb.co.com')) {
-                imgSrc = imgSrc.replace('i.ibb.co', 'i.ibb.co.com');
-            }
-            allEvents.push(ev);
             
             // Logika Status Berdasarkan Tanggal
             const isPast = ev.dateISO < today;
@@ -214,16 +400,14 @@ function closeEventModal() {
 // --- NEWS TAB LOGIC ---
 async function fetchNews() {
     try {
-        const snapshot = await db.collection("news").orderBy("date", "desc").get({ source: 'server' });
-        allNews = [];
+        const response = await apiRequest('/api/news');
+        const items = Array.isArray(response) ? response : (response.data || response.items || []);
+        allNews = items.map((item, index) => normalizeNewsItem(item, index));
         const tbody = document.getElementById('news-table-body');
         tbody.innerHTML = '';
 
-        snapshot.forEach(doc => {
-            const nw = { id: doc.id, ...doc.data() };
+        allNews.forEach(nw => {
             let imgSrc = nw.img1 || '../images/av.jpg';
-            if (imgSrc.includes('i.ibb.co') && !imgSrc.includes('i.ibb.co.com')) imgSrc = imgSrc.replace('i.ibb.co', 'i.ibb.co.com');
-            allNews.push(nw);
             
             const featBadge = nw.isFeatured ? `<span class="bg-amber-50 text-amber-600 px-3 py-1.5 rounded-md text-xs font-bold tracking-wide border border-amber-200"><i class="fas fa-star mr-1"></i> Featured</span>` : '';
 
@@ -300,7 +484,7 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
 
         const file = document.getElementById('ev-img-file').files[0];
         if (file) {
-            imgUrl = await uploadToImgBB(file);
+            imgUrl = await uploadImageToServer(file);
         }
         
         const eventData = {
@@ -316,11 +500,17 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
         
         const id = document.getElementById('ev-id').value;
         if (id) {
-            await db.collection("events").doc(id).update(eventData);
+            await apiRequest(`/api/events/${encodeURIComponent(id)}`, {
+                method: 'PUT',
+                body: JSON.stringify(eventData)
+            });
             Swal.fire('Berhasil', 'Event berhasil diperbarui', 'success');
         } else {
             if(!imgUrl) throw new Error("Gambar wajib diunggah untuk event baru!");
-            await db.collection("events").add(eventData);
+            await apiRequest('/api/events', {
+                method: 'POST',
+                body: JSON.stringify(eventData)
+            });
             Swal.fire('Berhasil', 'Event baru berhasil ditambahkan', 'success');
         }
         
@@ -340,7 +530,7 @@ window.deleteEvent = async (id) => {
         showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Hapus!'
     });
     if (result.isConfirmed) {
-        await db.collection("events").doc(id).delete();
+        await apiRequest(`/api/events/${encodeURIComponent(id)}`, { method: 'DELETE' });
         Swal.fire('Terhapus!', 'Event berhasil dihapus.', 'success');
         fetchEvents();
     }
@@ -348,14 +538,13 @@ window.deleteEvent = async (id) => {
 
 async function fetchCards() {
     try {
-        const snapshot = await db.collection("business_cards").orderBy("name").get({ source: 'server' });
-        allCards = [];
+        const response = await apiRequest('/api/business-cards');
+        const items = Array.isArray(response) ? response : (response.data || response.items || []);
+        allCards = items.map((item, index) => normalizeCardItem(item, index));
         const tbody = document.getElementById('cards-table-body');
         tbody.innerHTML = '';
 
-        snapshot.forEach(doc => {
-            const card = { id: doc.id, ...doc.data() };
-            allCards.push(card);
+        allCards.forEach(card => {
             let photoSrc = card.photo || '../images/favicon.png';
             const cardUrl = `${window.location.origin}/card.html?id=${card.id}`;
 
@@ -408,9 +597,9 @@ async function populateEventDropdown() {
     
     // Tarik data event jika belum ada di memory
     if (allEvents.length === 0) {
-        const snapshot = await db.collection("events").orderBy("dateISO", "desc").get();
-        allEvents = [];
-        snapshot.forEach(doc => allEvents.push({ id: doc.id, ...doc.data() }));
+        const response = await apiRequest('/api/events');
+        const items = Array.isArray(response) ? response : (response.data || response.items || []);
+        allEvents = items.map((item, index) => normalizeEventItem(item, index));
     }
 
     allEvents.forEach(ev => {
@@ -489,10 +678,10 @@ document.getElementById('news-form').addEventListener('submit', async (e) => {
         let img2Url = document.getElementById('nw-img2-url').value;
         
         const file1 = document.getElementById('nw-img1-file').files[0];
-        if(file1) img1Url = await uploadToImgBB(file1);
+        if(file1) img1Url = await uploadImageToServer(file1);
         
         const file2 = document.getElementById('nw-img2-file').files[0];
-        if(file2) img2Url = await uploadToImgBB(file2);
+        if(file2) img2Url = await uploadImageToServer(file2);
 
         const newsData = {
             title: document.getElementById('nw-title').value,
@@ -511,7 +700,10 @@ document.getElementById('news-form').addEventListener('submit', async (e) => {
 
         const id = document.getElementById('nw-id').value;
         if (id) {
-            await db.collection("news").doc(id).update(newsData);
+            await apiRequest(`/api/news/${encodeURIComponent(id)}`, {
+                method: 'PUT',
+                body: JSON.stringify(newsData)
+            });
             Swal.fire('Berhasil', 'Berita berhasil diperbarui', 'success');
         } else {
             if(!img1Url) throw new Error("Gambar Utama wajib diunggah!");
@@ -519,14 +711,11 @@ document.getElementById('news-form').addEventListener('submit', async (e) => {
             // Membuat ID custom (slug) dari judul (contoh: Berita Terbaru -> berita-terbaru)
             let customId = newsData.title.toLowerCase().trim().replace(/[\s\W-]+/g, '-');
             if (!customId) customId = Date.now().toString(); 
-            
-            // Cek apakah custom ID ini sudah dipakai
-            const checkDoc = await db.collection("news").doc(customId).get();
-            if (checkDoc.exists) {
-                customId = customId + '-' + Math.floor(Math.random() * 1000);
-            }
-            
-            await db.collection("news").doc(customId).set(newsData);
+
+            await apiRequest('/api/news', {
+                method: 'POST',
+                body: JSON.stringify({ id: customId, ...newsData })
+            });
             Swal.fire('Berhasil', 'Berita baru berhasil ditambahkan', 'success');
         }
         closeNewsModal();
@@ -541,7 +730,7 @@ document.getElementById('news-form').addEventListener('submit', async (e) => {
 window.deleteNews = async (id) => {
     const result = await Swal.fire({ title: 'Hapus berita ini?', text: "Tindakan ini tidak dapat dibatalkan!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Hapus!' });
     if (result.isConfirmed) {
-        await db.collection("news").doc(id).delete();
+        await apiRequest(`/api/news/${encodeURIComponent(id)}`, { method: 'DELETE' });
         Swal.fire('Terhapus!', 'Berita berhasil dihapus.', 'success');
         fetchNews();
     }
@@ -597,8 +786,8 @@ document.getElementById('card-form').addEventListener('submit', async (e) => {
         let photo2Url = document.getElementById('c-photo2-url').value;
         const file = document.getElementById('c-photo-file').files[0];
         const file2 = document.getElementById('c-photo2-file').files[0];
-        if(file) photoUrl = await uploadToImgBB(file);
-        if(file2) photo2Url = await uploadToImgBB(file2);
+        if(file) photoUrl = await uploadImageToServer(file);
+        if(file2) photo2Url = await uploadImageToServer(file2);
 
         const cardData = {
             name: document.getElementById('c-name').value,
@@ -613,7 +802,10 @@ document.getElementById('card-form').addEventListener('submit', async (e) => {
 
         const id = document.getElementById('c-id').value;
         if (id) {
-            await db.collection("business_cards").doc(id).update(cardData);
+            await apiRequest(`/api/business-cards/${encodeURIComponent(id)}`, {
+                method: 'PUT',
+                body: JSON.stringify(cardData)
+            });
             Swal.fire('Berhasil', 'Kartu nama berhasil diperbarui', 'success');
         } else {
             if(!photoUrl) throw new Error("Foto profil wajib diunggah!");
@@ -623,12 +815,10 @@ document.getElementById('card-form').addEventListener('submit', async (e) => {
             if (!customId) customId = Date.now().toString(); // Fallback jika nama kosong/aneh
             
             // Cek apakah custom ID ini sudah dipakai (misal ada 2 nama yang persis sama)
-            const checkDoc = await db.collection("business_cards").doc(customId).get();
-            if (checkDoc.exists) {
-                customId = customId + '-' + Math.floor(Math.random() * 1000);
-            }
-            
-            await db.collection("business_cards").doc(customId).set(cardData);
+            await apiRequest('/api/business-cards', {
+                method: 'POST',
+                body: JSON.stringify({ id: customId, ...cardData })
+            });
             Swal.fire('Berhasil', 'Kartu nama baru berhasil ditambahkan', 'success');
         }
         closeCardModal();
@@ -640,7 +830,7 @@ document.getElementById('card-form').addEventListener('submit', async (e) => {
 window.deleteCard = async (id) => {
     const result = await Swal.fire({ title: 'Hapus kartu nama ini?', text: "Tindakan ini tidak dapat dibatalkan!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Hapus!' });
     if (result.isConfirmed) {
-        await db.collection("business_cards").doc(id).delete();
+        await apiRequest(`/api/business-cards/${encodeURIComponent(id)}`, { method: 'DELETE' });
         Swal.fire('Terhapus!', 'Kartu nama berhasil dihapus.', 'success');
         fetchCards();
     }
@@ -675,13 +865,9 @@ window.downloadQR = (id, name) => {
 // --- GALLERY MANAGEMENT ---
 async function fetchGallery() {
     try {
-        const doc = await db.collection("siteContent").doc("gallery").get({ source: 'server' });
-        allGalleryItems = (doc.exists && doc.data().items) ? doc.data().items : [];
-
-        allGalleryItems = allGalleryItems.map((item, index) => {
-            if (!item.id) item.id = 'gal_' + Date.now() + '_' + index;
-            return item;
-        });
+        const response = await apiRequest('/api/gallery');
+        const items = Array.isArray(response) ? response : (response.data || response.items || response.items?.items || []);
+        allGalleryItems = items.map((item, index) => normalizeGalleryItem(item, index));
 
         const tbody = document.getElementById('gallery-table-body');
         if (!tbody) return;
@@ -696,7 +882,6 @@ async function fetchGallery() {
 
         allGalleryItems.forEach(gal => {
             let imgSrc = gal.img || '../images/av.jpg';
-            if (imgSrc.includes('i.ibb.co') && !imgSrc.includes('i.ibb.co.com')) imgSrc = imgSrc.replace('i.ibb.co', 'i.ibb.co.com');
             const categoryLabel = catMap[gal.category] || gal.category;
 
             tbody.innerHTML += `
@@ -788,7 +973,7 @@ if(galForm) {
                 // Mode Edit (hanya 1 gambar)
                 let imgUrl = document.getElementById('gal-img-url').value;
                 const file = document.getElementById('gal-img-file').files[0];
-                if(file) imgUrl = await uploadToImgBB(file);
+                if(file) imgUrl = await uploadImageToServer(file);
                 if(!imgUrl) throw new Error("Gambar wajib diunggah!");
 
                 const galData = {
@@ -804,7 +989,7 @@ if(galForm) {
                 const files = document.getElementById('gal-img-file').files;
                 if (files.length === 0) throw new Error("Pilih setidaknya satu gambar untuk diunggah!");
 
-                const uploadPromises = Array.from(files).map(file => uploadToImgBB(file));
+                const uploadPromises = Array.from(files).map(file => uploadImageToServer(file));
                 const uploadedUrls = await Promise.all(uploadPromises);
 
                 const newItems = uploadedUrls.map((url, index) => ({
@@ -816,7 +1001,10 @@ if(galForm) {
                 allGalleryItems.unshift(...newItems); // Tambahkan semua foto baru di urutan paling depan
             }
 
-            await db.collection("siteContent").doc("gallery").set({ items: allGalleryItems });
+            await apiRequest('/api/gallery', {
+                method: 'PUT',
+                body: JSON.stringify({ items: allGalleryItems })
+            });
             Swal.fire('Berhasil', 'Gambar galeri berhasil disimpan', 'success');
             closeGalleryModal();
             fetchGallery();
@@ -829,7 +1017,10 @@ window.deleteGallery = async (id) => {
     const result = await Swal.fire({ title: 'Hapus gambar ini?', text: "Tindakan ini tidak dapat dibatalkan!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Hapus!' });
     if (result.isConfirmed) {
         allGalleryItems = allGalleryItems.filter(g => g.id !== id);
-        await db.collection("siteContent").doc("gallery").set({ items: allGalleryItems });
+        await apiRequest('/api/gallery', {
+            method: 'PUT',
+            body: JSON.stringify({ items: allGalleryItems })
+        });
         Swal.fire('Terhapus!', 'Gambar berhasil dihapus dari galeri.', 'success');
         fetchGallery();
     }

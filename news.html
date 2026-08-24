@@ -203,21 +203,30 @@
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA", authDomain: "ajmn-website.firebaseapp.com",
-            projectId: "ajmn-website", storageBucket: "ajmn-website.firebasestorage.app",
-            messagingSenderId: "223460999999", appId: "1:223460999999:web:a0758ffee209e3b49c898a"
-        };
-        if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        
         let allNews = [];
         let currentUrl = window.location.href;
+        const API_BASE_URL = 'http://localhost:3000';
+
+        function formatNewsDate(value) {
+            if (!value) return '';
+
+            const parsed = new Date(value);
+            if (Number.isNaN(parsed.getTime())) return String(value);
+
+            return new Intl.DateTimeFormat('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(parsed);
+        }
+
+        function getImageUrl(path) {
+            if (!path) return 'images/placeholder.png';
+            if (/^https?:\/\//i.test(path)) return path;
+            return `${API_BASE_URL}${path}`;
+        }
 
         function buildCard(nw) {
             return `<div class="event-card" data-category="${nw.category}" onclick="openDetail('${nw.id}')" style="cursor:pointer;">
@@ -239,8 +248,32 @@
 
         async function loadNews() {
             try {
-                const snap = await db.collection("news").orderBy("date", "desc").get();
-                allNews = []; snap.forEach(doc => allNews.push({id: doc.id, ...doc.data()}));
+                const response = await fetch(`${API_BASE_URL}/api/news`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                const data = await response.json();
+
+                // Memetakan (Mapping) data SQL ke format array yang diharapkan UI
+                allNews = Array.isArray(data) ? data.map(item => {
+                    // Logika pintar untuk menggabungkan URL jika gambar ada
+                    let fullImg1 = item.Img1 ? (item.Img1.startsWith('http') ? item.Img1 : `${API_BASE_URL}${item.Img1}`) : 'images/Logo AJMNp.png';
+                    let fullImg2 = item.Img2 ? (item.Img2.startsWith('http') ? item.Img2 : `${API_BASE_URL}${item.Img2}`) : null;
+
+                    return {
+                        id: item.Id,
+                        title: item.Title,
+                        category: item.Category,
+                        date: item.Date ? new Date(item.Date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
+                        location: item.Location,
+                        snippet: item.Snippet,
+                        content1: item.Content1,
+                        content2: item.Content2,
+                        img1: fullImg1, // Menggunakan logika pintar di atas (fallback ke Logo AJMN)
+                        img2: fullImg2,
+                        img2Caption: item.Img2Caption,
+                        isFeatured: item.IsFeatured
+                    };
+                }) : [];
                 
                 if(allNews.length === 0) {
                     document.getElementById('no-news').style.display = 'block';
@@ -275,7 +308,7 @@
         }
 
         window.openDetail = (id, pushState = true) => {
-            const nw = allNews.find(n => n.id === id);
+            const nw = allNews.find(n => String(n.id) === String(id));
             if(!nw) return;
             
             document.getElementById('det-img1').src = nw.img1;

@@ -143,37 +143,28 @@
     </footer>
 
     
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
-    (function(){
-        const firebaseConfig = {
-            apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
-            authDomain:        "ajmn-website.firebaseapp.com",
-            projectId:         "ajmn-website",
-            storageBucket:     "ajmn-website.firebasestorage.app",
-            messagingSenderId: "223460999999",
-            appId:             "1:223460999999:web:a0758ffee209e3b49c898a"
-        };
+    (async function(){
+        const API_BASE_URL = '';
         
         function buildCard(ev) {            
             const linkHtml = `<a href="gallery" class="btn-event">LIHAT DOKUMENTASI</a>`;
-            const imgSrc = (ev.img || 'images/av.jpg').replace('i.ibb.co/', 'i.ibb.co.com/');
+            const imgSrc = ev.ImgPath ? `${API_BASE_URL}${ev.ImgPath}` : 'images/av.jpg';
             
-            return `<div class="event-card" data-category="${ev.category || 'seminar'}">
+            return `<div class="event-card" data-category="${ev.Category || 'seminar'}">
                 <div class="event-img-wrap">
-                    <img src="${imgSrc}" alt="${ev.title || ''}">
+                    <img src="${imgSrc}" alt="${ev.Title || ''}">
                     <span class="event-badge bg-gray-600 text-white">SELESAI</span>
                 </div>
                 <div class="event-info">
                     <div class="event-meta">
-                        <span class="event-date"><i class="fas fa-calendar-alt"></i> ${ev.date || ''}</span>
-                        <span class="event-category-tag">${(ev.category || '').toUpperCase().replace('-', ' ')}</span>
+                        <span class="event-date"><i class="fas fa-calendar-alt"></i> ${ev.DisplayDate || ''}</span>
+                        <span class="event-category-tag">${(ev.Category || '').toUpperCase().replace('-', ' ')}</span>
                     </div>
-                    <h3 class="event-title line-clamp-2">${ev.title || ''}</h3>
-                    <p class="event-desc line-clamp-3">${ev.desc || ''}</p>
+                    <h3 class="event-title line-clamp-2">${ev.Title || ''}</h3>
+                    <p class="event-desc line-clamp-3">${ev.Description || ''}</p>
                     <div class="event-footer">
-                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> ${ev.location || ''}</span>
+                        <span class="event-location"><i class="fas fa-map-marker-alt"></i> ${ev.Location || ''}</span>
                         ${linkHtml}
                     </div>
                 </div>
@@ -181,18 +172,19 @@
         }
 
         try {
-            if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-            firebase.firestore().collection("events").orderBy("dateISO", "desc").get().then(snap => {
-                const now = new Date().toISOString().split('T')[0];
-                const container = document.getElementById("past-events");
-                
-                snap.forEach(doc => {
-                    const ev = { id: doc.id, ...doc.data() };
-                    if (ev.dateISO < now) {
-                        container.insertAdjacentHTML('beforeend', buildCard(ev));
-                    }
+            const response = await fetch(`${API_BASE_URL}/api/events/past`);
+            if (!response.ok) throw new Error('Gagal mengambil data event');
+
+            const events = await response.json();
+            const container = document.getElementById("past-events");
+
+            if (events.length === 0) {
+                // Opsional: Tampilkan pesan jika tidak ada past events
+            } else {
+                events.forEach(ev => {
+                    container.insertAdjacentHTML('beforeend', buildCard(ev));
                 });
-            });
+            }
         } catch(e){ console.warn("Past events load error:", e.message); }
     })();
     </script>

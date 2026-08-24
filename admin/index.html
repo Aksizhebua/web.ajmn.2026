@@ -49,6 +49,7 @@
                     <div class="loader"></div>
                 </button>
                 <p class="mt-6 text-sm text-gray-500 font-medium">Belum punya akun? <button type="button" id="toggle-auth" class="text-goldHover font-bold hover:underline transition-colors">Daftar Admin Baru</button></p>
+                <p class="mt-3 text-sm text-gray-500 font-medium">Butuh akses khusus berita? <button type="button" id="toggle-news-auth" class="text-goldHover font-bold hover:underline transition-colors">Daftar Admin News</button></p>
             </form>
         </div>
     </div>
@@ -460,25 +461,8 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    
-    <!-- Config & Logic -->
-    <script>
-        const firebaseConfig = {
-            apiKey:            "AIzaSyAJOW065La24rSO0VJ8k2-g2KpgBxO2TlA",
-            authDomain:        "ajmn-website.firebaseapp.com",
-            projectId:         "ajmn-website",
-            storageBucket:     "ajmn-website.firebasestorage.app",
-            messagingSenderId: "223460999999",
-            appId:             "1:223460999999:web:a0758ffee209e3b49c898a"
-        };
-        firebase.initializeApp(firebaseConfig);
-    </script>
     <script src="/admin/admin.js"></script>
 </body>
 </html>

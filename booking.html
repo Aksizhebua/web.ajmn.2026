@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking & Reservasi | PT Atma Jaya Mitra Nusantara</title>
+    
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    
+    <!-- Menggunakan font Montserrat agar terlihat elegan -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("qiDMTSzcfbj_TBi5B");
+        })();
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- NAVBAR TAMPILAN TAILWIND -->
+    <header id="navbar" class="fixed top-0 left-0 w-full bg-white shadow-sm z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="/" class="flex-shrink-0">
+                <!-- Ganti link gambar jika error -->
+                <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara" class="h-10 md:h-12 object-contain" onerror="this.src='https://via.placeholder.com/150x50?text=AJMN'">
+            </a>
+            
+            <!-- Menu Desktop -->
+            <nav class="hidden lg:flex gap-8 items-center font-bold text-xs tracking-wider text-slate-600">
+                <a href="/" class="hover:text-blue-600 transition-colors">HOME</a>
+                <a href="about" class="hover:text-blue-600 transition-colors">ABOUT US</a>
+                <a href="news" class="hover:text-blue-600 transition-colors">NEWS</a>
+                
+                <!-- Dropdown Services -->
+                <div class="relative group cursor-pointer py-6">
+                    <span class="hover:text-blue-600 flex items-center gap-1">SERVICES <i class="fa-solid fa-chevron-down text-[10px]"></i></span>
+                    <div class="absolute top-full left-0 w-56 bg-white shadow-xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden py-2 transform translate-y-2 group-hover:translate-y-0">
+                        <a href="academic-venture" class="px-5 py-3 hover:bg-blue-50 hover:text-blue-600 transition-colors">ACADEMIC VENTURE</a>
+                        <a href="non-academic-venture" class="px-5 py-3 hover:bg-blue-50 hover:text-blue-600 transition-colors">NON-ACADEMIC VENTURE</a>
+                    </div>
+                </div>
+                
+                <a href="gallery" class="hover:text-blue-600 transition-colors">GALLERY</a>
+                
+                <!-- Dropdown What's On -->
+                <div class="relative group cursor-pointer py-6">
+                    <span class="hover:text-blue-600 flex items-center gap-1">WHAT'S ON <i class="fa-solid fa-chevron-down text-[10px]"></i></span>
+                    <div class="absolute top-full left-0 w-52 bg-white shadow-xl rounded-2xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden py-2 transform translate-y-2 group-hover:translate-y-0">
+                        <a href="upcoming-events" class="px-5 py-3 hover:bg-blue-50 hover:text-blue-600 transition-colors">UPCOMING EVENTS</a>
+                        <a href="past-events" class="px-5 py-3 hover:bg-blue-50 hover:text-blue-600 transition-colors">PAST EVENTS</a>
+                    </div>
+                </div>
+                
+                <a href="contact" class="hover:text-blue-600 transition-colors">CONTACT</a>
+            </nav>
+
+            <a href="#" class="hidden lg:block bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-3 rounded-full font-bold text-xs tracking-wider shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all transform hover:-translate-y-0.5">BOOKING</a>
+            
+            <!-- Tombol Hamburger Mobile -->
+            <button id="hamburger" class="lg:hidden text-2xl text-slate-700 focus:outline-none px-2"><i class="fa-solid fa-bars"></i></button>
+        </div>
+
+        <!-- Menu Mobile (Tersembunyi by default) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 absolute w-full left-0 top-full shadow-2xl flex-col font-bold text-sm text-slate-700">
+            <a href="/" class="px-6 py-4 border-b border-slate-50 hover:bg-blue-50 hover:text-blue-600">HOME</a>
+            <a href="about" class="px-6 py-4 border-b border-slate-50 hover:bg-blue-50 hover:text-blue-600">ABOUT US</a>
+            <a href="academic-venture" class="px-6 py-4 border-b border-slate-50 hover:bg-blue-50 hover:text-blue-600">SERVICES: ACADEMIC</a>
+            <a href="non-academic-venture" class="px-6 py-4 border-b border-slate-50 hover:bg-blue-50 hover:text-blue-600">SERVICES: NON-ACADEMIC</a>
+            <a href="contact" class="px-6 py-4 border-b border-slate-50 hover:bg-blue-50 hover:text-blue-600">CONTACT</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative w-full h-[250px] md:h-[350px] bg-slate-900 bg-cover bg-center flex items-center justify-center mt-20" style="background-image: url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop');">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-3xl md:text-5xl font-black text-white tracking-widest drop-shadow-lg">BOOKING & RESERVASI</h1>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16">
+            
+            <!-- BAGIAN KIRI: INFO -->
+            <aside class="w-full lg:w-1/3 flex flex-col gap-4">
+                <span class="text-xs font-black tracking-widest text-blue-600 uppercase">PT Atma Jaya Mitra Nusantara</span>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Ajukan booking melalui form berikut.</h2>
+                <p class="text-slate-500 font-medium text-base">Tim terkait akan menghubungi Anda setelah permintaan diterima dan direview.</p>
+
+                <div class="mt-6 p-8 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-[2rem] border border-blue-200/60 shadow-sm flex flex-col gap-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider"><i class="fa-solid fa-headset mr-2"></i> Hubungi tim kami</span>
+                    <strong class="text-2xl font-black text-blue-900">0851-7417-3247</strong>
+                    <small class="text-slate-600 font-medium">Senin - Jumat, 08:00 - 20:00</small>
+                </div>
+            </aside>
+
+            <!-- BAGIAN KANAN: FORMULIR -->
+            <section class="w-full lg:w-2/3 bg-white p-6 md:p-12 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative">
+                
+                <div class="border-b border-slate-100 pb-6 mb-8">
+                    <h2 class="text-2xl font-extrabold text-slate-900">Formulir Pendaftaran</h2>
+                    <p class="text-slate-500 font-medium mt-1">Harap isi data dengan lengkap dan benar.</p>
+                </div>
+
+                <form id="booking-form" class="flex flex-col gap-6">
+                    
+                    <!-- INPUT NAMA -->
+                    <div>
+                        <label for="name" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                        <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap..." 
+                               class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-slate-800 placeholder-slate-400">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- INPUT EMAIL -->
+                        <div>
+                            <label for="email" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Email Aktif</label>
+                            <input type="email" id="email" name="email" required placeholder="nama@email.com" 
+                                   class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-slate-800 placeholder-slate-400">
+                        </div>
+                        <!-- INPUT NOMOR WA -->
+                        <div>
+                            <label for="phone" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Nomor WhatsApp</label>
+                            <input type="text" id="phone" name="phone" required placeholder="08xxxxxxxxxx" 
+                                   class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-slate-800 placeholder-slate-400">
+                        </div>
+                    </div>
+
+                    <!-- KATEGORI LAYANAN -->
+                    <div>
+                        <label for="venture_type" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Kategori Layanan</label>
+                        <div class="relative">
+                            <select id="venture_type" name="venture_type" onchange="toggleVenture()" required 
+                                    class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-slate-800 appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih Kategori Layanan...</option>
+                                <option value="av">Academic Venture</option>
+                                <option value="non_av">Non-Academic Venture</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- HIDDEN FIELDS: ACADEMIC VENTURE -->
+                    <div id="av_unit_container" class="hidden">
+                        <label for="av_unit" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Dari Unit</label>
+                        <input type="text" id="av_unit" name="av_unit" placeholder="Masukkan nama unit institusi..." 
+                               class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-slate-800">
+                    </div>
+
+                    <div id="av_faculty_container" class="hidden">
+                        <label for="av_faculty" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Fakultas</label>
+                        <input type="text" id="av_faculty" name="av_faculty" placeholder="Opsional jika ada..." 
+                               class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-slate-800">
+                    </div>
+
+                    <div id="av_container" class="hidden">
+                        <label for="av_service" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Program / Sertifikasi</label>
+                        <div class="relative">
+                            <select id="av_service" name="service" class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-slate-800 appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih program...</option>
+                                <optgroup label="Training Programs">
+                                    <option value="Brevet A-C">Brevet A-C</option>
+                                    <option value="Procurement">Procurement</option>
+                                    <option value="Project Management">Project Management</option>
+                                    <option value="Leadership">Leadership</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Retirement Preparation">Retirement Preparation</option>
+                                    <option value="Soft Skills">Soft Skills</option>
+                                </optgroup>
+                                <optgroup label="Certification Programs">
+                                    <option value="Microsoft Office Specialist">Microsoft Office Specialist</option>
+                                    <option value="SAP">SAP</option>
+                                    <option value="BNSP: HR">BNSP: HR</option>
+                                    <option value="Train the Trainer">Train the Trainer</option>
+                                    <option value="Hotel & Restaurant">Hotel & Restaurant</option>
+                                    <option value="MICE">MICE</option>
+                                    <option value="Travel Bureau">Travel Bureau</option>
+                                </optgroup>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- HIDDEN FIELDS: NON-ACADEMIC VENTURE -->
+                    <div id="non_av_category_container" class="hidden">
+                        <label for="non_av_category" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Kategori Acara</label>
+                        <div class="relative">
+                            <select id="non_av_category" name="non_av_category" class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-slate-800 appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih kategori acara...</option>
+                                <option value="Corporate Event">Corporate Event</option>
+                                <option value="Concert & Entertainment">Concert & Entertainment</option>
+                                <option value="Wedding & Private">Wedding & Private</option>
+                                <option value="Venue & Facilities">Venue & Facilities</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+
+                    <div id="non_av_container" class="hidden">
+                        <label for="non_av_service" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Fasilitas / Venue</label>
+                        <div class="relative">
+                            <select id="non_av_service" name="service" class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-slate-800 appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih fasilitas...</option>
+                                <option value="ATMAterra Restaurant, Canteen & Café">ATMAterra Restaurant, Canteen & Café</option>
+                                <option value="Amphitheatre & Outdoor Class">Amphitheatre & Outdoor Class</option>
+                                <option value="Pop-up Market">Pop-up Market</option>
+                                <option value="Indoor Rooms (Y14, Y15, Small Classrooms)">Indoor Rooms (Y14, Y15, Small Classrooms)</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- KOTAK UPLOAD PROPOSAL DATABASE -->
+                    <div id="non_av_proposal_container" class="hidden bg-slate-50 p-6 rounded-2xl border border-dashed border-slate-300">
+                        <label for="proposal_file" class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-3">Upload Proposal Acara</label>
+                        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                            <input type="file" id="proposal_file" name="proposal_file" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,image/*" onchange="resetUploadStatus()" 
+                                   class="flex-1 w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                            <button type="button" id="btn-upload-proposal" onclick="uploadProposalToDB()" class="px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all whitespace-nowrap"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload File</button>
+                        </div>
+                        <div id="upload-status-text" class="mt-3 text-sm font-medium text-slate-500">
+                            Opsional. Jika Anda memilih file, <span class="font-bold text-slate-700">Anda wajib menekan tombol Upload File</span> biru di atas sebelum mengirim form.
+                        </div>
+                    </div>
+
+                    <!-- TANGGAL DAN PESAN -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 pt-6 mt-2">
+                        <div>
+                            <label for="date" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Tanggal Booking</label>
+                            <input type="date" id="date" name="date" required 
+                                   class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-slate-800">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Pesan Tambahan</label>
+                            <textarea id="message" name="message" rows="3" placeholder="Tuliskan detail tambahan (opsional)..." 
+                                      class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-medium text-slate-800 resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-6 border-t border-slate-100 flex flex-col gap-4">
+                        <button type="submit" id="btn-submit-booking" class="w-full bg-slate-900 hover:bg-blue-700 text-white font-extrabold text-base py-4 md:py-5 rounded-2xl shadow-xl shadow-slate-900/20 hover:shadow-blue-600/30 transition-all transform hover:-translate-y-1">
+                            KIRIM BOOKING SEKARANG <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                        <p class="text-center text-xs font-medium text-slate-400">Dengan menekan tombol kirim, Anda menyetujui syarat & ketentuan layanan kami.</p>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-16 px-6 sm:px-10 lg:px-16 mt-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            
+            <!-- Footer Col 1 -->
+            <div class="flex flex-col gap-6">
+                <div class="bg-white p-3 rounded-2xl w-fit">
+                    <img src="images/Logo AJMNp.png" alt="AJMN" class="h-12 object-contain" onerror="this.src='https://via.placeholder.com/150x50?text=AJMN'">
+                </div>
+                <p class="text-sm font-medium leading-relaxed text-slate-400">Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.</p>
+                <div class="flex gap-4 mt-2">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+
+            <!-- Footer Col 2 -->
+            <div class="flex flex-col gap-6">
+                <h4 class="text-white font-extrabold tracking-widest text-sm uppercase">Our Services</h4>
+                <ul class="flex flex-col gap-3 text-sm font-medium text-slate-400">
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Academic Venture</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Non-Academic Venture</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Col 3 -->
+            <div class="flex flex-col gap-6">
+                <h4 class="text-white font-extrabold tracking-widest text-sm uppercase">Quick Links</h4>
+                <ul class="flex flex-col gap-3 text-sm font-medium text-slate-400">
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Gallery</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Contact</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors text-white font-bold">Booking</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Col 4 -->
+            <div class="flex flex-col gap-6">
+                <h4 class="text-white font-extrabold tracking-widest text-sm uppercase">Contact Us</h4>
+                <div class="flex flex-col gap-4 text-sm font-medium text-slate-400">
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-location-dot mt-1 text-blue-500"></i>
+                        <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-phone text-blue-500"></i>
+                        <span>0851-7417-3247</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-envelope text-blue-500"></i>
+                        <span>marketing.ajmn@atmajaya.ac.id</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 text-center text-xs font-medium text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- NOTIFICATION MODAL -->
+    <div id="notification-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-[9999] p-4 transition-opacity">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative transform scale-100 transition-transform">
+            <div id="notification-icon" class="text-5xl mb-4"></div>
+            <h3 id="notification-title" class="text-xl font-black text-slate-900 mb-2"></h3>
+            <p id="notification-message" class="text-slate-500 font-medium text-sm mb-8"></p>
+            <button id="notification-close" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold py-3 rounded-xl transition-colors">Tutup</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. MOBILE MENU TOGGLE
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        // 2. NAVBAR SCROLL EFFECT
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.replace('h-20', 'h-16');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.replace('h-16', 'h-20');
+            }
+        });
+
+        // 3. LOGIKA FORM TOGGLE
+        function toggleVenture() {
+            const ventureType = document.getElementById('venture_type').value;
+            
+            const els = {
+                avUnit: document.getElementById('av_unit_container'),
+                avFaculty: document.getElementById('av_faculty_container'),
+                avProgram: document.getElementById('av_container'),
+                nonAvCategory: document.getElementById('non_av_category_container'),
+                nonAvProposal: document.getElementById('non_av_proposal_container'),
+                nonAvFacility: document.getElementById('non_av_container')
+            };
+
+            const inputs = {
+                avUnit: document.getElementById('av_unit'),
+                avService: document.getElementById('av_service'),
+                nonAvCat: document.getElementById('non_av_category'),
+                nonAvSvc: document.getElementById('non_av_service')
+            };
+
+            // Hide all first
+            Object.values(els).forEach(el => el.classList.add('hidden'));
+            Object.values(inputs).forEach(input => input.required = false);
+
+            if (ventureType === 'av') {
+                els.avUnit.classList.remove('hidden');
+                els.avFaculty.classList.remove('hidden');
+                els.avProgram.classList.remove('hidden');
+                inputs.avUnit.required = true;
+                inputs.avService.required = true;
+                isProposalUploaded = true; // AV tidak butuh upload
+            } else if (ventureType === 'non_av') {
+                els.nonAvCategory.classList.remove('hidden');
+                els.nonAvProposal.classList.remove('hidden');
+                els.nonAvFacility.classList.remove('hidden');
+                inputs.nonAvCat.required = true;
+                inputs.nonAvSvc.required = true;
+                resetUploadStatus(); 
+            }
+        }
+
+        // 4. LOGIKA UPLOAD PROPOSAL KE DATABASE
+        let isProposalUploaded = false;
+        let proposalFileUrl = '-';
+        let proposalFileName = '-';
+
+        function resetUploadStatus() {
+            const fileInput = document.getElementById('proposal_file');
+            const statusText = document.getElementById('upload-status-text');
+            const btnUpload = document.getElementById('btn-upload-proposal');
+
+            if (fileInput.files.length > 0) {
+                isProposalUploaded = false;
+                statusText.innerHTML = '<span class="text-rose-600 font-bold"><i class="fa-solid fa-circle-exclamation mr-1"></i> File belum di-upload. Silakan klik tombol Upload File!</span>';
+                btnUpload.textContent = '⬆️ Upload File';
+                btnUpload.className = 'px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all whitespace-nowrap';
+            } else {
+                isProposalUploaded = true;
+                statusText.innerHTML = 'Opsional. Jika Anda memilih file, Anda wajib mengklik tombol Upload File sebelum mengirim form.';
+            }
+        }
+
+        async function uploadProposalToDB() {
+            const fileInput = document.getElementById('proposal_file');
+            if (fileInput.files.length === 0) {
+                showNotification('warning', 'Pilih file proposal dari perangkat Anda terlebih dahulu!', 'File Kosong');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('proposal', file);
+
+            const btnUpload = document.getElementById('btn-upload-proposal');
+            const statusText = document.getElementById('upload-status-text');
+
+            btnUpload.disabled = true;
+            btnUpload.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunggah...';
+            btnUpload.className = 'px-6 py-3.5 bg-slate-400 text-white font-bold rounded-xl shadow-md whitespace-nowrap cursor-not-allowed';
+            statusText.innerHTML = '<span class="text-blue-600 font-bold">Menghubungkan ke server AJMN...</span>';
+
+            try {
+                // Endpoint ini harus aktif di Node.js (server.js) Anda
+                const response = await fetch('/api/upload-proposal', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Gagal mengunggah ke database.');
+                const result = await response.json();
+
+                isProposalUploaded = true;
+                proposalFileName = file.name;
+                proposalFileUrl = window.location.origin + '/api/download-proposal/' + result.fileId; 
+
+                statusText.innerHTML = '<span class="text-emerald-600 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> Upload Sukses! File aman tersimpan di database.</span>';
+                btnUpload.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Terupload';
+                btnUpload.className = 'px-6 py-3.5 bg-emerald-500 text-white font-bold rounded-xl shadow-md whitespace-nowrap';
+            } catch (error) {
+                statusText.innerHTML = '<span class="text-rose-600 font-bold"><i class="fa-solid fa-circle-xmark mr-1"></i> Gagal Upload! Pastikan koneksi stabil dan coba lagi.</span>';
+                btnUpload.disabled = false;
+                btnUpload.innerHTML = '<i class="fa-solid fa-rotate-right mr-2"></i> Coba Lagi';
+                btnUpload.className = 'px-6 py-3.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl shadow-md transition-all whitespace-nowrap';
+            }
+        }
+
+        // 5. NOTIFIKASI MODAL
+        const notifOverlay = document.getElementById('notification-overlay');
+        function showNotification(type, message, title) {
+            const styles = {
+                success: { icon: '<i class="fa-solid fa-circle-check text-emerald-500"></i>', title: title || 'Pendaftaran Berhasil!' },
+                error: { icon: '<i class="fa-solid fa-circle-xmark text-rose-500"></i>', title: title || 'Terjadi Kesalahan' },
+                warning: { icon: '<i class="fa-solid fa-triangle-exclamation text-orange-500"></i>', title: title || 'Perhatian' }
+            };
+            const current = styles[type] || styles.success;
+            
+            document.getElementById('notification-title').textContent = current.title;
+            document.getElementById('notification-message').textContent = message;
+            document.getElementById('notification-icon').innerHTML = current.icon;
+            
+            notifOverlay.classList.remove('hidden');
+            notifOverlay.classList.add('flex');
+        }
+
+        document.getElementById('notification-close').addEventListener('click', () => {
+            notifOverlay.classList.add('hidden');
+            notifOverlay.classList.remove('flex');
+        });
+
+        // 6. LOGIKA SUBMIT EMAILJS
+        document.getElementById('booking-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            // CEGAT JIKA FILE BELUM DIUPLOAD
+            const fileInput = document.getElementById('proposal_file');
+            if (document.getElementById('venture_type').value === 'non_av' && fileInput.files.length > 0 && !isProposalUploaded) {
+                showNotification('warning', 'Anda sudah memilih file proposal, tapi belum menekan tombol Upload. Silakan klik tombol Upload berwarna biru di samping kotak file.', 'Upload Tertunda');
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btn-submit-booking');
+            const originalBtnHtml = btnSubmit.innerHTML;
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Sedang Memproses...';
+
+            try {
+                const ventureType = document.getElementById('venture_type').value;
+                const targetEmail = ventureType === 'av' ? 'lkp.ajmn@atmajaya.ac.id' : 'marketing.ajmn@atmajaya.ac.id';
+                const selectedService = ventureType === 'av' ? document.getElementById('av_service').value : document.getElementById('non_av_service').value;
+
+                const templateParams = {
+                    to_email: targetEmail,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    venture_type: ventureType === 'av' ? 'Academic Venture' : 'Non-Academic Venture',
+                    av_unit: document.getElementById('av_unit').value.trim() || '-',
+                    av_faculty: document.getElementById('av_faculty').value.trim() || '-',
+                    non_av_category: document.getElementById('non_av_category').value || '-',
+                    proposal_file_name: proposalFileName,
+                    proposal_file_url: proposalFileUrl, 
+                    service: selectedService,
+                    date: document.getElementById('date').value,
+                    message: document.getElementById('message').value || '-'
+                };
+
+                await emailjs.send('service_lx1dsjm', 'template_vfnnuex', templateParams);
+                showNotification('success', 'Formulir booking Anda berhasil dikirim! Tim kami akan segera menghubungi nomor WhatsApp/Email Anda dalam waktu maksimal 1x24 jam kerja.');
+                
+                // Reset Form
+                document.getElementById('booking-form').reset();
+                proposalFileName = '-';
+                proposalFileUrl = '-';
+                const btnUpload = document.getElementById('btn-upload-proposal');
+                btnUpload.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload File';
+                btnUpload.className = 'px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all whitespace-nowrap';
+                btnUpload.disabled = false;
+                toggleVenture();
+
+            } catch (error) {
+                showNotification('error', 'Sistem gagal mengirim formulir booking Anda. Silakan coba beberapa saat lagi atau hubungi kami langsung via WhatsApp.', 'Gagal Mengirim');
+            }
+
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalBtnHtml;
+        });
+
+        // Inisialisasi State Pertama Kali
+        toggleVenture(); 
+    </script>
+</body>
+</html>
