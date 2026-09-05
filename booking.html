@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking & Reservasi | PT Atma Jaya Mitra Nusantara</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="viewport-scale.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("qiDMTSzcfbj_TBi5B");
+        })();
+    </script>
+    <script>
+        const CLOUDINARY_CLOUD_NAME = 'h7zlezzf';
+        const CLOUDINARY_UPLOAD_PRESET = 'ajmn_booking';
+
+        async function uploadProposalToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const payloadText = await response.text();
+            let payload = {};
+
+            try {
+                payload = payloadText ? JSON.parse(payloadText) : {};
+            } catch (error) {
+                throw new Error('Respon upload dari Cloudinary tidak valid.');
+            }
+
+            if (!response.ok) {
+                throw new Error(payload.error?.message || payload.message || 'Gagal mengunggah proposal ke Cloudinary.');
+            }
+
+            return payload;
+        }
+    </script>
+</head>
+<body class="booking-page">
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/Logo AJMNp.png" alt="PT Atma Jaya Mitra Nusantara">
+        </div>
+
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="about">ABOUT US</a></li>
+                    <li><a href="news">NEWS</a></li>
+                    <li class="dropdown">
+                        <a href="#">SERVICES &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="academic-venture">ACADEMIC VENTURE</a></li>
+                            <li><a href="non-academic-venture">NON-ACADEMIC VENTURE</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery">GALLERY</a></li>
+                    <li class="dropdown">
+                        <a href="upcoming-events">WHAT'S ON &#9662;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="upcoming-events">UPCOMING EVENTS</a></li>
+                            <li><a href="past-events">PAST EVENTS</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact">CONTACT</a></li>
+                </ul>
+            </nav>
+            <a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" class="btn-booking" target="_blank" rel="noreferrer">BOOKING</a>
+        </div>
+    </header>
+
+    <section class="hero-contact">
+        <div class="overlay"></div>
+        <div class="hero-about-content">
+            <h1>BOOKING & RESERVASI</h1>
+    </section>
+
+    <main class="booking-section">
+        <div class="container-booking">
+            <div class="booking-layout">
+                <aside class="booking-intro">
+                    <span class="booking-eyebrow">PT ATMA JAYA MITRA NUSANTARA</span>
+                    <h2>Ajukan booking melalui form berikut.</h2>
+                    <p>Tim terkait akan menghubungi Anda setelah permintaan diterima.</p>
+
+                    <div class="booking-highlight">
+                        <span>Hubungi tim kami</span>
+                        <strong>0851-7417-3247</strong>
+                        <small>Senin - Jumat, 08:00 - 20:00</small>
+                    </div>
+                </aside>
+
+                <section class="booking-card">
+                    <div class="booking-card-header">
+                        <h2>Formulir Booking & Reservasi</h2>
+                        <p>PT Atma Jaya Mitra Nusantara</p>
+                    </div>
+
+                    <form id="booking-form" class="booking-form">
+                        <div class="booking-field">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap">
+                        </div>
+
+                        <div class="booking-grid-2">
+                            <div class="booking-field">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required placeholder="nama@email.com">
+                            </div>
+                            <div class="booking-field">
+                                <label for="phone">Nomor WhatsApp</label>
+                                <input type="text" id="phone" name="phone" required placeholder="08xxxxxxxxxx">
+                            </div>
+                        </div>
+
+                        <div class="booking-field">
+                            <label for="venture_type">Kategori Layanan</label>
+                            <select id="venture_type" name="venture_type" onchange="toggleVenture()" required>
+                                <option value="" disabled selected>Pilih kategori</option>
+                                <option value="av">Academic Venture</option>
+                                <option value="non_av">Non-Academic Venture</option>
+                            </select>
+                        </div>
+
+                        <div id="av_unit_container" class="booking-field hidden">
+                            <label for="av_unit">Dari Unit</label>
+                            <input type="text" id="av_unit" name="av_unit" placeholder="Masukkan nama unit">
+                        </div>
+
+                        <div id="av_faculty_container" class="booking-field hidden">
+                            <label for="av_faculty">Fakultas</label>
+                            <input type="text" id="av_faculty" name="av_faculty" placeholder="Opsional">
+                        </div>
+
+                        <div id="av_container" class="booking-field hidden">
+                            <label for="av_service">Program / Sertifikasi</label>
+                            <select id="av_service" name="service">
+                                <option value="" disabled selected>Pilih program</option>
+                                <optgroup label="Training Programs">
+                                    <option value="Brevet A-C">Brevet A-C</option>
+                                    <option value="Procurement">Procurement</option>
+                                    <option value="Project Management">Project Management</option>
+                                    <option value="Leadership">Leadership</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Retirement Preparation">Retirement Preparation</option>
+                                    <option value="Soft Skills">Soft Skills</option>
+                                </optgroup>
+                                <optgroup label="Certification Programs">
+                                    <option value="Microsoft Office Specialist">Microsoft Office Specialist</option>
+                                    <option value="SAP">SAP</option>
+                                    <option value="BNSP: HR">BNSP: HR</option>
+                                    <option value="Train the Trainer">Train the Trainer</option>
+                                    <option value="Hotel & Restaurant">Hotel & Restaurant</option>
+                                    <option value="MICE">MICE</option>
+                                    <option value="Travel Bureau">Travel Bureau</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div id="non_av_category_container" class="booking-field hidden">
+                            <label for="non_av_category">Kategori Acara</label>
+                            <select id="non_av_category" name="non_av_category">
+                                <option value="" disabled selected>Pilih kategori acara</option>
+                                <option value="Corporate Event">Corporate Event</option>
+                                <option value="Concert & Entertainment">Concert & Entertainment</option>
+                                <option value="Wedding & Private">Wedding & Private</option>
+                                <option value="Venue & Facilities">Venue & Facilities</option>
+                            </select>
+                        </div>
+
+                        <div id="non_av_proposal_container" class="booking-field hidden">
+                            <label for="proposal_file">Upload Proposal</label>
+                            <input type="file" id="proposal_file" name="proposal_file" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,image/*">
+                            <small style="display:block; margin-top:8px; color:#6b6b6b; font-size:0.9rem;">Opsional. Unggah proposal jika ada.</small>
+                        </div>
+
+                        <div id="non_av_container" class="booking-field hidden">
+                            <label for="non_av_service">Fasilitas / Venue</label>
+                            <select id="non_av_service" name="service">
+                                <option value="" disabled selected>Pilih fasilitas</option>
+                                <option value="ATMAterra Restaurant, Canteen & Café">ATMAterra Restaurant, Canteen & Café</option>
+                                <option value="Amphitheatre & Outdoor Class">Amphitheatre & Outdoor Class</option>
+                                <option value="Pop-up Market">Pop-up Market</option>
+                                <option value="Indoor Rooms (Y14, Y15, Small Classrooms)">Indoor Rooms (Y14, Y15, Small Classrooms)</option>
+                            </select>
+                        </div>
+
+                        <div class="booking-grid-2">
+                            <div class="booking-field">
+                                <label for="date">Tanggal Booking</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="booking-field">
+                                <label for="message">Pesan Tambahan</label>
+                                <textarea id="message" name="message" rows="4" placeholder="Opsional"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="booking-submit-row">
+                            <button type="submit" class="booking-submit">Kirim Booking</button>
+                            <p>Tim terkait akan menghubungi Anda setelah booking diterima.</p>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="images/Logo AJMN.png" alt="PT Atma Jaya Mitra Nusantara">
+                </div>
+                <div class="footer-desc">
+                    Professional company specializing in building management and event services for Universitas Katolik Indonesia Atma Jaya and the community.
+                </div>
+
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61555815503773" target="_blank" class="social-icon-gold" aria-label="Facebook"><img src="images/fb.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@atmajayamitra" target="_blank" class="social-icon-gold" aria-label="TikTok"><img src="images/tt.png" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/atmajayamitra/" target="_blank" class="social-icon-gold" aria-label="Instagram"><img src="images/ig.png" alt="Instagram"></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>OUR SERVICES</h4>
+                <ul>
+                    <li><a href="academic-venture">ACADEMIC VENTURE</a></li>
+                    <li><a href="non-academic-venture">NON-ACADEMIC VENTURE</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="about">ABOUT US</a></li>
+                    <li><a href="gallery">GALLERY</a></li>
+                    <li><a href="contact">CONTACT</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone=6285174173247&text&type=phone_number&app_absent=0&utm_campaign=contact&utm_source=website" target="_blank" rel="noreferrer">BOOKING</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <div class="contact-info">
+                    <p><span class="contact-icon"><img src="images/lokasi.png" alt="Lokasi"></span> <span>Gedung Yustinus lantai 14, <br> Jl. Jend. Sudirman No.51, <br> Jakarta Selatan 12930</span></p>
+                    <p><span class="contact-icon"><img src="images/wa.png" alt="WhatsApp"></span> <span>085174173247</span></p>
+                    <p><span class="contact-icon"><img src="images/mail.png" alt="Email"></span> <span>marketing.ajmn@atmajaya.ac.id</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <div class="footer-copyright">
+                <p>&copy; 2026 PT Atma Jaya Mitra Nusantara. All rights reserved. | BY TIM AJMN | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notification-overlay" class="notification-overlay hidden" aria-hidden="true">
+        <div class="notification-modal" role="dialog" aria-modal="true" aria-labelledby="notification-title">
+            <div class="notification-icon" id="notification-icon">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="notification-content">
+                <h3 id="notification-title">Informasi</h3>
+                <p id="notification-message"></p>
+            </div>
+            <button type="button" id="notification-close" class="notification-close">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        const notificationOverlay = document.getElementById('notification-overlay');
+        const notificationTitle = document.getElementById('notification-title');
+        const notificationMessage = document.getElementById('notification-message');
+        const notificationIcon = document.getElementById('notification-icon');
+        const notificationClose = document.getElementById('notification-close');
+
+        function showNotification(type, message, title) {
+            const styles = {
+                success: {
+                    icon: 'fa-circle-check',
+                    title: title || 'Berhasil',
+                },
+                error: {
+                    icon: 'fa-circle-xmark',
+                    title: title || 'Gagal',
+                },
+                warning: {
+                    icon: 'fa-triangle-exclamation',
+                    title: title || 'Perhatian',
+                },
+                info: {
+                    icon: 'fa-circle-info',
+                    title: title || 'Informasi',
+                }
+            };
+
+            const current = styles[type] || styles.info;
+            notificationTitle.textContent = current.title;
+            notificationMessage.textContent = message;
+            notificationIcon.innerHTML = `<i class="fa-solid ${current.icon}"></i>`;
+            notificationOverlay.classList.remove('hidden');
+            notificationOverlay.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('notification-open');
+        }
+
+        function hideNotification() {
+            notificationOverlay.classList.add('hidden');
+            notificationOverlay.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('notification-open');
+        }
+
+        notificationClose.addEventListener('click', hideNotification);
+        notificationOverlay.addEventListener('click', function(event) {
+            if (event.target === notificationOverlay) {
+                hideNotification();
+            }
+        });
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && !notificationOverlay.classList.contains('hidden')) {
+                hideNotification();
+            }
+        });
+
+        function toggleVenture() {
+            const ventureType = document.getElementById('venture_type').value;
+            const avUnitContainer = document.getElementById('av_unit_container');
+            const avFacultyContainer = document.getElementById('av_faculty_container');
+            const avContainer = document.getElementById('av_container');
+            const nonAvCategoryContainer = document.getElementById('non_av_category_container');
+            const nonAvProposalContainer = document.getElementById('non_av_proposal_container');
+            const nonAvContainer = document.getElementById('non_av_container');
+            const avUnit = document.getElementById('av_unit');
+            const avFaculty = document.getElementById('av_faculty');
+            const avService = document.getElementById('av_service');
+            const nonAvCategory = document.getElementById('non_av_category');
+            const proposalFile = document.getElementById('proposal_file');
+            const nonAvService = document.getElementById('non_av_service');
+
+            if (ventureType === 'av') {
+                avUnitContainer.classList.remove('hidden');
+                avFacultyContainer.classList.remove('hidden');
+                avContainer.classList.remove('hidden');
+                nonAvCategoryContainer.classList.add('hidden');
+                nonAvProposalContainer.classList.add('hidden');
+                nonAvContainer.classList.add('hidden');
+                avUnit.required = true;
+                avFaculty.required = false;
+                avService.required = true;
+                nonAvCategory.required = false;
+                proposalFile.required = false;
+                nonAvService.required = false;
+                nonAvCategory.value = '';
+                proposalFile.value = '';
+                nonAvService.value = '';
+            } else if (ventureType === 'non_av') {
+                avUnitContainer.classList.add('hidden');
+                avFacultyContainer.classList.add('hidden');
+                nonAvContainer.classList.remove('hidden');
+                avContainer.classList.add('hidden');
+                nonAvCategoryContainer.classList.remove('hidden');
+                nonAvProposalContainer.classList.remove('hidden');
+                avUnit.required = false;
+                avFaculty.required = false;
+                nonAvService.required = true;
+                avService.required = false;
+                nonAvCategory.required = true;
+                proposalFile.required = false;
+                avService.value = '';
+                avUnit.value = '';
+                avFaculty.value = '';
+                nonAvCategory.value = '';
+                proposalFile.value = '';
+            } else {
+                avUnitContainer.classList.add('hidden');
+                avFacultyContainer.classList.add('hidden');
+                avContainer.classList.add('hidden');
+                nonAvCategoryContainer.classList.add('hidden');
+                nonAvProposalContainer.classList.add('hidden');
+                nonAvContainer.classList.add('hidden');
+                avUnit.required = false;
+                avFaculty.required = false;
+                avService.required = false;
+                nonAvCategory.required = false;
+                proposalFile.required = false;
+                nonAvService.required = false;
+                avUnit.value = '';
+                avFaculty.value = '';
+                avService.value = '';
+                nonAvCategory.value = '';
+                proposalFile.value = '';
+                nonAvService.value = '';
+            }
+        }
+
+        document.getElementById('booking-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            try {
+                const ventureType = document.getElementById('venture_type').value;
+                const targetEmail = ventureType === 'av'
+                    ? 'lkp.ajmn@atmajaya.ac.id'
+                    : 'marketing.ajmn@atmajaya.ac.id';
+
+                const selectedService = ventureType === 'av'
+                    ? document.getElementById('av_service').value
+                    : document.getElementById('non_av_service').value;
+
+                const avUnit = document.getElementById('av_unit').value.trim() || '-';
+                const avFaculty = document.getElementById('av_faculty').value.trim() || '-';
+                const nonAvCategory = document.getElementById('non_av_category').value || '-';
+                const proposalFileInput = document.getElementById('proposal_file');
+                let proposalFileName = '-';
+                let proposalFileUrl = '#';
+
+                if (proposalFileInput.files.length > 0) {
+                    const proposalPayload = await uploadProposalToCloudinary(proposalFileInput.files[0]);
+                    proposalFileName = proposalFileInput.files[0].name || proposalPayload.original_filename || '-';
+                    proposalFileUrl = proposalPayload.secure_url || proposalPayload.url || '#';
+                }
+
+                if (!ventureType || !selectedService) {
+                    showNotification('warning', 'Pilih kategori layanan dan layanan yang sesuai terlebih dahulu.');
+                    return;
+                }
+
+                const templateParams = {
+                    to_email: targetEmail,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    venture_type: ventureType === 'av' ? 'Academic Venture' : 'Non-Academic Venture',
+                    av_unit: avUnit,
+                    av_faculty: avFaculty,
+                    non_av_category: nonAvCategory,
+                    proposal_file_name: proposalFileName,
+                    proposal_file_url: proposalFileUrl,
+                    service: selectedService,
+                    date: document.getElementById('date').value,
+                    message: document.getElementById('message').value
+                };
+
+                await emailjs.send('service_lx1dsjm', 'template_vfnnuex', templateParams);
+                showNotification('success', 'Booking berhasil dikirim. Tim kami akan segera menghubungi Anda.');
+                document.getElementById('booking-form').reset();
+                toggleVenture();
+            } catch (error) {
+                showNotification('error', 'Gagal mengirim booking: ' + (error?.message || JSON.stringify(error)));
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('.navbar nav');
+        const dropdownItems = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        dropdownItems.forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    this.classList.toggle('active');
+                }
+            });
+        });
+
+        toggleVenture();
+    </script>
+
+</body>
+</html>
